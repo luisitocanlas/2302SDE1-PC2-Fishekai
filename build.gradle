@@ -1,0 +1,53 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version "${shadowVersion}"
+    id 'application'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(project.javaVersion)
+    }
+    withJavadocJar()
+}
+
+application {
+    mainClass = project.mainClass
+}
+
+run {
+    standardInput = System.in
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation fileTree(dir: 'libs', include: '*.jar')
+
+    testImplementation "org.junit.jupiter:junit-jupiter:${project.junit5Version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.junit5Version}"
+    // To use JUnit4 instead of JUnit5, comment out the previous 2 lines and uncomment the following 2 lines.
+    // testImplementation "junit:junit:${project.junit4Version}"
+    // testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${project.junit5Version}"
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+javadoc {
+    options {
+        links "https://docs.oracle.com/en/java/javase/${project.javaVersion}/docs/api/"
+    }
+}
+
+assemble {
+    dependsOn shadowJar, javadocJar
+}
+
+project.tasks.withType(Jar).configureEach {
+    it.exclude('**/.keep')
+}

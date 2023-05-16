@@ -1,0 +1,4 @@
+// TODO: Set the value of rootProject.name to a spinal-case (lower-case, with dashes between words)
+//  version of the project name, in single or double quotes. (This will also become artifact
+//  identifier in the project's Maven coordinates.)
+rootProject.name = 'replace-me'
