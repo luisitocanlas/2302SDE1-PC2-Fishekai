@@ -58,7 +58,6 @@ public class Location {
     }
 
     // for internal testing
-    // for internal testing
     public static void main(String[] args) {
         HashMap<String, String> direction = new HashMap<>();
         direction.put("north", "North Beach");
