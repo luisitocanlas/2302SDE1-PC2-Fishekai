@@ -5,11 +5,12 @@
 *							  *
 *Commands					  *
 *							  *
-*go (north, south, east, west)*
-*get (items)				  *
+*go (North, South, East, West)*
+*get (item from location)	  *
 *build (fishing pole)		  *
 *look (item)				  *
-*fish (catch a fish)		  *
+*cast (catch a fish)		  *
+*pull (pulls fishing line in) *
 *eat (food item)			  *
 *drink (water)				  *	
 *talk (self or NPC)			  *
