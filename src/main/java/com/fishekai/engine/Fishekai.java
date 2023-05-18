@@ -13,7 +13,7 @@ public class Fishekai implements SplashApp {
     // methods
     public void start() {
         // show title here
-        System.out.println("Replace me with the title.\n\n");
+        Display.showTitle();
 
         // ask user for input and store it
         String input = prompter.prompt("Would you like to play a new game?\n", "Yes|yes|y|No|no|n", "That is not a valid input\n");
