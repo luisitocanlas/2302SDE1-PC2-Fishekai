@@ -35,18 +35,34 @@ public class Display {
     }
     public static void showStatus(Character character, Location location){
 
-        System.out.println("--------------------------><(((º>--------------------------");
-        System.out.println("Health: " + character.getHp() + "     Hunger: " + character.getHunger() + "     Thirst: " + character.getThirst());
-        System.out.println();
-        System.out.println();
-        System.out.println("You are in the at the: " + location.getName());
-        System.out.println("Description: " + location.getDescriptions());
-        System.out.println();
-        System.out.println("Inventory: " + character.getInventory());
-        System.out.println();
-        System.out.println("You see paths to " + location.getDirections());
-        System.out.println("--------------------------><(((º>--------------------------");
-        System.out.println();
+        if (!location.isHasBeenHere()) { // if fa;se
+            System.out.println("--------------------------><(((º>--------------------------");
+            System.out.println("Health: " + character.getHp() + "     Hunger: " + character.getHunger() + "     Thirst: " + character.getThirst());
+            System.out.println();
+            System.out.println();
+            System.out.println("You are in the at the: " + location.getName());
+            System.out.println("Description: " + location.getDescriptions().get("before"));
+            System.out.println();
+            System.out.println("Inventory: " + character.getInventory());
+            System.out.println();
+            System.out.println("You see paths to " + location.getDirections());
+            System.out.println("--------------------------><(((º>--------------------------");
+            System.out.println();
+        }
+        else { // if true
+            System.out.println("--------------------------><(((º>--------------------------");
+            System.out.println("Health: " + character.getHp() + "     Hunger: " + character.getHunger() + "     Thirst: " + character.getThirst());
+            System.out.println();
+            System.out.println();
+            System.out.println("You are in the at the: " + location.getName());
+            System.out.println("Description: " + location.getDescriptions().get("after"));
+            System.out.println();
+            System.out.println("Inventory: " + character.getInventory());
+            System.out.println();
+            System.out.println("You see paths to " + location.getDirections());
+            System.out.println("--------------------------><(((º>--------------------------");
+            System.out.println();
+        }
     }
 
 
