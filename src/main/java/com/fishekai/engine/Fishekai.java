@@ -1,6 +1,7 @@
 package com.fishekai.engine;
 
 import com.fishekai.objects.Location;
+import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
@@ -11,7 +12,6 @@ public class Fishekai implements SplashApp {
     // constants
 
     // fields
-
     private static final HashMap<String, String> beach_dir;
     private static final HashMap<String, String> beach_des;
     private final Location beach = new Location("Beach", beach_dir, beach_des);
@@ -20,6 +20,7 @@ public class Fishekai implements SplashApp {
     private static final HashMap<String, String> nBeach_des;
     private final Location north_beach = new Location("North Beach", nBeach_dir, nBeach_des);
 
+    Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
 
     // instances
     private final Introduction intro = new Introduction();
@@ -56,7 +57,16 @@ public class Fishekai implements SplashApp {
 
         // starting point
         Location current_location = beach;
-        System.out.printf("Current location: %s\n", current_location.getName()); // just for testing
+
+        // for testing
+        Display.showStatus(player, current_location);
+        current_location.setHasBeenHere(true);
+        Display.showStatus(player, current_location);
+
+        // insert prompt here to tell the player to press any key to continue
+        prompter.prompt("Enter [Y]es to Continue: \n",
+                "Y|y",
+                "This is not a valid option!\n");
 
 //        while (true) {
 //          if(move[0] == "help"){
