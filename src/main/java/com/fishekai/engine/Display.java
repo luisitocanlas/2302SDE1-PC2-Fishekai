@@ -19,4 +19,15 @@ public class Display {
             System.out.println(line);
         }
     }
+    public static void showHelp() {
+        List<String> helpMenu = new ArrayList<>();
+        try {
+            helpMenu = Files.readAllLines(Path.of("images/helpMenu.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (var line : helpMenu) {
+            System.out.println(line);
+        }
+    }
 }

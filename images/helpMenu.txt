@@ -1,0 +1,18 @@
+**********><(((º>**************
+*							  *
+*		  Help Menu			  *
+*							  *
+*							  *
+*Commands					  *
+*							  *
+*go (north, south, east, west)*
+*get (items)				  *
+*build (fishing pole)		  *
+*look (item)				  *
+*fish (catch a fish)		  *
+*eat (food item)			  *
+*drink (water)				  *	
+*talk (self or NPC)			  *
+*							  *	
+**********><(((º>**************			
+		
