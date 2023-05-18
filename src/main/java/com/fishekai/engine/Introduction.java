@@ -1,11 +1,14 @@
 package com.fishekai.engine;
 
+import com.fishekai.utilities.Prompter;
+
+import java.util.Scanner;
+
 import static com.fishekai.utilities.Console.clear;
 
 class Introduction {
     private static final String FILE_PATH = "json/Game_Information.json";
-
-
+    private final Prompter prompter = new Prompter(new Scanner(System.in));
 
     public void showIntro() {
         // clear console
@@ -31,7 +34,9 @@ class Introduction {
         System.out.printf("Winning Condition:\n%s\n\n", winningCondition);
 
         // insert prompt here to tell the player to press any key to continue
-
+        prompter.prompt("Enter [Y]es to Continue: \n",
+                "Y|y",
+                "This is not a valid option!\n");
     }
 
     // call JSONReader to get data from JSON file
