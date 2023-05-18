@@ -39,9 +39,12 @@ public class Fishekai implements SplashApp {
         // press any key to continue
 
 
-//        while () {
-//
-//        }
-    }
+//        while (true) {
+//          if(move[0] == "help"){
+//            Display.showHelp();
 
+//        }
+        //testing to see if showHelp works.
+        Display.showHelp();
+    }
 }
