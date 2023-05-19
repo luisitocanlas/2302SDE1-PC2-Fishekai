@@ -9,6 +9,10 @@ public class Fish extends Item {
     int hungerValue;
     int catchDifficulty;
 
+    public Fish(String name) {
+        super(name);
+    }
+
     @Override
     public String getName() {
         return name;

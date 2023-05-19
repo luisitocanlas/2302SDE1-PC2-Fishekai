@@ -10,8 +10,8 @@ public class Location {
     private HashMap<String, Location> directions;
     private boolean hasBeenHere = false; // default value is false
     private HashMap<String, String> descriptions;
-    private List<String> fishes;
-    private List<String> items;
+    private List<Item> fishes;
+    private List<Item> items;
 
     // constructors
     public Location(String name) {
@@ -53,19 +53,19 @@ public class Location {
         this.hasBeenHere = hasBeenHere;
     }
 
-    public List<String> getFishes() {
+    public List<Item> getFishes() {
         return fishes;
     }
 
-    public void setFishes(List<String> fishes) {
+    public void setFishes(List<Item> fishes) {
         this.fishes = fishes;
     }
 
-    public List<String> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<String> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
