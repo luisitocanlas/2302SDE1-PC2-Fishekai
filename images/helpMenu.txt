@@ -1,19 +1,19 @@
 **********><(((º>**************
-*							  *
-*		  Help Menu			  *
-*							  *
-*							  *
-*Commands					  *
-*							  *
+*                             *
+*         Help Menu           *
+*                             *
+*                             *
+*Commands                     *
+*                             *
 *go (North, South, East, West)*
-*get (item from location)	  *
-*build (fishing pole)		  *
-*look (item)				  *
-*cast (catch a fish)		  *
+*get (item from location)     *
+*build (fishing pole)         *
+*look (item)                  *
+*cast (catch a fish)          *
 *pull (pulls fishing line in) *
-*eat (food item)			  *
-*drink (water)				  *	
-*talk (self or NPC)			  *
-*							  *	
+*eat (food item)              *
+*drink (water)                *
+*talk (self or NPC)           *
+*                             *
 **********><(((º>**************			
 		
