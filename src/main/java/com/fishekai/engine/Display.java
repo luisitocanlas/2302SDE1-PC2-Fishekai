@@ -1,39 +1,36 @@
 package com.fishekai.engine;
 
 import com.fishekai.objects.Character;
-import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class Display {
 
+    private static String banner;
+    private static String helpMenu;
+
+
     public static void showTitle() {
-        List<String> banner = new ArrayList<>();
-        try {
-            banner = Files.readAllLines(Path.of("images/banner.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (var line : banner) {
-            System.out.println(line);
-        }
+        System.out.println(banner);
     }
+
     public static void showHelp() {
-        List<String> helpMenu = new ArrayList<>();
-        try {
-            helpMenu = Files.readAllLines(Path.of("images/helpMenu.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (var line : helpMenu) {
-            System.out.println(line);
+        System.out.println(helpMenu);
+    }
+
+    public static String readResource(String path) throws IOException {
+        try (InputStream is = Display.class.getResourceAsStream(path)) {
+            if (is == null) {
+                throw new FileNotFoundException("Resource not found: " + path);
+            }
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         }
     }
+
     public static void showStatus(Character character, Location location){
 
         if (!location.isHasBeenHere()) { // if false
@@ -65,11 +62,22 @@ public class Display {
             System.out.println();
         }
     }
-    public static void showItem(Item item, Location location){
-        if (location.getItems().contains(item)){
-            System.out.println("You see a " + item.getName());
-        }
 
+//    public static void showItem(Item item, Location location){
+//        if (location.getItems().contains(item)){
+//            System.out.println("You see a " + item.getName());
+//        }
+//
+//    }
+
+
+    static {
+        try {
+            banner = readResource("/images/banner.txt");
+            helpMenu = readResource("/images/helpMenu.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
