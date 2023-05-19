@@ -46,7 +46,7 @@ public class Display {
             System.out.println();
             System.out.println("Inventory: " + character.getInventory());
             System.out.println();
-            System.out.println("You see paths to " + location.getDirections().keySet());
+            System.out.println("You see paths to " + location.getDirections());
             System.out.println("--------------------------><(((º>--------------------------");
             System.out.println();
         }
@@ -60,7 +60,7 @@ public class Display {
             System.out.println();
             System.out.println("Inventory: " + character.getInventory());
             System.out.println();
-            System.out.println("You see paths to " + location.getDirections().keySet());
+            System.out.println("You see paths to " + location.getDirections());
             System.out.println("--------------------------><(((º>--------------------------");
             System.out.println();
         }

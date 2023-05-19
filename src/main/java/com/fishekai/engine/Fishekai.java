@@ -1,12 +1,12 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Scanner;
 
 import static com.fishekai.utilities.Console.clear;
 import static com.fishekai.utilities.Console.pause;
@@ -17,15 +17,18 @@ public class Fishekai implements SplashApp {
     // fields
     private boolean isGameOver = false;
 
+    private HashMap<String, Location> locations;
+
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
 
-    Location beach = new Location("Beach");
-    Location north_beach = new Location("North Beach");
+
+
+//    Location beach = new Location("Beach");
+//    Location north_beach = new Location("North Beach");
 
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-    Item item = new Item("fish", "food", "Your typical fish.");
 
 
     // methods
@@ -62,7 +65,7 @@ public class Fishekai implements SplashApp {
         loadData();
 
         // starting point
-        Location current_location = beach;
+        Location current_location = locations.get("Beach");
 
         // for testing
 //        Display.showStatus(player, current_location);
@@ -75,13 +78,13 @@ public class Fishekai implements SplashApp {
 
             // show display
             Display.showStatus(player, current_location);
-            Display.showItem(item,current_location);
 
             // ask user for input
             String input = prompter.prompt("What would you like to do?\n><(((º> ");
 
             // give the input to the parser and then save the output of the parser
             //String[] words = UserInputParser.scan(input);
+
             // process input
             String[] words = input.split(" ");
             if (words.length > 0) {
@@ -92,23 +95,13 @@ public class Fishekai implements SplashApp {
                         if (words.length > 1) {
                             current_location.setHasBeenHere(true);
                             String direction = words[1].toLowerCase();
-                            current_location = current_location.getDirections().get(direction);
+                            Location next_location = locations.get(current_location.getDirections().get(direction));
+//                            System.out.println(next_location.getName());
+                            current_location = next_location;
                             pause(1_500);
                         } else {
                             System.out.println("Please specify a direction");
                         }
-                        break;
-
-                    case "help":
-                        clear();
-                        Display.showHelp();
-                        // insert prompt here to tell the player to press any key to continue
-                        intro.askToContinue();
-                        break;
-
-                    case "quit":
-                        isGameOver = true;
-                        gameOver();
                         break;
 
                     case "look":
@@ -128,6 +121,17 @@ public class Fishekai implements SplashApp {
                         }
                         break;
 
+                    case "help":
+                        clear();
+                        Display.showHelp();
+                        // insert prompt here to tell the player to press any key to continue
+                        intro.askToContinue();
+                        break;
+
+                    case "quit":
+                        isGameOver = true;
+                        gameOver();
+                        break;
 
                     default:
                         System.out.println("I don't understand. Type help for a list of commands.");
@@ -151,27 +155,11 @@ public class Fishekai implements SplashApp {
 
     // load the data
     private void loadData() {
-        HashMap<String, Location> beach_dir = new HashMap<>();
-        HashMap<String, String> beach_des = new HashMap<>();
-        List<Item> beach_item = new ArrayList<>();
+        String locationsPath = "json/locations.json";
+        locations = DataLoader.processLocations(locationsPath);
 
-        beach_dir.put("north", north_beach);
-        beach_des.put("before", "As you awaken from a disorienting haze, your surroundings slowly come into focus. \nYou find yourself standing upon a pristine beach, the rhythmic melody of lapping waves punctuating the air.\n The shimmering sand beneath your feet tells tales of countless tides, their whispers blending with the distant calls of seagulls.\nSurrounded by a picturesque landscape, you instinctively clutch the amulet that brought you here,\n its mysterious power revealing a path you never anticipated. \nThe beach, now your newfound sanctuary, holds the promise of survival and the key to unlocking the island's enigmatic secrets.\n With resolve in your heart, you take your first step into the untamed wilderness, eager to confront the challenges that lie ahead.");
-        beach_des.put("after", "Returning to the familiar embrace of the beach, you find solace in its timeless beauty. \nThe sand greets your every step, each grain a memory etched into the tapestry of your journey.\n The crashing waves provide a constant companion, whispering tales of resilience and perseverance.\nSeashells, weathered by the passage of time, reveal the island's secrets in their delicate patterns.\n With every return to this haven, you find yourself more attuned to the ebb and flow of the island's rhythm,\n ever closer to unraveling its mysteries.");
-        beach_item.add(item);
-
-        HashMap<String, Location> nBeach_dir = new HashMap<>();
-        HashMap<String, String> nBeach_des = new HashMap<>();
-        nBeach_dir.put("south", beach);
-        nBeach_des.put("before", "You step onto the pristine sands of the North Beach, greeted by the rhythmic melody of crashing waves and the salty tang of the sea.\nThe expansive shoreline stretches as far as the eye can see, adorned with delicate seashells and occasional pieces of driftwood.\nCrystal-clear waters gently lap at the shore, inviting you to dip your toes into their refreshing embrace.\nSeagulls glide overhead, their calls carried by the ocean breeze.\nThe North Beach holds the promise of respite and the allure of untold treasures washed ashore.\nIt's a sanctuary where land meets sea, offering a temporary escape from the challenges that lie ahead.");
-        nBeach_des.put("after", "You return to the familiar embrace of the North Beach, where the ebb and flow of the tides echo the rhythm of your journey.\nThe soft sands welcome your footsteps, imprinted with the memories of your previous explorations.\nWaves crash against the shore with a soothing cadence, as if whispering tales of distant lands.\nSeashells dot the shoreline like precious jewels, remnants of a hidden world beneath the waves.\nThe North Beach has become a place of solace and reflection, where you can find solace amidst the vastness of the ocean and gather your thoughts before delving back into the challenges that await.\n Let the symphony of the sea guide you on your continued adventure.");
-
-        beach.setDirections(beach_dir);
-        beach.setDescriptions(beach_des);
-        beach.setItems(beach_item);
-
-        north_beach.setDirections(nBeach_dir);
-        north_beach.setDescriptions(nBeach_des);
+//        List<Item> beach_item = new ArrayList<>();
+//        beach.setItems(beach_item);
     }
 
 }

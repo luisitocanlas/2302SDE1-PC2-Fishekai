@@ -7,7 +7,7 @@ public class Location {
 
     // fields
     private final String name;
-    private HashMap<String, Location> directions;
+    private HashMap<String, String> directions;
     private boolean hasBeenHere = false; // default value is false
     private HashMap<String, String> descriptions;
     private List<Item> fishes;
@@ -18,7 +18,7 @@ public class Location {
         this.name = name;
     }
 
-    public Location(String name, HashMap<String, Location> directions, HashMap<String, String> descriptions) {
+    public Location(String name, HashMap<String, String> directions, HashMap<String, String> descriptions) {
         this.name = name;
         this.directions = directions;
         this.descriptions = descriptions;
@@ -29,11 +29,11 @@ public class Location {
         return name;
     }
 
-    public HashMap<String, Location> getDirections() {
+    public HashMap<String, String> getDirections() {
         return directions;
     }
 
-    public void setDirections(HashMap<String, Location> directions) {
+    public void setDirections(HashMap<String, String> directions) {
         this.directions = directions;
     }
 
@@ -70,23 +70,23 @@ public class Location {
     }
 
     // for internal testing
-    public static void main(String[] args) {
-        Location north_beach = new Location("North Beach");
-
-        HashMap<String, Location> direction = new HashMap<>();
-        direction.put("north", north_beach);
-
-        HashMap<String, String> description = new HashMap<>();
-        description.put("before", "Description when first entered.");
-        description.put("after", "Description for subsequent entries.");
-
-        Location beach = new Location("Beach", direction, description);
-
-        Location current_location = beach;
-
-        System.out.println(current_location.getName());
-
-        System.out.println(current_location.getDirections().keySet());
-    }
+//    public static void main(String[] args) {
+//        Location north_beach = new Location("North Beach");
+//
+//        HashMap<String, Location> direction = new HashMap<>();
+//        direction.put("north", north_beach);
+//
+//        HashMap<String, String> description = new HashMap<>();
+//        description.put("before", "Description when first entered.");
+//        description.put("after", "Description for subsequent entries.");
+//
+//        Location beach = new Location("Beach", direction, description);
+//
+//        Location current_location = beach;
+//
+//        System.out.println(current_location.getName());
+//
+//        System.out.println(current_location.getDirections().keySet());
+//    }
 }
 
