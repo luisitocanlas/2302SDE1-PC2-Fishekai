@@ -34,7 +34,11 @@ class Introduction {
         System.out.printf("Winning Condition:\n%s\n\n", winningCondition);
 
         // insert prompt here to tell the player to press any key to continue
-        prompter.prompt("Enter [Y]es to Continue: \n",
+        askToContinue();
+    }
+
+    public void askToContinue() {
+        prompter.prompt("Enter [Y]es to Continue:\n><(((º> ",
                 "Y|y",
                 "This is not a valid option!\n");
     }

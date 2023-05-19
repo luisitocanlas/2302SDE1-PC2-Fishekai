@@ -7,14 +7,18 @@ public class Location {
 
     // fields
     private final String name;
-    private final HashMap<String, String> directions;
+    private HashMap<String, Location> directions;
     private boolean hasBeenHere = false; // default value is false
-    private final HashMap<String, String> descriptions;
+    private HashMap<String, String> descriptions;
     private List<String> fishes;
     private List<String> items;
 
     // constructors
-    public Location(String name, HashMap<String, String> directions, HashMap<String, String> descriptions) {
+    public Location(String name) {
+        this.name = name;
+    }
+
+    public Location(String name, HashMap<String, Location> directions, HashMap<String, String> descriptions) {
         this.name = name;
         this.directions = directions;
         this.descriptions = descriptions;
@@ -25,12 +29,20 @@ public class Location {
         return name;
     }
 
-    public HashMap<String, String> getDirections() {
+    public HashMap<String, Location> getDirections() {
         return directions;
+    }
+
+    public void setDirections(HashMap<String, Location> directions) {
+        this.directions = directions;
     }
 
     public HashMap<String, String> getDescriptions() {
         return descriptions;
+    }
+
+    public void setDescriptions(HashMap<String, String> descriptions) {
+        this.descriptions = descriptions;
     }
 
     public boolean isHasBeenHere() {
@@ -59,26 +71,22 @@ public class Location {
 
     // for internal testing
     public static void main(String[] args) {
-        HashMap<String, String> direction = new HashMap<>();
-        direction.put("north", "North Beach");
-        direction.put("east", "Jungle");
+        Location north_beach = new Location("North Beach");
+
+        HashMap<String, Location> direction = new HashMap<>();
+        direction.put("north", north_beach);
 
         HashMap<String, String> description = new HashMap<>();
         description.put("before", "Description when first entered.");
         description.put("after", "Description for subsequent entries.");
 
-        Location location = new Location("Beach", direction, description);
+        Location beach = new Location("Beach", direction, description);
 
-        System.out.println(location.getName());
+        Location current_location = beach;
 
-        System.out.println(location.getDirections());
-        System.out.println(location.getDirections().get("north"));
+        System.out.println(current_location.getName());
 
-        System.out.println(location.getDescriptions());
-        System.out.println(location.getDescriptions().get("after"));
-
-        System.out.println(location.getItems());
-        System.out.println(location.getFishes());
+        System.out.println(current_location.getDirections().keySet());
     }
 }
 

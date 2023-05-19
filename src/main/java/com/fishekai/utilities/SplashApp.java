@@ -9,7 +9,7 @@ public interface SplashApp {
     void start();
 
     default void welcome(String... var1) throws IllegalArgumentException {
-        this.welcome(3000L, var1);
+        this.welcome(DEFAULT_PAUSE, var1);
     }
 
     default void welcome(long var1, String... var3) throws IllegalArgumentException {

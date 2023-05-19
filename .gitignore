@@ -34,7 +34,6 @@ local.properties
 # - build output
 /build/
 
-
 ### Maven ###
 
 # - developer information
@@ -63,3 +62,6 @@ dependency-reduced-pom.xml
 
 # - metadata
 .DS_Store
+
+# - manual add
+/classes/
