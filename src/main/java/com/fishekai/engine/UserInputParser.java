@@ -1,37 +1,29 @@
 package com.fishekai.engine;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class UserInputParser {
 
-    public static void scan() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a verb and a noun:");
-        String input = scanner.nextLine();
+    public static String[] scan(String input) {
 
-        List<String> verbs = new ArrayList<>();
-        List<String> nouns = new ArrayList<>();
+        String[] output = new String[2];
 
-        String[] words = input.split("\\s+");
+        String[] words = input.split(" ");
         for (String word : words) {
             if (isVerb(word)) {
-                verbs.add(word);
+                output[0] = word;
             } else if (isNoun(word)) {
-                nouns.add(word);
+                output[1] = word;
             }
         }
-
-        System.out.println("Verbs: " + verbs);
-        System.out.println("Nouns: " + nouns);
+        return output;
     }
 
     private static boolean isVerb(String word) {
-        // Implement your verb identification logic here
+        // Implement verb identification logic here
         // This is a simple example using a predefined list of verbs
 
-        List<String> verbList = List.of("go", "get", "drink", "build", "eat", "cast", "pull", "help", "talk");
+        List<String> verbList = List.of("go", "get", "drink", "build", "eat", "cast", "pull", "help", "talk", "quit");
         return verbList.contains(word.toLowerCase());
     }
 
@@ -39,8 +31,15 @@ public class UserInputParser {
         // Implement your noun identification logic here
         // This is a simple example using a predefined list of nouns
 
-        List<String> nounList = List.of("North", "East", "South", "West", "water", "fish", "line", "pole");
+        List<String> nounList = List.of("north", "east", "south", "west", "water", "fish", "line", "pole");
         return nounList.contains(word.toLowerCase());
     }
+
+    /*public static void main(String[] args) {
+        String[] words = UserInputParser.scan("go to the east");
+        for (String word : words) {
+            System.out.println(word);
+        }
+    }*/
 }
 

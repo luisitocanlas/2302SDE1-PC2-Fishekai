@@ -79,7 +79,7 @@ public class Fishekai implements SplashApp {
             String input = prompter.prompt("What would you like to do?\n><(((º> ");
 
             // give the input to the parser and then save the output of the parser
-
+            //String[] words = UserInputParser.scan(input);
             // process input
             String[] words = input.split(" ");
             if (words.length > 0) {
