@@ -1,6 +1,7 @@
 package com.fishekai.engine;
 
 import com.fishekai.objects.Character;
+import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class Display {
     }
     public static void showStatus(Character character, Location location){
 
-        if (!location.isHasBeenHere()) { // if fa;se
+        if (!location.isHasBeenHere()) { // if false
             System.out.println("--------------------------><(((º>--------------------------");
             System.out.println("Health: " + character.getHp() + "     Hunger: " + character.getHunger() + "     Thirst: " + character.getThirst());
             System.out.println();
@@ -64,6 +65,11 @@ public class Display {
             System.out.println();
         }
     }
+    public static void showItem(Item item, Location location){
+        if (location.getItems().contains(item)){
+            System.out.println("You see a " + item.getName());
+        }
 
+    }
 
 }
