@@ -1,12 +1,12 @@
 package com.fishekai.engine;
 
+import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 import static com.fishekai.utilities.Console.clear;
 import static com.fishekai.utilities.Console.pause;
@@ -25,6 +25,7 @@ public class Fishekai implements SplashApp {
     Location north_beach = new Location("North Beach");
 
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
+    Item item = new Item("fish", "food", "Your typical fish.");
 
 
     // methods
@@ -74,6 +75,7 @@ public class Fishekai implements SplashApp {
 
             // show display
             Display.showStatus(player, current_location);
+            Display.showItem(item,current_location);
 
             // ask user for input
             String input = prompter.prompt("What would you like to do?\n><(((º> ");
@@ -109,6 +111,24 @@ public class Fishekai implements SplashApp {
                         gameOver();
                         break;
 
+                    case "look":
+                        if (words.length > 1) {
+                            String itemToLook = words[1].toLowerCase();
+
+                            if (current_location.getItems().contains(itemToLook)) {
+                                System.out.println("The " + current_location.getItems().get(0).getName() + " looks like " + current_location.getItems().get(0).getDescription());
+//                            } else if (Player.getInventory().contains(itemToLook)) {
+//                                System.out.println("The " + Item.getName(itemToLook) + " in your inventory looks like " + Item.getDescription(itemToLook));
+//                            } else {
+//                                System.out.println("There is no " + Item.getName(itemToLook) + " here.");
+                            }
+                        } else {
+                            // Handle the case when the user didn't specify an item to look at
+                            System.out.println("Please specify an item to look at.");
+                        }
+                        break;
+
+
                     default:
                         System.out.println("I don't understand. Type help for a list of commands.");
                         pause(1_500);
@@ -133,11 +153,12 @@ public class Fishekai implements SplashApp {
     private void loadData() {
         HashMap<String, Location> beach_dir = new HashMap<>();
         HashMap<String, String> beach_des = new HashMap<>();
+        List<Item> beach_item = new ArrayList<>();
 
         beach_dir.put("north", north_beach);
         beach_des.put("before", "As you awaken from a disorienting haze, your surroundings slowly come into focus. \nYou find yourself standing upon a pristine beach, the rhythmic melody of lapping waves punctuating the air.\n The shimmering sand beneath your feet tells tales of countless tides, their whispers blending with the distant calls of seagulls.\nSurrounded by a picturesque landscape, you instinctively clutch the amulet that brought you here,\n its mysterious power revealing a path you never anticipated. \nThe beach, now your newfound sanctuary, holds the promise of survival and the key to unlocking the island's enigmatic secrets.\n With resolve in your heart, you take your first step into the untamed wilderness, eager to confront the challenges that lie ahead.");
         beach_des.put("after", "Returning to the familiar embrace of the beach, you find solace in its timeless beauty. \nThe sand greets your every step, each grain a memory etched into the tapestry of your journey.\n The crashing waves provide a constant companion, whispering tales of resilience and perseverance.\nSeashells, weathered by the passage of time, reveal the island's secrets in their delicate patterns.\n With every return to this haven, you find yourself more attuned to the ebb and flow of the island's rhythm,\n ever closer to unraveling its mysteries.");
-
+        beach_item.add(item);
 
         HashMap<String, Location> nBeach_dir = new HashMap<>();
         HashMap<String, String> nBeach_des = new HashMap<>();
@@ -147,6 +168,7 @@ public class Fishekai implements SplashApp {
 
         beach.setDirections(beach_dir);
         beach.setDescriptions(beach_des);
+        beach.setItems(beach_item);
 
         north_beach.setDirections(nBeach_dir);
         north_beach.setDescriptions(nBeach_des);
