@@ -12,21 +12,14 @@ import static com.fishekai.utilities.Console.clear;
 import static com.fishekai.utilities.Console.pause;
 
 public class Fishekai implements SplashApp {
-    // constants
 
     // fields
     private boolean isGameOver = false;
-
-    private HashMap<String, Location> locations;
+    private HashMap<String, Location> locations; // will contain the locations loaded from JSON file
 
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
-
-
-
-//    Location beach = new Location("Beach");
-//    Location north_beach = new Location("North Beach");
 
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
 
@@ -41,12 +34,12 @@ public class Fishekai implements SplashApp {
                 "Yes|yes|Y|y|No|no|N|n",
                 "That is not a valid input\n");
 
-        // if New Game
+        // if New Game, go to begin()
         if (input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y")) {
             begin();
         }
 
-        // if Quit
+        // if Quit, terminates the game
         else if (input.equalsIgnoreCase("no") || input.equalsIgnoreCase("n")) {
             prompter.prompt("Are you sure?\n><(((º> ",
                     "Yes|yes|Y|y",
@@ -58,20 +51,13 @@ public class Fishekai implements SplashApp {
         // show the intro
         intro.showIntro();
 
-        // clear the screen
-        clear();
-
-        // initialize data
+        // initialize data, crashes the jar build
         loadData();
 
-        // starting point
+        // set starting point
         Location current_location = locations.get("Beach");
 
-        // for testing
-//        Display.showStatus(player, current_location);
-//        current_location.setHasBeenHere(true);
-//        Display.showStatus(player, current_location);
-
+        // starts the game
         while (!isGameOver) {
             // clear screen
             clear();
@@ -96,7 +82,6 @@ public class Fishekai implements SplashApp {
                             current_location.setHasBeenHere(true);
                             String direction = words[1].toLowerCase();
                             Location next_location = locations.get(current_location.getDirections().get(direction));
-//                            System.out.println(next_location.getName());
                             current_location = next_location;
                             pause(1_500);
                         } else {
@@ -104,27 +89,26 @@ public class Fishekai implements SplashApp {
                         }
                         break;
 
-                    case "look":
-                        if (words.length > 1) {
-                            String itemToLook = words[1].toLowerCase();
-
-                            if (current_location.getItems().contains(itemToLook)) {
-                                System.out.println("The " + current_location.getItems().get(0).getName() + " looks like " + current_location.getItems().get(0).getDescription());
-//                            } else if (Player.getInventory().contains(itemToLook)) {
-//                                System.out.println("The " + Item.getName(itemToLook) + " in your inventory looks like " + Item.getDescription(itemToLook));
-//                            } else {
-//                                System.out.println("There is no " + Item.getName(itemToLook) + " here.");
-                            }
-                        } else {
-                            // Handle the case when the user didn't specify an item to look at
-                            System.out.println("Please specify an item to look at.");
-                        }
-                        break;
+//                    case "look": // need more testing
+//                        if (words.length > 1) {
+//                            String itemToLook = words[1].toLowerCase();
+//
+//                            if (current_location.getItems().contains(itemToLook)) {
+//                                System.out.println("The " + current_location.getItems().get(0).getName() + " looks like " + current_location.getItems().get(0).getDescription());
+////                            } else if (Player.getInventory().contains(itemToLook)) {
+////                                System.out.println("The " + Item.getName(itemToLook) + " in your inventory looks like " + Item.getDescription(itemToLook));
+////                            } else {
+////                                System.out.println("There is no " + Item.getName(itemToLook) + " here.");
+//                            }
+//                        } else {
+//                            // Handle the case when the user didn't specify an item to look at
+//                            System.out.println("Please specify an item to look at.");
+//                        }
+//                        break;
 
                     case "help":
                         clear();
                         Display.showHelp();
-                        // insert prompt here to tell the player to press any key to continue
                         intro.askToContinue();
                         break;
 
@@ -155,8 +139,7 @@ public class Fishekai implements SplashApp {
 
     // load the data
     private void loadData() {
-        String locationsPath = "json/locations.json";
-        locations = DataLoader.processLocations(locationsPath);
+        locations = DataLoader.processLocations();
 
 //        List<Item> beach_item = new ArrayList<>();
 //        beach.setItems(beach_item);

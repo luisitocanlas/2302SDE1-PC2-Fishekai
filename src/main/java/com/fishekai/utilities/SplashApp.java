@@ -1,12 +1,13 @@
 package com.fishekai.utilities;
 
 import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 
 public interface SplashApp {
     long DEFAULT_PAUSE = 3000L;
 
-    void start();
+    void start() throws IOException;
 
     default void welcome(String... var1) throws IllegalArgumentException {
         this.welcome(DEFAULT_PAUSE, var1);
