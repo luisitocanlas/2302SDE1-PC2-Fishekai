@@ -7,7 +7,6 @@ import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 import static com.fishekai.utilities.Console.clear;
@@ -23,10 +22,15 @@ public class Fishekai implements SplashApp {
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
 
-
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
+    Item amulet = new Item("amulet", "relic", "The thing that transported you to this place");
+
+
     Item parachute = new Item ("parachute", "item","Ripped and torn but some of the cords are still connected to the canopy");
     Item banana = new Item("banana", "food", "It's bananas, B.A.N.A.N.A.S");
+
+
+
     // methods
     public void start() {
         // show title here
@@ -98,18 +102,13 @@ public class Fishekai implements SplashApp {
                             String itemToLook = words[1].toLowerCase();
 
                             if (current_location.getItems().containsKey(itemToLook)) {
-
                                 System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
                                 pause(1_000);
                             }
-                            else if (Player.getInventory().contains(itemToLook)) {
-
-                                if (item != null) {
-                                    System.out.println("The " + item.getName() + " in your inventory looks like " + item.getDescription());
-
-                                } else {
-                                    System.out.println("Item not found: " + itemToLook);
-                                }
+                            else if (player.getInventory().containsKey(itemToLook)) {
+                                System.out.println("I'm looking here");
+//                                System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
+                                pause(1_000);
                             }
                             else {
                                 System.out.println("There is no " + itemToLook + " here.");
@@ -158,6 +157,8 @@ public class Fishekai implements SplashApp {
         listOfItems.put("parachute", parachute);
         listOfItems.put("banana", banana);
         locations.get("Jungle").setItems(listOfItems);
+
+        player.getInventory().put("amulet", amulet);
 
 //        List<Item> beach_item = new ArrayList<>();
 //        beach.setItems(beach_item);
