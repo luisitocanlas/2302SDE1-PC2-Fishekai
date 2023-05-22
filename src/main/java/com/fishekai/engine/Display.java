@@ -67,7 +67,7 @@ public class Display {
 //        if (!location.getItems().isEmpty()){
 //            System.out.println("You see a " + location.getItems());
 //        }
-        System.out.println(location.getItems().get());
+        System.out.println(location.getItems());
     }
 
 
