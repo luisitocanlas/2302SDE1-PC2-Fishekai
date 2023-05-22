@@ -118,6 +118,22 @@ public class Fishekai implements SplashApp {
                         }
                         break;
 
+                    case "drop":
+                        if (words.length > 1) {
+                            String itemToDrop = words[1].toLowerCase();
+                            if (player.getInventory().containsKey(itemToDrop)) {
+                                current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
+                                player.getInventory().remove(itemToDrop);
+                                System.out.println("You dropped the " + itemToDrop + ".");
+                            } else {
+                                System.out.println("You don't have a " + itemToDrop + "in your inventory.");
+                            }
+
+                        } else {
+                            System.out.println("Please specify an item to drop.");
+                        }
+                        break;
+
                     case "help":
                         clear();
                         Display.showHelp();
