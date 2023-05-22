@@ -1,7 +1,6 @@
 package com.fishekai.objects;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Location {
 
@@ -67,6 +66,16 @@ public class Location {
 
     public void setItems(HashMap<String, Item> items) {
         this.items = items;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "name='" + name + '\'' +
+                ", directions=" + directions +
+                ", description='" + descriptions + '\'' +
+                ", items=" + items +
+                '}';
     }
 
     // for internal testing

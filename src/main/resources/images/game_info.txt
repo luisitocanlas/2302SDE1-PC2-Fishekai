@@ -1,7 +1,6 @@
-**************><(((º>**************
 The Story:
 "You are a renowned archaeologist named Ethan Rutherford, known for your expertise in ancient artifacts.
-One fateful day, while exploring a mysterious ruin, you stumble upon a peculiar artifact—a small,
+One fateful day, while exploring a mysterious ruin, you stumble upon a peculiar artifact — a small,
 intricately carved stone amulet. As you touch the amulet, a blinding light engulfs you, and you find yourself
 transported to an entirely different world. When you regain your senses, you discover that you are standing
 on a deserted island surrounded by the vast expanse of the ocean. Confused and disoriented, you realize that the
@@ -21,10 +20,11 @@ your fate and the outcome of your journey. Prepare to embark on a thrilling isek
 survival, and the pursuit of a way back home. Will you unravel the island's secrets and harness its magic to survive
 and thrive? The answers lie within the depths of the island and the bonds you form along the way."
 
+Objective:
+"The objective of the game is to escape the island that you are transported into."
 
+Who are you?
+"You are a renowned archaeologist named Ethan Rutherford, known for your expertise in ancient artifacts."
 
-
-
-
-
-**************><(((º>**************
+Winning Condition:
+"You need to catch a certain legendary fish."
