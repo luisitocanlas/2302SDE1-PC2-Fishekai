@@ -100,20 +100,19 @@ public class Fishekai implements SplashApp {
                     case "look": // need more testing
                         if (words.length > 1) {
                             String itemToLook = words[1].toLowerCase();
-
-                            if (current_location.getItems().containsKey(itemToLook)) {
-                                System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
+                            if (player.getInventory().containsKey(itemToLook)) {
+                                System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
                                 pause(1_000);
                             }
-                            else if (player.getInventory().containsKey(itemToLook)) {
-                                System.out.println("I'm looking here");
-//                                System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
+                            else if (current_location.getItems().containsKey(itemToLook)) {
+                                System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
                                 pause(1_000);
                             }
                             else {
                                 System.out.println("There is no " + itemToLook + " here.");
                             }
-                        } else {
+                        }
+                        else {
                             // Handle the case when the user didn't specify an item to look at
                             System.out.println("Please specify an item to look at.");
                         }
