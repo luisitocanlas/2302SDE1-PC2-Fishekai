@@ -1,12 +1,17 @@
 package com.fishekai.engine;
 
 import com.fishekai.objects.Character;
+import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Display {
 
@@ -64,12 +69,14 @@ public class Display {
     }
 
     public static void showItem(Location location){
-//        if (!location.getItems().isEmpty()){
-//            System.out.println("You see a " + location.getItems());
-//        }
-        System.out.println(location.getItems());
+        if (location.getItems() != null) {
+            List<String> itemAvailable = new ArrayList<>();
+            for (Map.Entry<String, Item> entry : location.getItems().entrySet()) {
+                itemAvailable.add(entry.getKey());
+            }
+            System.out.println(itemAvailable);
+        }
     }
-
 
     static {
         try {
