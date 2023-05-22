@@ -63,12 +63,12 @@ public class Display {
         }
     }
 
-//    public static void showItem(Item item, Location location){
-//        if (location.getItems().contains(item)){
-//            System.out.println("You see a " + item.getName());
+    public static void showItem(Location location){
+//        if (!location.getItems().isEmpty()){
+//            System.out.println("You see a " + location.getItems());
 //        }
-//
-//    }
+        System.out.println(location.getItems().get());
+    }
 
 
     static {

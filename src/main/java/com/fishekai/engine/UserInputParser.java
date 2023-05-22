@@ -34,7 +34,7 @@ public class UserInputParser {
         List<String> nounList = List.of("north", "east", "south", "west", "water", "fish", "line", "pole");
         return nounList.contains(word.toLowerCase());
     }
-
+//for testing
     /*public static void main(String[] args) {
         String[] words = UserInputParser.scan("go to the east");
         for (String word : words) {

@@ -1,11 +1,13 @@
 package com.fishekai.engine;
 
+import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.fishekai.utilities.Console.clear;
@@ -16,13 +18,14 @@ public class Fishekai implements SplashApp {
     // fields
     private boolean isGameOver = false;
     private HashMap<String, Location> locations; // will contain the locations loaded from JSON file
-
+    private HashMap<String, Item> listOfItems = new HashMap<>();
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
 
-    Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
 
+    Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
+    Item parachute = new Item ("parachute", "item","Ripped and torn but some of the cords are still connected to the canopy");
 
     // methods
     public void start() {
@@ -64,6 +67,7 @@ public class Fishekai implements SplashApp {
 
             // show display
             Display.showStatus(player, current_location);
+            Display.showItem(current_location);
 
             // ask user for input
             String input = prompter.prompt("What would you like to do?\n><(((º> ");
@@ -89,22 +93,31 @@ public class Fishekai implements SplashApp {
                         }
                         break;
 
-//                    case "look": // need more testing
-//                        if (words.length > 1) {
-//                            String itemToLook = words[1].toLowerCase();
+                    case "look": // need more testing
+                        if (words.length > 1) {
+                            String itemToLook = words[1].toLowerCase();
+
+                            if (current_location.getItems().containsValue(itemToLook)) {
+
+                                System.out.println("The " + current_location.getItems().get(0).getName() + " looks like " + current_location.getItems().get(0).getDescription());
+                            }
+//                            else if (Player.getInventory().contains(itemToLook)) {
 //
-//                            if (current_location.getItems().contains(itemToLook)) {
-//                                System.out.println("The " + current_location.getItems().get(0).getName() + " looks like " + current_location.getItems().get(0).getDescription());
-////                            } else if (Player.getInventory().contains(itemToLook)) {
-////                                System.out.println("The " + Item.getName(itemToLook) + " in your inventory looks like " + Item.getDescription(itemToLook));
-////                            } else {
-////                                System.out.println("There is no " + Item.getName(itemToLook) + " here.");
+//                                if (item != null) {
+//                                    System.out.println("The " + item.getName() + " in your inventory looks like " + item.getDescription());
+//
+//                                } else {
+//                                    System.out.println("Item not found: " + itemToLook);
+//                                }
 //                            }
-//                        } else {
-//                            // Handle the case when the user didn't specify an item to look at
-//                            System.out.println("Please specify an item to look at.");
-//                        }
-//                        break;
+                            else {
+                                System.out.println("There is no " + itemToLook + " here.");
+                            }
+                        } else {
+                            // Handle the case when the user didn't specify an item to look at
+                            System.out.println("Please specify an item to look at.");
+                        }
+                        break;
 
                     case "help":
                         clear();
@@ -131,6 +144,7 @@ public class Fishekai implements SplashApp {
         }
     }
 
+
     private void gameOver() {
         clear();
         System.out.println("Thank you for playing!");
@@ -140,6 +154,8 @@ public class Fishekai implements SplashApp {
     // load the data
     private void loadData() {
         locations = DataLoader.processLocations();
+        listOfItems.put("parachute", parachute);
+        locations.get("Jungle").setItems(listOfItems);
 
 //        List<Item> beach_item = new ArrayList<>();
 //        beach.setItems(beach_item);
