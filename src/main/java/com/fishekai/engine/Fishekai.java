@@ -33,7 +33,7 @@ public class Fishekai implements SplashApp {
         Display.showTitle();
 
         // ask user for input and store it
-        String input = prompter.prompt("Would you like to play a new game?\n><(((º> ",
+        String input = prompter.prompt("Would you like to play a new game? [Y]es or [N]o.\n><(((º> ",
                 "Yes|yes|Y|y|No|no|N|n",
                 "That is not a valid input\n");
 
