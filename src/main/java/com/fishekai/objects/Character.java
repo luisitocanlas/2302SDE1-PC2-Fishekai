@@ -1,6 +1,7 @@
 package com.fishekai.objects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Character {
@@ -11,7 +12,7 @@ public class Character {
     private int hp = 10;    // range 0 ~ 10
     private int hunger = 0; // range 0 ~ 10
     private int thirst = 0; // range 0 ~ 10
-    private final List<Object> inventory = new ArrayList<>();
+    private final HashMap<String, Object> inventory = new HashMap<>();
 
     // constructors
     public Character(String name) {
@@ -24,9 +25,7 @@ public class Character {
     }
 
     // methods
-    public void addToInventory(Object item) {
-        inventory.add(item);
-    }
+
 
     public void removeFromInventory(Object item) {
         inventory.remove(item);
@@ -65,7 +64,7 @@ public class Character {
         this.thirst = thirst;
     }
 
-    public List<Object> getInventory() {
+    public HashMap<String, Object> getInventory() {
         return inventory;
     }
 }
