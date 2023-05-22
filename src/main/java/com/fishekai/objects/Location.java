@@ -9,8 +9,8 @@ public class Location {
     private HashMap<String, String> directions;
     private boolean hasBeenHere = false; // default value is false
     private HashMap<String, String> descriptions;
-    private HashMap<String, Item> fishes;
-    private HashMap<String, Item> items;
+    private HashMap<String, Item> fishes = new HashMap<>();
+    private HashMap<String, Item> items = new HashMap<>();
 
     // constructors
     public Location(String name) {

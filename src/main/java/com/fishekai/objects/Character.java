@@ -10,7 +10,7 @@ public class Character {
     private int hp = 10;    // range 0 ~ 10
     private int hunger = 0; // range 0 ~ 10
     private int thirst = 0; // range 0 ~ 10
-    private final HashMap<String, Object> inventory = new HashMap<>();
+    private final HashMap<String, Item> inventory = new HashMap<>();
 
     // constructors
     public Character(String name) {
@@ -20,13 +20,6 @@ public class Character {
     public Character(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    // methods
-
-
-    public void removeFromInventory(Object item) {
-        inventory.remove(item);
     }
 
     // accessors
@@ -62,7 +55,9 @@ public class Character {
         this.thirst = thirst;
     }
 
-    public HashMap<String, Object> getInventory() {
+    public HashMap<String, Item> getInventory() {
         return inventory;
     }
+
+
 }
