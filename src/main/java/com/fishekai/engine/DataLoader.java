@@ -4,21 +4,24 @@ import com.fishekai.objects.Location;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class DataLoader {
+    private static final String LOCATIONS_PATH = "/json/locations.json";
 
-    private static List<Location> listLocations(String locationsPath) {
+    public static String introduction;
+
+    private static List<Location> listLocations() {
         Gson gson = new Gson();
 
-        BufferedReader fileReader = new BufferedReader(new InputStreamReader(DataLoader.class.getResourceAsStream("/json/locations.json")));
+        BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(LOCATIONS_PATH))));
         TypeToken<List<Location>> token = new TypeToken<>(){};
-        List<Location> locations = gson.fromJson(fileReader, token.getType());
 
-        return locations;
+        return gson.fromJson(fileReader, token.getType());
     }
 
     private static HashMap<String, Location> mapLocations(List<Location> locations) {
@@ -32,6 +35,23 @@ public class DataLoader {
 
     public static HashMap<String, Location> processLocations() {
         return mapLocations(listLocations());
+    }
+
+    public static String readResource(String path) throws IOException {
+        try (InputStream is = Display.class.getResourceAsStream(path)) {
+            if (is == null) {
+                throw new FileNotFoundException("Resource not found: " + path);
+            }
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
+    }
+
+    static{
+        try{
+            introduction = readResource("/images/introduction.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // for internal testing
