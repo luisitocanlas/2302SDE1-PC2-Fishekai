@@ -1,9 +1,6 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.Fish;
-import com.fishekai.objects.Item;
-import com.fishekai.objects.Location;
-import com.fishekai.objects.Player;
+import com.fishekai.objects.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -24,6 +21,7 @@ public class DataLoader {
     private static final String GAME_INFO_PATH = "/json/Game_Information.json";
     private static final String ITEM_PATH = "/json/Item.json";
     private static final String FISH_PATH = "/json/Fish.json";
+    private static final String NPC_PATH = "/json/npc.json";
 
     // references to be called
     public static String gameInfo;
@@ -83,7 +81,7 @@ public class DataLoader {
         Gson gson = new Gson();
 
         // takes the data from json file and stores the data
-        try(BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(ITEM_PATH))))) {
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(ITEM_PATH))))) {
 
             TypeToken<List<Item>> token = new TypeToken<>() {
             };
@@ -141,25 +139,46 @@ public class DataLoader {
             }
         }
     }
+
+    public static void processNpc(Map<String, Location> locations) {
+        Gson gson = new Gson();
+
+        // takes the data from json file and stores the data
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader
+                (Objects.requireNonNull(DataLoader.class.getResourceAsStream(NPC_PATH))))) {
+            TypeToken<List<NPC>> token = new TypeToken<>() {
+            };
+            List<NPC> listNpcs = gson.fromJson(fileReader, token.getType());
+
+            for (NPC npc : listNpcs) {
+                // variable for accessing where the npc will be located
+                String locationName = locations.get(npc.getLocation()).getName();
+
+                // place the npc in the specified location
+                if (locations.get(locationName).getNpc() == null) {
+                    Map<String, NPC> npcMap = new HashMap<>();
+                    npcMap.put(npc.getType(), npc);
+                    locations.get(locationName).setNpc(npcMap);
+                } else {
+                    locations.get(locationName).getNpc().put(npc.getType(), npc);
+                }
+            }
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //    // for internal testing
+    public static void main(String[] args) {
+        Map<String, Location> locations = processLocations();
+        processNpc(locations);
+        locations.get("Mystical Grove").getNpc().get("ghost").getRandomQuotes();
+
+
+    }
 }
-
-
-//    // for internal testing
-//    public static void main(String[] args) {
-//        HashMap<String, Location> locations = processLocations();
-//        Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-//
-//        processItems(locations, player);
-//
-//        System.out.println("");
-//        System.out.printf("%s has %s\n", player.getName(), player.getInventory());
-//        System.out.println("");
-//        System.out.printf("%s has %s", locations.get("Cave").getName(), locations.get("Cave").getItems());
-//        System.out.println("");
-//        System.out.printf("%s has %s",locations.get("Jungle").getName(), locations.get("Jungle").getItems());
-//        System.out.println("");
-//        System.out.printf("%s has %s", locations.get("Waterfall").getName(), locations.get("Waterfall").getItems());
-//        System.out.println("");
-//        System.out.printf("%s has %s", locations.get("Mystical Grove").getName(), locations.get("Mystical Grove").getItems());
-//    }
-//}
