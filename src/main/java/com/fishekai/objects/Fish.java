@@ -1,35 +1,22 @@
 package com.fishekai.objects;
 
 public class Fish extends Item {
-    String name;
-    String type;
-    String description;
-    boolean isEdible;
-    boolean causesDeath;
-    int hungerValue;
-    int catchDifficulty;
 
-    public Fish(String name) {
-        super(name);
+    private final boolean causesDeath;
+    private final int hungerValue;
+    private int catchDifficulty;
+
+    public Fish(String name, String type, String description, boolean causesDeath, int hungerValue) {
+        super(name, type, description);
+        this.causesDeath = causesDeath;
+        this.hungerValue = hungerValue;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isEdible() {
-        return isEdible;
+    public Fish(String name, String type, String description, boolean causesDeath, int hungerValue, int catchDifficulty) {
+        super(name, type, description);
+        this.causesDeath = causesDeath;
+        this.hungerValue = hungerValue;
+        this.catchDifficulty = catchDifficulty;
     }
 
     public boolean isCausesDeath() {
