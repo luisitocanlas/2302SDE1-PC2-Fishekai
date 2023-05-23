@@ -6,6 +6,7 @@ import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static com.fishekai.utilities.Console.clear;
@@ -122,7 +123,20 @@ public class Fishekai implements SplashApp {
                             System.out.println("Please specify an item to drop.");
                         }
                         break;
-
+                    case "get":
+                        if (words.length > 1) {
+                            String itemToGet = words[1].toLowerCase();
+                            if (!player.getInventory().containsKey(itemToGet)) {
+                                player.getInventory().put(itemToGet, current_location.getItems().get(itemToGet));
+                                current_location.getItems().remove(itemToGet);
+                                System.out.println("You got the " + itemToGet + ".");
+                            } else if (player.getInventory().containsKey(itemToGet)) {
+                                System.out.println("You have the " + itemToGet + ".");
+                            } else {
+                                System.out.println("There is no " + itemToGet + " here.");
+                            }
+                            break;
+                        }
                     case "help":
                         clear();
                         Display.showHelp();
