@@ -1,20 +1,21 @@
 package com.fishekai.objects;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Location {
 
     // fields
     private final String name;
-    private HashMap<String, String> directions;
+    private Map<String, String> directions;
     private boolean hasBeenHere = false; // default value is false
-    private HashMap<String, String> descriptions;
-    private HashMap<String, Fish> fishes = new HashMap<>();
-    private HashMap<String, Item> items = new HashMap<>();
-    private HashMap<String, NPC> npc = new HashMap<>();
+    private Map<String, String> descriptions;
+    private Map<String, Fish> fishes = new HashMap<>();
+    private Map<String, Item> items = new HashMap<>();
+    private Map<String, NPC> npc = new HashMap<>();
 
     // constructors
-    public Location(String name, HashMap<String, String> directions, HashMap<String, String> descriptions) {
+    public Location(String name, Map<String, String> directions, Map<String, String> descriptions) {
         this.name = name;
         this.directions = directions;
         this.descriptions = descriptions;
@@ -25,11 +26,11 @@ public class Location {
         return name;
     }
 
-    public HashMap<String, String> getDirections() {
+    public Map<String, String> getDirections() {
         return directions;
     }
 
-    public HashMap<String, String> getDescriptions() {
+    public Map<String, String> getDescriptions() {
         return descriptions;
     }
 
@@ -41,27 +42,27 @@ public class Location {
         this.hasBeenHere = hasBeenHere;
     }
 
-    public HashMap<String, Fish> getFishes() {
+    public Map<String, Fish> getFishes() {
         return fishes;
     }
 
-    public void setFishes(HashMap<String, Fish> fishes) {
+    public void setFishes(Map<String, Fish> fishes) {
         this.fishes = fishes;
     }
 
-    public HashMap<String, Item> getItems() {
+    public Map<String, Item> getItems() {
         return items;
     }
 
-    public void setItems(HashMap<String, Item> items) {
+    public void setItems(Map<String, Item> items) {
         this.items = items;
     }
 
-    public HashMap<String, NPC> getNpc() {
+    public Map<String, NPC> getNpc() {
         return npc;
     }
 
-    public void setNpc(HashMap<String, NPC> npc) {
+    public void setNpc(Map<String, NPC> npc) {
         this.npc = npc;
     }
 
