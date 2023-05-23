@@ -7,7 +7,7 @@ import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 
 import static com.fishekai.utilities.Console.clear;
@@ -17,7 +17,7 @@ public class Fishekai implements SplashApp {
 
     // fields
     private boolean isGameOver = false;
-    private HashMap<String, Location> locations; // will contain the locations loaded from JSON file
+    private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
     NPC npc = new NPC("Hanley Druthers", "the ghost", "Mystical Grove", "ghost");
 
@@ -69,13 +69,13 @@ public class Fishekai implements SplashApp {
             Display.showStatus(player, current_location);
 
             // ask user for input
-            String input = prompter.prompt("What would you like to do?\n><(((º> ");
+            String input = prompter.prompt("What would you like to do?\n><(((º> ").trim().strip();
 
             // give the input to the parser and then save the output of the parser
 //            String[] words = parser.scan(input);
 
             // process input
-            String[] words = input.split(" ");
+            String[] words = input.split("\\s+");
             if (words.length > 0) {
                 String verb = words[0].toLowerCase();
 
@@ -127,6 +127,7 @@ public class Fishekai implements SplashApp {
                             System.out.println("Please specify an item to drop.");
                         }
                         break;
+
                     case "get":
                         if (words.length > 1) {
                             String itemToGet = words[1].toLowerCase();
@@ -152,6 +153,13 @@ public class Fishekai implements SplashApp {
                             }
                             break;
                         }
+
+
+                    case "map":
+                        clear();
+                        Display.showMap(locations, current_location);
+                        intro.askToContinue();
+                        break;
 
                     case "help":
                         clear();
@@ -190,7 +198,7 @@ public class Fishekai implements SplashApp {
         locations = DataLoader.processLocations(); // load the locations
         DataLoader.processItems(player, locations); // load items and place in locations
         DataLoader.processFishes(locations); // load fishes and place in locations
-        HashMap<String, NPC> npcMap = new HashMap<>();
+        Map<String, NPC> npcMap = new HashMap<>();
         npcMap.put("ghost", npc);
         locations.get("Beach").setNpc(npcMap);
     }

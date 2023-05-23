@@ -5,13 +5,18 @@ import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 import com.fishekai.objects.Player;
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class DataLoader {
     // file paths
@@ -24,7 +29,7 @@ public class DataLoader {
     public static String gameInfo;
 
     // reads the locations json file and stores data
-    public static HashMap<String, Location> processLocations() {
+    public static Map<String, Location> processLocations() {
         Gson gson = new Gson();
 
         // takes the data from json file and stores as a List<Location>
@@ -33,20 +38,23 @@ public class DataLoader {
         };
         List<Location> listLocations = gson.fromJson(fileReader, token.getType());
 
+        Map<String, Location> mappedLocations = listLocations.stream()
+                .collect(Collectors.toMap(Location::getName, Function.identity()));
+
         // takes in the List<Location> and stores as a hashmap
-        HashMap<String, Location> mappedLocations = new HashMap<>();
+        /*HashMap<String, Location> mappedLocations = new HashMap<>();
         for (Location location : listLocations) {
             mappedLocations.put(location.getName(), location);
-        }
+        }*/
         return mappedLocations;
     }
 
     //
-    public static HashMap<String, String> processGameInfo() {
+    public static Map<String, String> processGameInfo() {
         Gson gson = new Gson();
 
         BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(GAME_INFO_PATH))));
-        TypeToken<HashMap<String, String>> token = new TypeToken<>() {
+        TypeToken<Map<String, String>> token = new TypeToken<>() {
         };
         return gson.fromJson(fileReader, token.getType());
     }
@@ -71,38 +79,46 @@ public class DataLoader {
     }
 
     // reads the item json file and stores data
-    public static void processItems(Player player, HashMap<String, Location> locations) {
+    public static void processItems(Player player, Map<String, Location> locations) {
         Gson gson = new Gson();
 
         // takes the data from json file and stores the data
-        BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(ITEM_PATH))));
-        TypeToken<List<Item>> token = new TypeToken<>() {
-        };
-        List<Item> listItems = gson.fromJson(fileReader, token.getType());
+        try(BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(ITEM_PATH))))) {
 
-        for (Item item : listItems) {
-            // checks where the item should be located
-            if (item.getLocation().equalsIgnoreCase("player")) {
-                // place the item in the player inventory
-                player.getInventory().put(item.getName(), item);
-            } else if (locations.containsKey(item.getLocation())) {
-                // variable for accessing where the item will be located
-                String locationName = locations.get(item.getLocation()).getName();
+            TypeToken<List<Item>> token = new TypeToken<>() {
+            };
+            List<Item> listItems = gson.fromJson(fileReader, token.getType());
 
-                // place the item in the specified location
-                if (locations.get(locationName).getItems() == null) {
-                    HashMap<String, Item> itemMap = new HashMap<>();
-                    itemMap.put(item.getName(), item);
-                    locations.get(locationName).setItems(itemMap);
-                } else {
-                    locations.get(locationName).getItems().put(item.getName(), item);
+            for (Item item : listItems) {
+                // checks where the item should be located
+                if (item.getLocation().equalsIgnoreCase("player")) {
+                    // place the item in the player inventory
+                    player.getInventory().put(item.getName(), item);
+                } else if (locations.containsKey(item.getLocation())) {
+                    // variable for accessing where the item will be located
+                    String locationName = locations.get(item.getLocation()).getName();
+
+                    // place the item in the specified location
+                    if (locations.get(locationName).getItems() == null) {
+                        Map<String, Item> itemMap = new HashMap<>();
+                        itemMap.put(item.getName(), item);
+                        locations.get(locationName).setItems(itemMap);
+                    } else {
+                        locations.get(locationName).getItems().put(item.getName(), item);
+                    }
                 }
             }
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     // reads the fish json file and stores data
-    public static void processFishes(HashMap<String, Location> locations) {
+    public static void processFishes(Map<String, Location> locations) {
         Gson gson = new Gson();
 
         // takes the data from json file and stores the data
@@ -117,7 +133,7 @@ public class DataLoader {
 
             // place the item in the specified location
             if (locations.get(location).getFishes() == null) {
-                HashMap<String, Fish> fishMap = new HashMap<>();
+                Map<String, Fish> fishMap = new HashMap<>();
                 fishMap.put(fish.getName(), fish);
                 locations.get(location).setFishes(fishMap);
             } else {
