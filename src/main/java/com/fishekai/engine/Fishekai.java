@@ -19,7 +19,7 @@ public class Fishekai implements SplashApp {
     private boolean isGameOver = false;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-    NPC npc = new NPC("Hanley Druthers", "the ghost", "Mystical Grove", "ghost");
+//    NPC npc = new NPC("Hanley Druthers", "the ghost", "Mystical Grove", "ghost");
 
     // instances
     private final Introduction intro = new Introduction();
@@ -198,9 +198,11 @@ public class Fishekai implements SplashApp {
         locations = DataLoader.processLocations(); // load the locations
         DataLoader.processItems(player, locations); // load items and place in locations
         DataLoader.processFishes(locations); // load fishes and place in locations
-        Map<String, NPC> npcMap = new HashMap<>();
-        npcMap.put("ghost", npc);
-        locations.get("Beach").setNpc(npcMap);
+        DataLoader.processNpc(locations);
+        // for testing
+//        Map<String, NPC> npcMap = new HashMap<>();
+//        npcMap.put("ghost", npc);
+//        locations.get("Beach").setNpc(npcMap);
     }
 
 }
