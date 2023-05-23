@@ -214,9 +214,11 @@ public class Fishekai implements SplashApp {
         locations = DataLoader.processLocations(); // load the locations
         DataLoader.processItems(player, locations); // load items and place in locations
         DataLoader.processFishes(locations); // load fishes and place in locations
-        Map<String, NPC> npcMap = new HashMap<>();
-        npcMap.put("ghost", npc);
-        locations.get("Beach").setNpc(npcMap);
+        DataLoader.processNpc(locations);
+        // for testing
+//        Map<String, NPC> npcMap = new HashMap<>();
+//        npcMap.put("ghost", npc);
+//        locations.get("Beach").setNpc(npcMap);
     }
 
 }
