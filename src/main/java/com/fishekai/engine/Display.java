@@ -17,6 +17,7 @@ public class Display {
 
     private static String banner;
     private static String helpMenu;
+    private static String gameMap;
 
 
     public static void showTitle() {
@@ -25,6 +26,10 @@ public class Display {
 
     public static void showHelp() {
         System.out.println(helpMenu);
+    }
+
+    public static void showMap() {
+        System.out.println(gameMap);
     }
 
     public static String readResource(String path) throws IOException {
@@ -96,6 +101,7 @@ public class Display {
         try {
             banner = readResource("/images/banner.txt");
             helpMenu = readResource("/images/helpMenu.txt");
+            gameMap = readResource("/images/game_map.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
