@@ -12,7 +12,7 @@ public class Location {
     private Map<String, String> descriptions;
     private Map<String, Fish> fishes = new HashMap<>();
     private Map<String, Item> items = new HashMap<>();
-    private HashMap<String, NPC> npc = new HashMap<>();
+    private Map<String, NPC> npc = new HashMap<>();
 
     // constructors
     public Location(String name, Map<String, String> directions, Map<String, String> descriptions) {
@@ -58,11 +58,11 @@ public class Location {
         this.items = items;
     }
 
-    public HashMap<String, NPC> getNpc() {
+    public Map<String, NPC> getNpc() {
         return npc;
     }
 
-    public void setNpc(HashMap<String, NPC> npc) {
+    public void setNpc(Map<String, NPC> npc) {
         this.npc = npc;
     }
 
