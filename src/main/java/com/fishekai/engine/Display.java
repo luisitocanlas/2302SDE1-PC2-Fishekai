@@ -1,5 +1,6 @@
 package com.fishekai.engine;
 
+import com.fishekai.objects.Fish;
 import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 import com.fishekai.objects.Player;
@@ -37,37 +38,29 @@ public class Display {
 
     public static void showStatus(Player player, Location location){
 
-        if (!location.isHasBeenHere()) { // if false
-            System.out.println("--------------------------><(((º>--------------------------");
-            System.out.println("Player Status");
-            System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
-            System.out.println();
-            System.out.println();
-            System.out.println("You are in the at the: " + location.getName());
-            System.out.println("Description: " + location.getDescriptions().get("before"));
-            System.out.println();
-//            System.out.printf("Inventory: %s\n", showInventory(character));
-            showInventory(player);
-            System.out.println();
-            System.out.println("You see paths to " + location.getDirections());
-            System.out.println("--------------------------><(((º>--------------------------");
-            System.out.println();
-        }
-        else { // if true
-            System.out.println("--------------------------><(((º>--------------------------");
-            System.out.println("Player Status");
-            System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
-            System.out.println();
-            System.out.println();
-            System.out.println("You are in the at the: " + location.getName());
-            System.out.println("Description: " + location.getDescriptions().get("after"));
-            System.out.println();
-//            System.out.printf("Inventory: %s\n", showInventory(character));
-            showInventory(player);
-            System.out.println();
-            System.out.println("You see paths to " + location.getDirections());
-            System.out.println("--------------------------><(((º>--------------------------");
-            System.out.println();
+        System.out.println("--------------------------><(((º>--------------------------");
+        System.out.println("Player Status");
+        System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
+        System.out.println();
+        showFish(location);
+        System.out.println();
+        System.out.println("You are in the at the: " + location.getName());
+        showDescription(location);
+        System.out.println();
+        showInventory(player);
+        System.out.println();
+        showItem(location);
+        System.out.println();
+        System.out.println("You see paths to " + location.getDirections());
+        System.out.println("--------------------------><(((º>--------------------------");
+        System.out.println();
+    }
+
+    private static void showDescription(Location location) {
+        if (!location.isHasBeenHere()) {
+            System.out.printf("Description: %s", location.getDescriptions().get("before"));
+        } else {
+            System.out.printf("Description: %s", location.getDescriptions().get("after"));
         }
     }
 
@@ -89,6 +82,15 @@ public class Display {
         }
     }
 
+    public static void showFish(Location location) {
+        if (location.getFishes() != null) {
+            List<String> fishAvailable = new ArrayList<>();
+            for (Map.Entry<String, Fish> entry : location.getFishes().entrySet()) {
+                fishAvailable.add(entry.getKey());
+            }
+            System.out.printf("You see something swimming in the water...\n%s\n", fishAvailable);
+        }
+    }
 
     static {
         try {

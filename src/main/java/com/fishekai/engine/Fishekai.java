@@ -1,6 +1,5 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
@@ -17,19 +16,11 @@ public class Fishekai implements SplashApp {
     // fields
     private boolean isGameOver = false;
     private HashMap<String, Location> locations; // will contain the locations loaded from JSON file
-    private HashMap<String, Item> listOfItems = new HashMap<>();
+    Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
+
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
-
-    Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-    Item amulet = new Item("amulet", "relic", "The thing that transported you to this place");
-
-
-    Item parachute = new Item ("parachute", "item","Ripped and torn but some of the cords are still connected to the canopy");
-    Item banana = new Item("banana", "food", "It's bananas, B.A.N.A.N.A.S");
-
-
 
     // methods
     public void start() {
@@ -71,7 +62,6 @@ public class Fishekai implements SplashApp {
 
             // show display
             Display.showStatus(player, current_location);
-            Display.showItem(current_location);
 
             // ask user for input
             String input = prompter.prompt("What would you like to do?\n><(((º> ");
@@ -89,9 +79,8 @@ public class Fishekai implements SplashApp {
                         if (words.length > 1) {
                             current_location.setHasBeenHere(true);
                             String direction = words[1].toLowerCase();
-                            Location next_location = locations.get(current_location.getDirections().get(direction));
-                            current_location = next_location;
-                            pause(1_500);
+                            current_location = locations.get(current_location.getDirections().get(direction));
+                            pause(1_000);
                         } else {
                             System.out.println("Please specify a direction");
                         }
@@ -147,13 +136,13 @@ public class Fishekai implements SplashApp {
 
                     default:
                         System.out.println("I don't understand. Type help for a list of commands.");
-                        pause(1_500);
+                        pause(1_000);
                         break;
                 }
             }
             else {
                 System.out.println("I don't understand. Type help for a list of commands.");
-                pause(1_500);
+                pause(1_000);
             }
 
         }
@@ -168,15 +157,9 @@ public class Fishekai implements SplashApp {
 
     // load the data
     private void loadData() {
-        locations = DataLoader.processLocations();
-        listOfItems.put("parachute", parachute);
-        listOfItems.put("banana", banana);
-        locations.get("Jungle").setItems(listOfItems);
-
-        player.getInventory().put("amulet", amulet);
-
-//        List<Item> beach_item = new ArrayList<>();
-//        beach.setItems(beach_item);
+        locations = DataLoader.processLocations(); // load the locations
+        DataLoader.processItems(player, locations); // load items and place in locations
+        DataLoader.processFishes(locations); // load fishes and place in locations
     }
 
 }

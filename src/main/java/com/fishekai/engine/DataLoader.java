@@ -1,6 +1,9 @@
 package com.fishekai.engine;
 
+import com.fishekai.objects.Fish;
+import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
+import com.fishekai.objects.Player;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -14,6 +17,8 @@ public class DataLoader {
     // file paths
     private static final String LOCATIONS_PATH = "/json/locations.json";
     private static final String GAME_INFO_PATH = "/json/Game_Information.json";
+    private static final String ITEM_PATH = "/json/Item.json";
+    private static final String FISH_PATH = "/json/Fish.json";
 
     // references to be called
     public static String gameInfo;
@@ -24,7 +29,8 @@ public class DataLoader {
 
         // takes the data from json file and stores as a List<Location>
         BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(LOCATIONS_PATH))));
-        TypeToken<List<Location>> token = new TypeToken<>(){};
+        TypeToken<List<Location>> token = new TypeToken<>() {
+        };
         List<Location> listLocations = gson.fromJson(fileReader, token.getType());
 
         // takes in the List<Location> and stores as a hashmap
@@ -35,13 +41,16 @@ public class DataLoader {
         return mappedLocations;
     }
 
+    //
     public static HashMap<String, String> processGameInfo() {
         Gson gson = new Gson();
 
         BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(GAME_INFO_PATH))));
-        TypeToken<HashMap<String, String>> token = new TypeToken<>(){};
+        TypeToken<HashMap<String, String>> token = new TypeToken<>() {
+        };
         return gson.fromJson(fileReader, token.getType());
     }
+
 
     // used for reading and storing text files
     public static String readResource(String path) throws IOException {
@@ -53,17 +62,88 @@ public class DataLoader {
         }
     }
 
-    static{
-        try{
+    static {
+        try {
             gameInfo = readResource("/images/game_info.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // for internal testing
-//    public static void main(String[] args) {
-//        HashMap<String, String> game_Info = processGameInfo();
-//
-//    }
+    // reads the item json file and stores data
+    public static void processItems(Player player, HashMap<String, Location> locations) {
+        Gson gson = new Gson();
+
+        // takes the data from json file and stores the data
+        BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(ITEM_PATH))));
+        TypeToken<List<Item>> token = new TypeToken<>() {
+        };
+        List<Item> listItems = gson.fromJson(fileReader, token.getType());
+
+        for (Item item : listItems) {
+            // checks where the item should be located
+            if (item.getLocation().equalsIgnoreCase("player")) {
+                // place the item in the player inventory
+                player.getInventory().put(item.getName(), item);
+            } else if (locations.containsKey(item.getLocation())) {
+                // variable for accessing where the item will be located
+                String locationName = locations.get(item.getLocation()).getName();
+
+                // place the item in the specified location
+                if (locations.get(locationName).getItems() == null) {
+                    HashMap<String, Item> itemMap = new HashMap<>();
+                    itemMap.put(item.getName(), item);
+                    locations.get(locationName).setItems(itemMap);
+                } else {
+                    locations.get(locationName).getItems().put(item.getName(), item);
+                }
+            }
+        }
+    }
+
+    // reads the fish json file and stores data
+    public static void processFishes(HashMap<String, Location> locations) {
+        Gson gson = new Gson();
+
+        // takes the data from json file and stores the data
+        BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(FISH_PATH))));
+        TypeToken<List<Fish>> token = new TypeToken<>() {
+        };
+        List<Fish> listFishes = gson.fromJson(fileReader, token.getType());
+
+        for (Fish fish : listFishes) {
+            // variable for accessing where the item will be located
+            String location = "North Beach";
+
+            // place the item in the specified location
+            if (locations.get(location).getFishes() == null) {
+                HashMap<String, Fish> fishMap = new HashMap<>();
+                fishMap.put(fish.getName(), fish);
+                locations.get(location).setFishes(fishMap);
+            } else {
+                locations.get(location).getFishes().put(fish.getName(), fish);
+            }
+        }
+    }
 }
+
+
+//    // for internal testing
+//    public static void main(String[] args) {
+//        HashMap<String, Location> locations = processLocations();
+//        Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
+//
+//        processItems(locations, player);
+//
+//        System.out.println("");
+//        System.out.printf("%s has %s\n", player.getName(), player.getInventory());
+//        System.out.println("");
+//        System.out.printf("%s has %s", locations.get("Cave").getName(), locations.get("Cave").getItems());
+//        System.out.println("");
+//        System.out.printf("%s has %s",locations.get("Jungle").getName(), locations.get("Jungle").getItems());
+//        System.out.println("");
+//        System.out.printf("%s has %s", locations.get("Waterfall").getName(), locations.get("Waterfall").getItems());
+//        System.out.println("");
+//        System.out.printf("%s has %s", locations.get("Mystical Grove").getName(), locations.get("Mystical Grove").getItems());
+//    }
+//}
