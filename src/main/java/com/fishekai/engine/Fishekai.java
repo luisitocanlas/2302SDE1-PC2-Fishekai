@@ -6,7 +6,6 @@ import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Scanner;
 
 import static com.fishekai.utilities.Console.clear;
@@ -22,6 +21,8 @@ public class Fishekai implements SplashApp {
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
+    private final UserInputParser parser = new UserInputParser();
+
 
     // methods
     public void start() {
@@ -68,7 +69,7 @@ public class Fishekai implements SplashApp {
             String input = prompter.prompt("What would you like to do?\n><(((º> ");
 
             // give the input to the parser and then save the output of the parser
-            //String[] words = UserInputParser.scan(input);
+//            String[] words = parser.scan(input);
 
             // process input
             String[] words = input.split(" ");
@@ -77,13 +78,13 @@ public class Fishekai implements SplashApp {
 
                 switch (verb) { // change this to if statements
                     case "go":
-                        if (words.length > 1) {
+                        String direction = words[1].toLowerCase();
+                        if (parser.getDirectionsList().contains(direction)) {
                             current_location.setHasBeenHere(true);
-                            String direction = words[1].toLowerCase();
                             current_location = locations.get(current_location.getDirections().get(direction));
                             pause(1_000);
                         } else {
-                            System.out.println("Please specify a direction");
+                            System.out.println("Please specify a valid direction.");
                         }
                         break;
 
