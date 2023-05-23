@@ -39,6 +39,7 @@ public class Display {
 
         if (!location.isHasBeenHere()) { // if false
             System.out.println("--------------------------><(((º>--------------------------");
+            System.out.println("Player Status");
             System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
             System.out.println();
             System.out.println();
@@ -54,6 +55,7 @@ public class Display {
         }
         else { // if true
             System.out.println("--------------------------><(((º>--------------------------");
+            System.out.println("Player Status");
             System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
             System.out.println();
             System.out.println();
@@ -83,7 +85,7 @@ public class Display {
             for (Map.Entry<String, Item> entry : location.getItems().entrySet()) {
                 itemAvailable.add(entry.getKey());
             }
-            System.out.println(itemAvailable);
+            System.out.println("You see:" + itemAvailable);
         }
     }
 
