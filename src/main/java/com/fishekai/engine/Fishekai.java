@@ -1,11 +1,13 @@
 package com.fishekai.engine;
 
 import com.fishekai.objects.Location;
+import com.fishekai.objects.NPC;
 import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static com.fishekai.utilities.Console.clear;
@@ -17,6 +19,7 @@ public class Fishekai implements SplashApp {
     private boolean isGameOver = false;
     private HashMap<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
+    NPC npc = new NPC("Hanley Druthers", "the ghost", "Mystical Grove", "ghost");
 
     // instances
     private final Introduction intro = new Introduction();
@@ -138,6 +141,18 @@ public class Fishekai implements SplashApp {
                             }
                             break;
                         }
+                    case "talk":
+                        if (words.length > 1){
+                            String npcCharacter = words[1].toLowerCase();
+                            if (current_location.getNpc().containsKey(npcCharacter)){
+                                System.out.println("Hello");
+                            }else {
+                                System.out.println(current_location.getNpc().containsKey(npcCharacter));
+                                System.out.println("There is no " + npcCharacter + "here.");
+                            }
+                            break;
+                        }
+
                     case "help":
                         clear();
                         Display.showHelp();
@@ -175,6 +190,9 @@ public class Fishekai implements SplashApp {
         locations = DataLoader.processLocations(); // load the locations
         DataLoader.processItems(player, locations); // load items and place in locations
         DataLoader.processFishes(locations); // load fishes and place in locations
+        HashMap<String, NPC> npcMap = new HashMap<>();
+        npcMap.put("ghost", npc);
+        locations.get("Beach").setNpc(npcMap);
     }
 
 }

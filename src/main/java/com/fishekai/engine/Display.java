@@ -1,9 +1,6 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.Fish;
-import com.fishekai.objects.Item;
-import com.fishekai.objects.Location;
-import com.fishekai.objects.Player;
+import com.fishekai.objects.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,6 +53,8 @@ public class Display {
         System.out.println();
         showItem(location);
         System.out.println();
+        showNPC(location);
+        System.out.println();
         System.out.println("You see paths to " + location.getDirections());
         System.out.println("--------------------------><(((º>--------------------------");
         System.out.println();
@@ -94,6 +93,15 @@ public class Display {
                 fishAvailable.add(entry.getKey());
             }
             System.out.printf("You see something swimming in the water...\n%s\n", fishAvailable);
+        }
+    }
+    public static void showNPC(Location location){
+        if (location.getNpc() != null){
+            List<String> npcPresent = new ArrayList<>();
+            for(Map.Entry<String, NPC> entry : location.getNpc().entrySet()) {
+                npcPresent.add(entry.getKey());
+            }
+            System.out.printf("You see a %s at the %s\n", npcPresent, location.getName());
         }
     }
 
