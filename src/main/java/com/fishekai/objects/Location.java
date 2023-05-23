@@ -11,6 +11,7 @@ public class Location {
     private HashMap<String, String> descriptions;
     private HashMap<String, Fish> fishes = new HashMap<>();
     private HashMap<String, Item> items = new HashMap<>();
+    private HashMap<String, NPC> npc = new HashMap<>();
 
     // constructors
     public Location(String name, HashMap<String, String> directions, HashMap<String, String> descriptions) {
@@ -54,6 +55,14 @@ public class Location {
 
     public void setItems(HashMap<String, Item> items) {
         this.items = items;
+    }
+
+    public HashMap<String, NPC> getNpc() {
+        return npc;
+    }
+
+    public void setNpc(HashMap<String, NPC> npc) {
+        this.npc = npc;
     }
 
     @Override
