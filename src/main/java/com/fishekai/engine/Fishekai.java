@@ -167,7 +167,7 @@ public class Fishekai implements SplashApp {
 
                     case "map":
                         clear();
-                        //playSE(5);
+                        playSE(5);
                         Display.showMap(locations, current_location);
                         intro.askToContinue();
                         break;
@@ -180,7 +180,7 @@ public class Fishekai implements SplashApp {
 
                     case "quit":
                         isGameOver = true;
-//                        playSE(4);
+                        playSE(4);
                         gameOver();
                         break;
 
