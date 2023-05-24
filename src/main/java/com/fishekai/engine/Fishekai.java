@@ -1,10 +1,12 @@
 package com.fishekai.engine;
 
+import com.fishekai.objects.Item;
 import com.fishekai.objects.Location;
 import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -113,9 +115,17 @@ public class Fishekai implements SplashApp {
                         String itemToDrop = words[1].toLowerCase();
                         if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop)) {
                             if (player.getInventory().containsKey(itemToDrop)) {
-                                current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
-                                player.getInventory().remove(itemToDrop);
-                                System.out.println("You dropped the " + itemToDrop + ".");
+                                if (current_location.getItems() == null) {
+                                    Map<String, Item> inventoryMap = new HashMap<>();
+                                    inventoryMap.put(itemToDrop, player.getInventory().get(itemToDrop));
+                                    player.getInventory().remove(itemToDrop);
+                                    current_location.setItems(inventoryMap);
+                                    System.out.println("You dropped the " + itemToDrop + ".");
+                                } else {
+                                    current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
+                                    player.getInventory().remove(itemToDrop);
+                                    System.out.println("You dropped the " + itemToDrop + ".");
+                                }
                             } else {
                                 System.out.println("You don't have a " + itemToDrop + "in your inventory.");
                             }
