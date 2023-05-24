@@ -1,6 +1,5 @@
 package com.fishekai.objects;
 
-import java.util.List;
 import java.util.Random;
 
 public class NPC extends Character {
@@ -37,23 +36,11 @@ public class NPC extends Character {
     }
 
     public void getRandomQuotes() {
-
         Random random = new Random();
         int randomIndex = random.nextInt(randomQuotes.length);
         String randomQuote = randomQuotes[randomIndex];
-        System.out.printf("The %s says: '%s'\n\n", getType(),randomQuote);
-
-        // all randomQuotes
-        // for (String quote : randomQuotes
-        //        ) {
-        //            System.out.println(quote);
-        //
-        //        }
-
+        System.out.printf("The %s says: '%s'\n\n", getType(), randomQuote);
     }
-
-
-
 
     // for internal testing
 //    public static void main(String[] args) {

@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Display {
-    //
+
+    private static final int LINE_WIDTH = 120;
+
     private static String banner;
     private static String helpMenu;
     private static String gameMap;
@@ -24,7 +26,6 @@ public class Display {
     private static String inVolcano;
     private static String inWaterfall;
 
-
     public static void showTitle() {
         System.out.println(banner);
     }
@@ -36,43 +37,26 @@ public class Display {
     public static void showMap(Map<String, Location> locations, Location current_location) {
         if (locations.get("Beach").equals(current_location)) {
             System.out.println(inBeach);
-        }
-        else if (locations.get("Cave").equals(current_location)) {
+        } else if (locations.get("Cave").equals(current_location)) {
             System.out.println(inCave);
-        }
-        else if (locations.get("Jungle").equals(current_location)) {
+        } else if (locations.get("Jungle").equals(current_location)) {
             System.out.println(inJungle);
-        }
-        else if (locations.get("Mountain").equals(current_location)) {
+        } else if (locations.get("Mountain").equals(current_location)) {
             System.out.println(inMountain);
-        }
-        else if (locations.get("Mystical Grove").equals(current_location)) {
+        } else if (locations.get("Mystical Grove").equals(current_location)) {
             System.out.println(inMysticalGrove);
-        }
-        else if (locations.get("North Beach").equals(current_location)) {
+        } else if (locations.get("North Beach").equals(current_location)) {
             System.out.println(inNorthBeach);
-        }
-        else if (locations.get("Volcano").equals(current_location)) {
+        } else if (locations.get("Volcano").equals(current_location)) {
             System.out.println(inVolcano);
-        }
-        else if (locations.get("Waterfall").equals(current_location)) {
+        } else if (locations.get("Waterfall").equals(current_location)) {
             System.out.println(inWaterfall);
-        }
-        else{
+        } else {
             System.out.println(gameMap);
         }
     }
 
-    public static String readResource(String path) throws IOException {
-        try (InputStream is = Display.class.getResourceAsStream(path)) {
-            if (is == null) {
-                throw new FileNotFoundException("Resource not found: " + path);
-            }
-            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        }
-    }
-
-    public static void showStatus(Player player, Location location){
+    public static void showStatus(Player player, Location location) {
 
         System.out.println("--------------------------><(((º>--------------------------");
         System.out.println("Player Status");
@@ -96,9 +80,11 @@ public class Display {
 
     private static void showDescription(Location location) {
         if (!location.isHasBeenHere()) {
-            System.out.printf("Description: %s", location.getDescriptions().get("before"));
+            Introduction.formatText(location.getDescriptions().get("before"), LINE_WIDTH);
+            System.out.println();
         } else {
-            System.out.printf("Description: %s", location.getDescriptions().get("after"));
+            Introduction.formatText(location.getDescriptions().get("after"), LINE_WIDTH);
+            System.out.println();
         }
     }
 
@@ -110,7 +96,7 @@ public class Display {
         System.out.printf("Inventory: %s\n", inventoryList);
     }
 
-    public static void showItem(Location location){
+    public static void showItem(Location location) {
         if (location.getItems() != null) {
             List<String> itemAvailable = new ArrayList<>();
             for (Map.Entry<String, Item> entry : location.getItems().entrySet()) {
@@ -122,20 +108,31 @@ public class Display {
 
     public static void showFish(Location location) {
         if (location.getFishes() != null) {
-            List<String> fishAvailable = new ArrayList<>();
-            for (Map.Entry<String, Fish> entry : location.getFishes().entrySet()) {
-                fishAvailable.add(entry.getKey());
-            }
-            System.out.printf("You see something swimming in the water...\n%s\n", fishAvailable);
+//            List<String> fishAvailable = new ArrayList<>();
+//            for (Map.Entry<String, Fish> entry : location.getFishes().entrySet()) {
+//                fishAvailable.add(entry.getKey());
+//            }
+//            System.out.printf("You see something swimming in the water...\n%s\n", fishAvailable);
+            System.out.println("You see something swimming in the water...");
         }
     }
-    public static void showNPC(Location location){
-        if (location.getNpc() != null){
+
+    public static void showNPC(Location location) {
+        if (location.getNpc() != null) {
             List<String> npcPresent = new ArrayList<>();
-            for(Map.Entry<String, NPC> entry : location.getNpc().entrySet()) {
+            for (Map.Entry<String, NPC> entry : location.getNpc().entrySet()) {
                 npcPresent.add(entry.getKey());
             }
             System.out.printf("You see a %s at the %s\n", npcPresent, location.getName());
+        }
+    }
+
+    public static String readResource(String path) throws IOException {
+        try (InputStream is = Display.class.getResourceAsStream(path)) {
+            if (is == null) {
+                throw new FileNotFoundException("Resource not found: " + path);
+            }
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         }
     }
 
@@ -156,5 +153,4 @@ public class Display {
             e.printStackTrace();
         }
     }
-
 }

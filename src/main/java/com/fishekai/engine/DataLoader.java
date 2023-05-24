@@ -23,9 +23,6 @@ public class DataLoader {
     private static final String FISH_PATH = "/json/Fish.json";
     private static final String NPC_PATH = "/json/npc.json";
 
-    // references to be called
-    public static String gameInfo;
-
     // reads the locations json file and stores data
     public static Map<String, Location> processLocations() {
         Gson gson = new Gson();
@@ -39,15 +36,9 @@ public class DataLoader {
         Map<String, Location> mappedLocations = listLocations.stream()
                 .collect(Collectors.toMap(Location::getName, Function.identity()));
 
-        // takes in the List<Location> and stores as a hashmap
-        /*HashMap<String, Location> mappedLocations = new HashMap<>();
-        for (Location location : listLocations) {
-            mappedLocations.put(location.getName(), location);
-        }*/
         return mappedLocations;
     }
 
-    //
     public static Map<String, String> processGameInfo() {
         Gson gson = new Gson();
 
@@ -65,14 +56,6 @@ public class DataLoader {
                 throw new FileNotFoundException("Resource not found: " + path);
             }
             return new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        }
-    }
-
-    static {
-        try {
-            gameInfo = readResource("/images/game_info.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -106,11 +89,7 @@ public class DataLoader {
                     }
                 }
             }
-        } catch (JsonIOException e) {
-            e.printStackTrace();
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JsonIOException | JsonSyntaxException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -163,11 +142,7 @@ public class DataLoader {
                     locations.get(locationName).getNpc().put(npc.getType(), npc);
                 }
             }
-        } catch (JsonIOException e) {
-            e.printStackTrace();
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JsonIOException | JsonSyntaxException | IOException e) {
             e.printStackTrace();
         }
     }
