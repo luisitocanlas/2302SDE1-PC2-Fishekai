@@ -37,12 +37,9 @@ public class NPC extends Character {
     }
 
     public void getRandomQuotes() {
-        for (String quote : randomQuotes
-        ) {
+        for (String quote : randomQuotes) {
             System.out.println(quote);
-
         }
-
     }
 
     // methods

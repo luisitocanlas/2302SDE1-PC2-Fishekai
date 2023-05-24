@@ -9,7 +9,7 @@ public class Console {
     }
 
     public static void blankLines(int var0) {
-        for(int var1 = 0; var1 < var0; ++var1) {
+        for (int var1 = 0; var1 < var0; ++var1) {
             System.out.println();
         }
 

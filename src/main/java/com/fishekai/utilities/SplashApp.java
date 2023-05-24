@@ -21,7 +21,7 @@ public interface SplashApp {
             String[] var5 = var3;
             int var6 = var3.length;
 
-            for(int var7 = 0; var7 < var6; ++var7) {
+            for (int var7 = 0; var7 < var6; ++var7) {
                 String var8 = var5[var7];
                 URL var9 = new URL("file:./" + var8);
                 var4.setImageURL(var9);
