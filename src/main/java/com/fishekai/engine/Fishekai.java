@@ -19,7 +19,7 @@ public class Fishekai implements SplashApp {
     private boolean isGameOver = false;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-    NPC npc = new NPC("Hanley Druthers", "the ghost", "Mystical Grove", "ghost");
+    //NPC npc = new NPC("Hanley Druthers", "the ghost", "Mystical Grove", "ghost");
     Sound sound = new Sound();
 
     // instances
@@ -134,7 +134,7 @@ public class Fishekai implements SplashApp {
                             String itemToGet = words[1].toLowerCase();
                             if (!player.getInventory().containsKey(itemToGet)) {
                                 player.getInventory().put(itemToGet, current_location.getItems().get(itemToGet));
-                                //playSE(3);
+                                playSE(3);
                                 current_location.getItems().remove(itemToGet);
                                 System.out.println("You got the " + itemToGet + ".");
                             } else if (player.getInventory().containsKey(itemToGet)) {
@@ -159,6 +159,7 @@ public class Fishekai implements SplashApp {
 
                     case "map":
                         clear();
+                        //playSE(5);
                         Display.showMap(locations, current_location);
                         intro.askToContinue();
                         break;
@@ -171,6 +172,7 @@ public class Fishekai implements SplashApp {
 
                     case "quit":
                         isGameOver = true;
+                        playSE(4);
                         gameOver();
                         break;
 
