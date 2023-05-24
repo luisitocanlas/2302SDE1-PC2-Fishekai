@@ -1,0 +1,51 @@
+[
+  {
+    "name": "parachute",
+    "description": "the chord could come in handy",
+    "location": "Jungle",
+    "type": "tool",
+    "modifier": "0"
+  },
+  {
+    "name": "stick",
+    "description": "Smooth and perfectly straight, they would make a great fishing pole",
+    "location": "Waterfall",
+    "type": "tool",
+    "modifier": "0"
+  },
+  {
+    "name": "hook",
+    "description": "The hook carries the weight of stories untold, promising a connection to the abundant waters that surround this deserted island",
+    "location": "Cave",
+    "type": "tool",
+    "modifier": "0"
+  },
+  {
+    "name": "water",
+    "description": "refreshing and improves health",
+    "location": "Waterfall",
+    "type": "food",
+    "modifier": "2"
+  },
+  {
+    "name": "banana",
+    "description": "it's bananas, B.A.N.A.N.A.S",
+    "location": "Jungle",
+    "type": "food",
+    "modifier": "2"
+  },
+  {
+    "name": "apple",
+    "description": "an apple a day keeps the doctor away",
+    "location": "Mystical Grove",
+    "type": "food",
+    "modifier": "2"
+  },
+  {
+    "name": "amulet",
+    "description": "The thing that transported you to this place",
+    "location": "player",
+    "type": "Key Item",
+    "modifier": "0"
+  }
+]

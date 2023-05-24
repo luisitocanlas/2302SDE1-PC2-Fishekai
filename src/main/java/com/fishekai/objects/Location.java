@@ -1,24 +1,21 @@
 package com.fishekai.objects;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class Location {
 
     // fields
     private final String name;
-    private HashMap<String, String> directions;
+    private Map<String, String> directions;
     private boolean hasBeenHere = false; // default value is false
-    private HashMap<String, String> descriptions;
-    private List<Item> fishes;
-    private List<Item> items;
+    private Map<String, String> descriptions;
+    private Map<String, Fish> fishes = new HashMap<>();
+    private Map<String, Item> items = new HashMap<>();
+    private Map<String, NPC> npc = new HashMap<>();
 
     // constructors
-    public Location(String name) {
-        this.name = name;
-    }
-
-    public Location(String name, HashMap<String, String> directions, HashMap<String, String> descriptions) {
+    public Location(String name, Map<String, String> directions, Map<String, String> descriptions) {
         this.name = name;
         this.directions = directions;
         this.descriptions = descriptions;
@@ -29,20 +26,12 @@ public class Location {
         return name;
     }
 
-    public HashMap<String, String> getDirections() {
+    public Map<String, String> getDirections() {
         return directions;
     }
 
-    public void setDirections(HashMap<String, String> directions) {
-        this.directions = directions;
-    }
-
-    public HashMap<String, String> getDescriptions() {
+    public Map<String, String> getDescriptions() {
         return descriptions;
-    }
-
-    public void setDescriptions(HashMap<String, String> descriptions) {
-        this.descriptions = descriptions;
     }
 
     public boolean isHasBeenHere() {
@@ -53,20 +42,38 @@ public class Location {
         this.hasBeenHere = hasBeenHere;
     }
 
-    public List<Item> getFishes() {
+    public Map<String, Fish> getFishes() {
         return fishes;
     }
 
-    public void setFishes(List<Item> fishes) {
+    public void setFishes(Map<String, Fish> fishes) {
         this.fishes = fishes;
     }
 
-    public List<Item> getItems() {
+    public Map<String, Item> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(Map<String, Item> items) {
         this.items = items;
+    }
+
+    public Map<String, NPC> getNpc() {
+        return npc;
+    }
+
+    public void setNpc(Map<String, NPC> npc) {
+        this.npc = npc;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "name='" + name + '\'' +
+                ", directions=" + directions +
+                ", description='" + descriptions + '\'' +
+                ", items=" + items +
+                '}';
     }
 
     // for internal testing

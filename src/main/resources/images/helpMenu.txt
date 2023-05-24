@@ -14,6 +14,7 @@
 *eat (food item)              *
 *drink (water)                *
 *talk (self or NPC)           *
+*map (shows map)              *
 *                             *
 **********><(((º>**************			
 		

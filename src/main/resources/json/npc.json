@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Hanley Druthers",
+    "description": "Your standard ghost haunting the place of his death and  just enjoying the Mystic Grove for its beauty.",
+    "hp": 100,
+    "hunger": 0,
+    "thirst": 0,
+    "inventory": null,
+    "type": "ghost",
+    "location": "Mystical Grove",
+    "randomQuotes": [
+      "I require a shrubbery! Oh, wrong game. Sorry. I am the one who landed on this god-forsaken island. Did you know this island looks like a fish? I wonder what that means… Anyway, isn't it weird that you can see me? Good luck with getting off this island.",
+      "Hmmm… you're talking to me again. What help could I possibly be? I'm dead!",
+      "You know, you are a persistent thorn in my side. I'm just trying to spend the remainder of my non-existence in this lovely grove. Minding my own business!",
+      "How about you make like a banana, and peel it out of here?",
+      "You really look as ghastly as I do. There is food, but you might have to catch it with something."
+    ],
+    "has stick": "Well, well, well. It looks like you have a stick. I can think of many things to use that for, but seeing as I can't actually touch anything I can't use it. But you might remember that we are on a fish-shaped island… I'm not the one that needs food, remember! Go away!",
+    "need stick": "Never thought I'd say this, but I'm tired of talking to you. Oh… you need more help. There might be a stick somewhere wet that could be useful. Seems weird that you didn't find it already. Pretty soon you'll be dead just like me if you can't look around yourself.",
+    "has parachute": "Well, well, well. It looks like you have a parachute. I can think of many things to use that for, but seeing as I can't actually touch anything I can't use it. But you might remember that we are on a fish-shaped island… I'm not the one that needs food, remember! Go away!",
+    "need parachute": "You again? Can't you see that I'm busy… with… you know… ghostly business. I remember falling from the sky and having to cut myself out of something. You might try looking in a place that is a tangle of growth.",
+    "has hook": "Well, well, well. It looks like you have a hook. I can think of many things to use that for, but seeing as I can't actually touch anything I can't use it. But you might remember that we are on a fish-shaped island… I'm not the one that needs food, remember! Go away!",
+    "need hook": "Why are you asking me for help again? As you can see, I didn't get very far in my journey off this island. You might try looking for my body. I didn't come here empty-handed. I just remember it being dark and damp.",
+    "volcano discovered": "Fish not your thing. Well, I heard through the local ghost hotline that there is always another way off this island. A nice, hot bath would surely do the trick.",
+    "has fish": "So you finally caught a fish. Doesn't do much good sitting in your pocket. Which is kind of weird, now that I think about it. I'm glad I can't smell anything.",
+    "built fishing pole": "Still here? Go fishing already!"
+  },
+  {
+    "name": "Spaulding",
+    "description": "A kind looking volleyball that has floated up onto the beach.",
+    "hp": 1000,
+    "thirst": 0,
+    "hunger": 0,
+    "inventory": null,
+    "type": "ball",
+    "location": "North Beach",
+    "randomQuotes": [
+      ".... .... ...",
+      "... .. .",
+      "...",
+      "... ... ...",
+      "... Hello...",
+      "... fishing pole..."
+    ]
+  }
+]

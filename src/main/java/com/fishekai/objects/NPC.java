@@ -1,37 +1,58 @@
 package com.fishekai.objects;
 
-import java.util.List;
 import java.util.Random;
 
 public class NPC extends Character {
+    private String location;
+    private String type;
+    private String[] randomQuotes;
 
     // constructors
     public NPC(String name) {
         super(name);
     }
 
-    public NPC(String name, String description) {
+    public NPC(String name, String description, String location, String type, String[] randomQuotes) {
         super(name, description);
+        this.location = location;
+        this.type = type;
+        this.randomQuotes = randomQuotes;
     }
 
-    // methods
-    public String quotes() {
-        List<String> quotes = List.of("I require a shrubbery! Oh, wrong game. Sorry. I am the one who landed on this god-forsaken island. Did you know this island looks like a fish? I wonder what that means… Anyway, isn’t it weird that you can see me? Good luck with getting off this island.", "Hmmm… you’re talking to me again. What help could I possibly be? I’m dead!","You know, you are a persistent thorn in my side. I’m just trying to spend the remainder of my non-existence in this lovely grove. Minding my own business!","Still here? Go fishing already!");
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void getRandomQuotes() {
         Random random = new Random();
-        return quotes.get(random.nextInt(quotes.size()));
+        int randomIndex = random.nextInt(randomQuotes.length);
+        String randomQuote = randomQuotes[randomIndex];
+        System.out.printf("The %s says: '%s'\n\n", getType(), randomQuote);
     }
 
     // for internal testing
-    public static void main(String[] args) {
-        NPC ghost = new NPC("Hanley Druthers", "Your standard ghost haunting the place of his death and  just enjoying the Mystic Grove for its beauty.");
-
-        System.out.println(ghost.getName());
-        System.out.println(ghost.getDescription());
-
-        System.out.println(ghost.getHp());
-        ghost.setHp(ghost.getHp() - 3);
-        System.out.println(ghost.getHp()); // you can kill a ghost!!!
-
-        System.out.println(ghost.quotes());
-    }
+//    public static void main(String[] args) {
+//        NPC ghost = new NPC("Hanley Druthers", "Your standard ghost haunting the place of his death and  just enjoying the Mystic Grove for its beauty.", location);
+//
+//        System.out.println(ghost.getName());
+//        System.out.println(ghost.getDescription());
+//
+//        System.out.println(ghost.getHp());
+//        ghost.setHp(ghost.getHp() - 3);
+//        System.out.println(ghost.getHp()); // you can kill a ghost!!!
+//
+//        System.out.println(ghost.quotes());
+//    }
 }
