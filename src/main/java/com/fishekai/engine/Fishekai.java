@@ -120,12 +120,11 @@ public class Fishekai implements SplashApp {
                                     inventoryMap.put(itemToDrop, player.getInventory().get(itemToDrop));
                                     player.getInventory().remove(itemToDrop);
                                     current_location.setItems(inventoryMap);
-                                    System.out.println("You dropped the " + itemToDrop + ".");
                                 } else {
                                     current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
                                     player.getInventory().remove(itemToDrop);
-                                    System.out.println("You dropped the " + itemToDrop + ".");
                                 }
+                                System.out.println("You dropped the " + itemToDrop + ".");
                             } else {
                                 System.out.println("You don't have a " + itemToDrop + "in your inventory.");
                             }

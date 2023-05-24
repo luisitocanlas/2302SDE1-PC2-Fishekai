@@ -80,11 +80,10 @@ public class Display {
     private static void showDescription(Location location) {
         if (!location.isHasBeenHere()) {
             Introduction.formatText(location.getDescriptions().get("before"), LINE_WIDTH);
-            System.out.println();
         } else {
             Introduction.formatText(location.getDescriptions().get("after"), LINE_WIDTH);
-            System.out.println();
         }
+        System.out.println();
     }
 
     private static void showInventory(Player player) {
@@ -107,11 +106,6 @@ public class Display {
 
     public static void showFish(Location location) {
         if (location.getFishes() != null) {
-//            List<String> fishAvailable = new ArrayList<>();
-//            for (Map.Entry<String, Fish> entry : location.getFishes().entrySet()) {
-//                fishAvailable.add(entry.getKey());
-//            }
-//            System.out.printf("You see something swimming in the water...\n%s\n", fishAvailable);
             System.out.println("You see something swimming in the water...");
         }
     }

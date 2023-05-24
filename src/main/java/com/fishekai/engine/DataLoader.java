@@ -34,10 +34,8 @@ public class DataLoader {
         };
         List<Location> listLocations = gson.fromJson(fileReader, token.getType());
 
-        Map<String, Location> mappedLocations = listLocations.stream()
+        return listLocations.stream()
                 .collect(Collectors.toMap(Location::getName, Function.identity()));
-
-        return mappedLocations;
     }
 
     public static Map<String, String> processGameInfo() {

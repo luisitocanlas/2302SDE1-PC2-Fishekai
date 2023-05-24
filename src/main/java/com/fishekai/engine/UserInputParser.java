@@ -61,13 +61,5 @@ public class UserInputParser {
         return nounList.contains(word.toLowerCase());
     }
 
-    //for testing
-    /*public static void main(String[] args) {
-        UserInputParser parser = new UserInputParser();
-        String[] words = parser.scan("go to your mommas house");
-        for (String word : words) {
-            System.out.println(word);
-        }
-    }*/
 }
 
