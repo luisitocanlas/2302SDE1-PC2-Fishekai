@@ -6,6 +6,7 @@ import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -98,6 +99,9 @@ public class Fishekai implements SplashApp {
                                 System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
                                 pause(1_000);
                             }
+                            else if (current_location.getNpc().containsKey(itemToLook)) {
+                                System.out.println("The " + current_location.getNpc().get(itemToLook).getType() + " looks like " + current_location.getNpc().get(itemToLook).getDescription() + " and their name is " + current_location.getNpc().get(itemToLook).getName());
+                            }
                             else if (current_location.getItems().containsKey(itemToLook)) {
                                 System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
                                 pause(1_000);
@@ -146,7 +150,7 @@ public class Fishekai implements SplashApp {
                         if (words.length > 1){
                             String npcCharacter = words[1].toLowerCase();
                             if (current_location.getNpc().containsKey(npcCharacter)){
-                                System.out.println("Hello");
+                                current_location.getNpc().get(npcCharacter).getRandomQuotes();
                             }else {
                                 System.out.println(current_location.getNpc().containsKey(npcCharacter));
                                 System.out.println("There is no " + npcCharacter + "here.");
