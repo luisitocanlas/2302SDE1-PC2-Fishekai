@@ -12,6 +12,7 @@ public class UserInputParser {
     private final List<String> itemList = List.of("parachute", "hook", "stick");
     private final List<String> foodList = List.of("water", "banana", "apple");
     private final List<String> fishList = List.of("Mystical Sunfish", "Venomous Fangfish", "Silverscale Tuna", "Rainbow Parrotfish", "Luminous Lanternfish");
+    private final List<String> npcList = List.of("ghost", "ball");
 
     public List<String> getDirectionsList() {
         return directionsList;
@@ -27,6 +28,10 @@ public class UserInputParser {
 
     public List<String> getFishList() {
         return fishList;
+    }
+
+    public List<String> getNpcList() {
+        return npcList;
     }
 
     public String[] scan(String input) {

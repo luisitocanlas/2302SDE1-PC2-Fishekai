@@ -6,7 +6,6 @@ import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -15,12 +14,14 @@ import static com.fishekai.utilities.Console.clear;
 import static com.fishekai.utilities.Console.pause;
 
 public class Fishekai implements SplashApp {
+    // constants
+    private static final long PAUSE_VALUE = 1_500;
 
     // fields
     private boolean isGameOver = false;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-    //NPC npc = new NPC("Hanley Druthers", "the ghost", "Mystical Grove", "ghost");
+
     Sound sound = new Sound();
 
     // instances
@@ -74,38 +75,33 @@ public class Fishekai implements SplashApp {
             String input = prompter.prompt("What would you like to do?\n><(((º> ").trim().strip();
 
             // give the input to the parser and then save the output of the parser
-//            String[] words = parser.scan(input);
+            String[] words = parser.scan(input);
 
             // process input
-            String[] words = input.split("\\s+");
+//            String[] words = input.split("\\s+");
             if (words.length > 0) {
                 String verb = words[0].toLowerCase();
 
                 switch (verb) { // change this to if statements
                     case "go":
                         String direction = words[1].toLowerCase();
-                        if (parser.getDirectionsList().contains(direction)) {
+                        if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
                             current_location.setHasBeenHere(true);
                             current_location = locations.get(current_location.getDirections().get(direction));
-                            pause(1_000);
                         } else {
                             System.out.println("Please specify a valid direction.");
                         }
+                        pause(PAUSE_VALUE);
                         break;
 
                     case "look": // need more testing
-                        if (words.length > 1) {
-                            String itemToLook = words[1].toLowerCase();
+                        String itemToLook = words[1].toLowerCase();
+                        if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook)) {
                             if (player.getInventory().containsKey(itemToLook)) {
                                 System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
-                                pause(1_000);
-                            }
-                            else if (current_location.getNpc().containsKey(itemToLook)) {
-                                System.out.println("The " + current_location.getNpc().get(itemToLook).getType() + " looks like " + current_location.getNpc().get(itemToLook).getDescription() + " and their name is " + current_location.getNpc().get(itemToLook).getName());
                             }
                             else if (current_location.getItems().containsKey(itemToLook)) {
                                 System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
-                                pause(1_000);
                             }
                             else {
                                 System.out.println("There is no " + itemToLook + " here.");
@@ -115,11 +111,12 @@ public class Fishekai implements SplashApp {
                             // Handle the case when the user didn't specify an item to look at
                             System.out.println("Please specify an item to look at.");
                         }
+                        pause(PAUSE_VALUE);
                         break;
 
                     case "drop":
-                        if (words.length > 1) {
-                            String itemToDrop = words[1].toLowerCase();
+                        String itemToDrop = words[1].toLowerCase();
+                        if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop)) {
                             if (player.getInventory().containsKey(itemToDrop)) {
                                 current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
                                 player.getInventory().remove(itemToDrop);
@@ -127,15 +124,15 @@ public class Fishekai implements SplashApp {
                             } else {
                                 System.out.println("You don't have a " + itemToDrop + "in your inventory.");
                             }
-
                         } else {
                             System.out.println("Please specify an item to drop.");
                         }
+                        pause(PAUSE_VALUE);
                         break;
 
                     case "get":
-                        if (words.length > 1) {
-                            String itemToGet = words[1].toLowerCase();
+                        String itemToGet = words[1].toLowerCase();
+                        if (parser.getItemList().contains(itemToGet) || parser.getFoodList().contains(itemToGet)) {
                             if (!player.getInventory().containsKey(itemToGet)) {
                                 player.getInventory().put(itemToGet, current_location.getItems().get(itemToGet));
                                 playSE(3);
@@ -146,20 +143,22 @@ public class Fishekai implements SplashApp {
                             } else {
                                 System.out.println("There is no " + itemToGet + " here.");
                             }
-                            break;
                         }
+                        pause(PAUSE_VALUE);
+                        break;
+
                     case "talk":
-                        if (words.length > 1){
-                            String npcCharacter = words[1].toLowerCase();
+                        String npcCharacter = words[1].toLowerCase();
+                        if (parser.getNpcList().contains(npcCharacter)){
                             if (current_location.getNpc().containsKey(npcCharacter)){
                                 current_location.getNpc().get(npcCharacter).getRandomQuotes();
                             }else {
                                 System.out.println(current_location.getNpc().containsKey(npcCharacter));
                                 System.out.println("There is no " + npcCharacter + "here.");
                             }
-                            break;
                         }
-
+                        pause(PAUSE_VALUE);
+                        break;
 
                     case "map":
                         clear();
@@ -182,15 +181,14 @@ public class Fishekai implements SplashApp {
 
                     default:
                         System.out.println("I don't understand. Type help for a list of commands.");
-                        pause(1_000);
+                        pause(PAUSE_VALUE);
                         break;
                 }
             }
             else {
                 System.out.println("I don't understand. Type help for a list of commands.");
-                pause(1_000);
+                pause(PAUSE_VALUE);
             }
-
         }
     }
 
@@ -220,11 +218,7 @@ public class Fishekai implements SplashApp {
         locations = DataLoader.processLocations(); // load the locations
         DataLoader.processItems(player, locations); // load items and place in locations
         DataLoader.processFishes(locations); // load fishes and place in locations
-        DataLoader.processNpc(locations);
-        // for testing
-//        Map<String, NPC> npcMap = new HashMap<>();
-//        npcMap.put("ghost", npc);
-//        locations.get("Beach").setNpc(npcMap);
+        DataLoader.processNpc(locations); // load NPCs and place in locations
     }
 
 }
