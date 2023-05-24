@@ -41,6 +41,13 @@ public class NPC extends Character {
         int randomIndex = random.nextInt(randomQuotes.length);
         String randomQuote = randomQuotes[randomIndex];
         System.out.printf("The %s says: '%s'\n\n", getType(),randomQuote);
+
+        // all randomQuotes
+        // for (String quote : randomQuotes
+        //        ) {
+        //            System.out.println(quote);
+        //
+        //        }
     }
 
 
