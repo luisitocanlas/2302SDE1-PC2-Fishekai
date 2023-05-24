@@ -1,12 +1,10 @@
 package com.fishekai.engine;
 
 import com.fishekai.objects.Location;
-import com.fishekai.objects.NPC;
 import com.fishekai.objects.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -99,15 +97,12 @@ public class Fishekai implements SplashApp {
                         if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook)) {
                             if (player.getInventory().containsKey(itemToLook)) {
                                 System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
-                            }
-                            else if (current_location.getItems().containsKey(itemToLook)) {
+                            } else if (current_location.getItems().containsKey(itemToLook)) {
                                 System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
-                            }
-                            else {
+                            } else {
                                 System.out.println("There is no " + itemToLook + " here.");
                             }
-                        }
-                        else {
+                        } else {
                             // Handle the case when the user didn't specify an item to look at
                             System.out.println("Please specify an item to look at.");
                         }
@@ -149,10 +144,10 @@ public class Fishekai implements SplashApp {
 
                     case "talk":
                         String npcCharacter = words[1].toLowerCase();
-                        if (parser.getNpcList().contains(npcCharacter)){
-                            if (current_location.getNpc().containsKey(npcCharacter)){
+                        if (parser.getNpcList().contains(npcCharacter)) {
+                            if (current_location.getNpc().containsKey(npcCharacter)) {
                                 current_location.getNpc().get(npcCharacter).getRandomQuotes();
-                            }else {
+                            } else {
                                 System.out.println(current_location.getNpc().containsKey(npcCharacter));
                                 System.out.println("There is no " + npcCharacter + "here.");
                             }
@@ -175,7 +170,7 @@ public class Fishekai implements SplashApp {
 
                     case "quit":
                         isGameOver = true;
-                        playSE(4);
+//                        playSE(4);
                         gameOver();
                         break;
 
@@ -184,8 +179,7 @@ public class Fishekai implements SplashApp {
                         pause(PAUSE_VALUE);
                         break;
                 }
-            }
-            else {
+            } else {
                 System.out.println("I don't understand. Type help for a list of commands.");
                 pause(PAUSE_VALUE);
             }
