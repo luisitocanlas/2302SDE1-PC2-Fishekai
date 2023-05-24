@@ -37,6 +37,7 @@ public class NPC extends Character {
     }
 
     public void getRandomQuotes() {
+
         Random random = new Random();
         int randomIndex = random.nextInt(randomQuotes.length);
         String randomQuote = randomQuotes[randomIndex];
@@ -48,6 +49,7 @@ public class NPC extends Character {
         //            System.out.println(quote);
         //
         //        }
+
     }
 
 
