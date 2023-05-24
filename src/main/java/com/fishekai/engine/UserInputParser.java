@@ -9,7 +9,7 @@ public class UserInputParser {
 
     private final Set<String> excludedWords = new HashSet<>(List.of("to", "at", "your", "the"));
     private final List<String> directionsList = List.of("north", "east", "south", "west");
-    private final List<String> itemList = List.of("parachute", "hook", "stick");
+    private final List<String> itemList = List.of("amulet", "parachute", "hook", "stick");
     private final List<String> foodList = List.of("water", "banana", "apple");
     private final List<String> fishList = List.of("Mystical Sunfish", "Venomous Fangfish", "Silverscale Tuna", "Rainbow Parrotfish", "Luminous Lanternfish");
     private final List<String> npcList = List.of("ghost", "ball");
