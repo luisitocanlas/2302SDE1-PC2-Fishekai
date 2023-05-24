@@ -58,23 +58,22 @@ public class Display {
 
     public static void showStatus(Player player, Location location) {
 
-        System.out.println("--------------------------><(((º>--------------------------");
+        System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println("Player Status");
         System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
         System.out.println();
         showFish(location);
         System.out.println();
-        System.out.println("You are in the at the: " + location.getName());
+        System.out.println("You are at the: " + location.getName());
         showDescription(location);
         System.out.println();
         showInventory(player);
         System.out.println();
         showItem(location);
-        System.out.println();
         showNPC(location);
         System.out.println();
         System.out.println("You see paths to " + location.getDirections());
-        System.out.println("--------------------------><(((º>--------------------------");
+        System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println();
     }
 
@@ -102,7 +101,7 @@ public class Display {
             for (Map.Entry<String, Item> entry : location.getItems().entrySet()) {
                 itemAvailable.add(entry.getKey());
             }
-            System.out.println("You see:" + itemAvailable);
+            System.out.println("You see " + itemAvailable + ". It might be useful.\n");
         }
     }
 
@@ -123,7 +122,7 @@ public class Display {
             for (Map.Entry<String, NPC> entry : location.getNpc().entrySet()) {
                 npcPresent.add(entry.getKey());
             }
-            System.out.printf("You see a %s at the %s\n", npcPresent, location.getName());
+            System.out.printf("You see a %s, staring at you, at the %s\n", npcPresent, location.getName());
         }
     }
 

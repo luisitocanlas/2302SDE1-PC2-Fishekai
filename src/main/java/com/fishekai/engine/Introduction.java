@@ -37,12 +37,14 @@ class Introduction {
 
         // insert prompt here to tell the player to press any key to continue
         askToContinue();
+        clear();
     }
 
     public void askToContinue() {
         prompter.prompt("Enter [Y]es to Continue:\n><(((º> ",
                 "Y|y",
                 "This is not a valid option!\n");
+
     }
 
     public static void formatText(String text, int width) {
