@@ -6,8 +6,9 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,17 +47,6 @@ public class DataLoader {
         TypeToken<Map<String, String>> token = new TypeToken<>() {
         };
         return gson.fromJson(fileReader, token.getType());
-    }
-
-
-    // used for reading and storing text files
-    public static String readResource(String path) throws IOException {
-        try (InputStream is = Display.class.getResourceAsStream(path)) {
-            if (is == null) {
-                throw new FileNotFoundException("Resource not found: " + path);
-            }
-            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        }
     }
 
     // reads the item json file and stores data
@@ -99,23 +89,26 @@ public class DataLoader {
         Gson gson = new Gson();
 
         // takes the data from json file and stores the data
-        BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(FISH_PATH))));
-        TypeToken<List<Fish>> token = new TypeToken<>() {
-        };
-        List<Fish> listFishes = gson.fromJson(fileReader, token.getType());
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(FISH_PATH))))) {
+            TypeToken<List<Fish>> token = new TypeToken<>() {
+            };
+            List<Fish> listFishes = gson.fromJson(fileReader, token.getType());
 
-        for (Fish fish : listFishes) {
-            // variable for accessing where the item will be located
-            String location = "North Beach";
+            for (Fish fish : listFishes) {
+                // variable for accessing where the item will be located
+                String location = "North Beach";
 
-            // place the item in the specified location
-            if (locations.get(location).getFishes() == null) {
-                Map<String, Fish> fishMap = new HashMap<>();
-                fishMap.put(fish.getName(), fish);
-                locations.get(location).setFishes(fishMap);
-            } else {
-                locations.get(location).getFishes().put(fish.getName(), fish);
+                // place the item in the specified location
+                if (locations.get(location).getFishes() == null) {
+                    Map<String, Fish> fishMap = new HashMap<>();
+                    fishMap.put(fish.getName(), fish);
+                    locations.get(location).setFishes(fishMap);
+                } else {
+                    locations.get(location).getFishes().put(fish.getName(), fish);
+                }
             }
+        } catch (JsonIOException | JsonSyntaxException | IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -123,8 +116,7 @@ public class DataLoader {
         Gson gson = new Gson();
 
         // takes the data from json file and stores the data
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader
-                (Objects.requireNonNull(DataLoader.class.getResourceAsStream(NPC_PATH))))) {
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(NPC_PATH))))) {
             TypeToken<List<NPC>> token = new TypeToken<>() {
             };
             List<NPC> listNpcs = gson.fromJson(fileReader, token.getType());
@@ -147,13 +139,10 @@ public class DataLoader {
         }
     }
 
-
     //    // for internal testing
     public static void main(String[] args) {
         Map<String, Location> locations = processLocations();
         processNpc(locations);
         locations.get("Mystical Grove").getNpc().get("ghost").getRandomQuotes();
-
-
     }
 }
