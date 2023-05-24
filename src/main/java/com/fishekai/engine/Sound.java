@@ -3,7 +3,6 @@ package com.fishekai.engine;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.IOException;
 import java.net.URL;
 
 public class Sound {
@@ -11,11 +10,11 @@ public class Sound {
     URL soundURL[] = new URL[30];
 
     public Sound() {
-        soundURL[0] = getClass().getResource("/sounds/beach.wav");
+        soundURL[0] = getClass().getResource("/sounds/waves-of-hawaii.wav");
         soundURL[1] = getClass().getResource("/sounds/jungle_growl.wav");
         soundURL[2] = getClass().getResource("/sounds/mountain-river.wav");
         soundURL[3] = getClass().getResource("/sounds/ding.wav");
-        soundURL[4] = getClass().getResource("/sounds/goodbye.wav");
+        soundURL[4] = getClass().getResource("/sounds/goodbye-friendly.wav");
         soundURL[5] = getClass().getResource("/sounds/where-am-i.wav");
     }
 
