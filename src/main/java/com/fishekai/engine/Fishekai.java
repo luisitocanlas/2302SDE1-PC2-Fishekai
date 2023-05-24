@@ -78,11 +78,10 @@ public class Fishekai implements SplashApp {
             String[] words = parser.scan(input);
 
             // process input
-//            String[] words = input.split("\\s+");
             if (words.length > 0) {
                 String verb = words[0].toLowerCase();
 
-                switch (verb) { // change this to if statements
+                switch (verb) {
                     case "go":
                         String direction = words[1].toLowerCase();
                         if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
