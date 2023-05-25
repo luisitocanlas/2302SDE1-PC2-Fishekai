@@ -1,6 +1,6 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.*;
+import com.fishekai.models.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;

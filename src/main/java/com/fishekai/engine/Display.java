@@ -1,6 +1,6 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.*;
+import com.fishekai.models.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

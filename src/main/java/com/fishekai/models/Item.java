@@ -1,4 +1,4 @@
-package com.fishekai.objects;
+package com.fishekai.models;
 
 public class Item {
     private final String name;

@@ -1,8 +1,8 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.Item;
-import com.fishekai.objects.Location;
-import com.fishekai.objects.Player;
+import com.fishekai.models.Item;
+import com.fishekai.models.Location;
+import com.fishekai.models.Player;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
@@ -21,14 +21,12 @@ public class Fishekai implements SplashApp {
     private boolean isGameOver = false;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-
     Sound sound = new Sound();
 
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private final UserInputParser parser = new UserInputParser();
-
 
     // methods
     public void start() {
@@ -83,83 +81,27 @@ public class Fishekai implements SplashApp {
 
                 switch (verb) {
                     case "go":
-                        String direction = words[1].toLowerCase();
-                        if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
-                            current_location.setHasBeenHere(true);
-                            current_location = locations.get(current_location.getDirections().get(direction));
-                        } else {
-                            System.out.println("Please specify a valid direction.");
-                        }
+                        current_location = changeLocation(current_location, words[1]);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "look": // need more testing
-                        String itemToLook = words[1].toLowerCase();
-                        if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook)) {
-                            if (player.getInventory().containsKey(itemToLook)) {
-                                System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
-                            } else if (current_location.getItems().containsKey(itemToLook)) {
-                                System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
-                            } else {
-                                System.out.println("There is no " + itemToLook + " here.");
-                            }
-                        } else {
-                            // Handle the case when the user didn't specify an item to look at
-                            System.out.println("Please specify an item to look at.");
-                        }
+                        lookAtItem(current_location, words[1]);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "drop":
-                        String itemToDrop = words[1].toLowerCase();
-                        if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop)) {
-                            if (player.getInventory().containsKey(itemToDrop)) {
-                                if (current_location.getItems() == null) {
-                                    Map<String, Item> inventoryMap = new HashMap<>();
-                                    inventoryMap.put(itemToDrop, player.getInventory().get(itemToDrop));
-                                    player.getInventory().remove(itemToDrop);
-                                    current_location.setItems(inventoryMap);
-                                } else {
-                                    current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
-                                    player.getInventory().remove(itemToDrop);
-                                }
-                                System.out.println("You dropped the " + itemToDrop + ".");
-                            } else {
-                                System.out.println("You don't have a " + itemToDrop + "in your inventory.");
-                            }
-                        } else {
-                            System.out.println("Please specify an item to drop.");
-                        }
+                        dropItem(current_location, words[1]);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "get":
-                        String itemToGet = words[1].toLowerCase();
-                        if (parser.getItemList().contains(itemToGet) || parser.getFoodList().contains(itemToGet)) {
-                            if (!player.getInventory().containsKey(itemToGet)) {
-                                player.getInventory().put(itemToGet, current_location.getItems().get(itemToGet));
-                                playSE(3);
-                                current_location.getItems().remove(itemToGet);
-                                System.out.println("You got the " + itemToGet + ".");
-                            } else if (player.getInventory().containsKey(itemToGet)) {
-                                System.out.println("You have the " + itemToGet + ".");
-                            } else {
-                                System.out.println("There is no " + itemToGet + " here.");
-                            }
-                        }
+                        getItem(current_location, words[1]);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "talk":
-                        String npcCharacter = words[1].toLowerCase();
-                        if (parser.getNpcList().contains(npcCharacter)) {
-                            if (current_location.getNpc().containsKey(npcCharacter)) {
-                                current_location.getNpc().get(npcCharacter).getRandomQuotes();
-                            } else {
-                                System.out.println(current_location.getNpc().containsKey(npcCharacter));
-                                System.out.println("There is no " + npcCharacter + "here.");
-                            }
-                        }
+                        talkWithNpc(current_location, words[1]);
                         pause(PAUSE_VALUE);
                         break;
 
@@ -183,15 +125,95 @@ public class Fishekai implements SplashApp {
                         break;
 
                     default:
-                        System.out.println("I don't understand. Type help for a list of commands.");
-                        pause(PAUSE_VALUE);
+                        invalidInput();
                         break;
                 }
             } else {
-                System.out.println("I don't understand. Type help for a list of commands.");
-                pause(PAUSE_VALUE);
+                invalidInput();
             }
         }
+    }
+
+    private void invalidInput() {
+        System.out.println("I don't understand. Type help for a list of commands.");
+        pause(PAUSE_VALUE);
+    }
+
+    private void talkWithNpc(Location current_location, String word) {
+        String npcCharacter = word.toLowerCase();
+        if (parser.getNpcList().contains(npcCharacter)) {
+            if (current_location.getNpc().containsKey(npcCharacter)) {
+                current_location.getNpc().get(npcCharacter).getRandomQuotes();
+            } else {
+                System.out.println(current_location.getNpc().containsKey(npcCharacter));
+                System.out.println("There is no " + npcCharacter + "here.");
+            }
+        }
+    }
+
+    private void getItem(Location current_location, String word) {
+        String itemToGet = word.toLowerCase();
+        if (parser.getItemList().contains(itemToGet) || parser.getFoodList().contains(itemToGet)) {
+            if (!player.getInventory().containsKey(itemToGet)) {
+                player.getInventory().put(itemToGet, current_location.getItems().get(itemToGet));
+                playSE(3);
+                current_location.getItems().remove(itemToGet);
+                System.out.println("You got the " + itemToGet + ".");
+            } else if (player.getInventory().containsKey(itemToGet)) {
+                System.out.println("You have the " + itemToGet + ".");
+            } else {
+                System.out.println("There is no " + itemToGet + " here.");
+            }
+        }
+    }
+
+    private void dropItem(Location current_location, String word) {
+        String itemToDrop = word.toLowerCase();
+        if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop)) {
+            if (player.getInventory().containsKey(itemToDrop)) {
+                if (current_location.getItems() == null) {
+                    Map<String, Item> inventoryMap = new HashMap<>();
+                    inventoryMap.put(itemToDrop, player.getInventory().get(itemToDrop));
+                    player.getInventory().remove(itemToDrop);
+                    current_location.setItems(inventoryMap);
+                } else {
+                    current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
+                    player.getInventory().remove(itemToDrop);
+                }
+                System.out.println("You dropped the " + itemToDrop + ".");
+            } else {
+                System.out.println("You don't have a " + itemToDrop + "in your inventory.");
+            }
+        } else {
+            System.out.println("Please specify an item to drop.");
+        }
+    }
+
+    private void lookAtItem(Location current_location, String word) {
+        String itemToLook = word.toLowerCase();
+        if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook)) {
+            if (player.getInventory().containsKey(itemToLook)) {
+                System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
+            } else if (current_location.getItems().containsKey(itemToLook)) {
+                System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
+            } else {
+                System.out.println("There is no " + itemToLook + " here.");
+            }
+        } else {
+            // Handle the case when the user didn't specify an item to look at
+            System.out.println("Please specify an item to look at.");
+        }
+    }
+
+    private Location changeLocation(Location current_location, String word) {
+        String direction = word.toLowerCase();
+        if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
+            current_location.setHasBeenHere(true);
+            current_location = locations.get(current_location.getDirections().get(direction));
+        } else {
+            System.out.println("Please specify a valid direction.");
+        }
+        return current_location;
     }
 
     public void playMusic(int i) {

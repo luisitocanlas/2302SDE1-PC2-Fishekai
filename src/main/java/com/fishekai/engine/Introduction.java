@@ -69,9 +69,4 @@ class Introduction {
         System.out.println(formattedText.toString());
     }
 
-    // for internal testing
-//    public static void main(String[] args) {
-//        Introduction intro = new Introduction();
-//        intro.showIntro();
-//    }
 }
