@@ -136,11 +136,4 @@ public class DataLoader {
             e.printStackTrace();
         }
     }
-
-    //    // for internal testing
-    public static void main(String[] args) {
-        Map<String, Location> locations = processLocations();
-        processNpc(locations);
-        locations.get("Mystical Grove").getNpc().get("ghost").getRandomQuotes();
-    }
 }

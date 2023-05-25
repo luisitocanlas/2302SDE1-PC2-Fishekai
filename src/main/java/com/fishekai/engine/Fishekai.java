@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import static com.fishekai.engine.Mapa.*;
+import static com.fishekai.engine.Mapa.locationCheck;
+import static com.fishekai.engine.Mapa.showStaticMap;
 import static com.fishekai.utilities.Console.clear;
 import static com.fishekai.utilities.Console.pause;
 
@@ -124,12 +125,11 @@ public class Fishekai implements SplashApp {
                         intro.askToContinue();
                         break;
                     case "music":
-                        if (words[1].equals("off")){
+                        if (words[1].equals("off")) {
                             stopMusic(6);
                         } else if (words[1].equals("on")) {
                             playMusic(6);
-                        }
-                        else {
+                        } else {
                             System.out.println("That is not a valid command. Try music on or music off.");
                         }
                         break;
@@ -267,6 +267,7 @@ public class Fishekai implements SplashApp {
         DataLoader.processItems(player, locations); // load items and place in locations
         DataLoader.processFishes(locations); // load fishes and place in locations
         DataLoader.processNpc(locations); // load NPCs and place in locations
+        parser.loadTextArguments(); // loads text arguments in UserInputParser
     }
 
 }
