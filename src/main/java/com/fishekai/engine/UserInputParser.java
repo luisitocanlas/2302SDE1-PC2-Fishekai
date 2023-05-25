@@ -1,36 +1,49 @@
 package com.fishekai.engine;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class UserInputParser {
+    private static final String EXCLUDED_WORDS_PATH = "/texts/excluded_words.txt";
+    private static final String GO_SYNONYM_PATH = "/texts/go_synonym.txt";
+    private static final String LOOK_SYNONYM_PATH = "/texts/look_synonym.txt";
+    private static final String DROP_SYNONYM_PATH = "/texts/drop_synonym.txt";
+    private static final String GET_SYNONYM_PATH = "/texts/get_synonym.txt";
 
-    private final Set<String> excludedWords = new HashSet<>(List.of("to", "at", "your", "the"));
-    private final List<String> directionsList = List.of("north", "east", "south", "west");
-    private final List<String> itemList = List.of("amulet", "parachute", "hook", "stick");
-    private final List<String> foodList = List.of("water", "banana", "apple");
-    private final List<String> fishList = List.of("Mystical Sunfish", "Venomous Fangfish", "Silverscale Tuna", "Rainbow Parrotfish", "Luminous Lanternfish");
-    private final List<String> npcList = List.of("ghost", "ball");
+    private final Set<String> excludedWords = new HashSet<>();
+    private final Set<String> goSynonym = new HashSet<>();
+    private final Set<String> lookSynonym = new HashSet<>();
+    private final Set<String> dropSynonym = new HashSet<>();
+    private final Set<String> getSynonym = new HashSet<>();
+    private final Set<String> directionsList = new HashSet<>(List.of("north", "east", "south", "west"));
+    private final Set<String> itemList = new HashSet<>(List.of("amulet", "parachute", "hook", "stick"));
+    private final Set<String> foodList = new HashSet<>(List.of("water", "banana", "apple"));
+    private final Set<String> fishList = new HashSet<>(List.of("Mystical Sunfish", "Venomous Fangfish", "Silverscale Tuna", "Rainbow Parrotfish", "Luminous Lanternfish"));
+    private final Set<String> npcList = new HashSet<>(List.of("ghost", "ball"));
 
-    public List<String> getDirectionsList() {
+    public Set<String> getExcludedWords() {
+        return excludedWords;
+    }
+
+    public Set<String> getDirectionsList() {
         return directionsList;
     }
 
-    public List<String> getItemList() {
+    public Set<String> getItemList() {
         return itemList;
     }
 
-    public List<String> getFoodList() {
+    public Set<String> getFoodList() {
         return foodList;
     }
 
-    public List<String> getFishList() {
+    public Set<String> getFishList() {
         return fishList;
     }
 
-    public List<String> getNpcList() {
+    public Set<String> getNpcList() {
         return npcList;
     }
 
@@ -39,27 +52,42 @@ public class UserInputParser {
         String[] words = input.split("\\s+");
 
         String[] output = Arrays.stream(words)
+                .map(word -> {
+                    if (goSynonym.contains(word)) {
+                        return "go";
+                    } else if (lookSynonym.contains(word)) {
+                        return "look";
+                    } else if (dropSynonym.contains(word)) {
+                        return "drop";
+                    } else if (getSynonym.contains(word)) {
+                        return "get";
+                    } else {
+                        return word;
+                    }
+                })
                 .filter(word -> !excludedWords.contains(word))
                 .toArray(String[]::new);
 
         return output;
     }
 
-    private boolean isVerb(String word) {
-        // Implement verb identification logic here
-        // This is a simple example using a predefined list of verbs
-
-        List<String> verbList = List.of("go", "get", "drink", "build", "eat", "cast", "pull", "help", "talk", "quit");
-        return verbList.contains(word.toLowerCase());
+    private static void loadFromFile(Set<String> outputSet, String filePath) {
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(filePath))))) {
+            String line;
+            while ((line = fileReader.readLine()) != null) {
+                outputSet.add(line.trim());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private boolean isNoun(String word) {
-        // Implement your noun identification logic here
-        // This is a simple example using a predefined list of nouns
-
-        List<String> nounList = List.of("north", "east", "south", "west", "water", "fish", "line", "pole");
-        return nounList.contains(word.toLowerCase());
+    public void loadTextArguments() {
+        loadFromFile(excludedWords, EXCLUDED_WORDS_PATH);
+        loadFromFile(goSynonym, GO_SYNONYM_PATH);
+        loadFromFile(lookSynonym, LOOK_SYNONYM_PATH);
+        loadFromFile(dropSynonym, DROP_SYNONYM_PATH);
+        loadFromFile(getSynonym, GET_SYNONYM_PATH);
     }
-
 }
 
