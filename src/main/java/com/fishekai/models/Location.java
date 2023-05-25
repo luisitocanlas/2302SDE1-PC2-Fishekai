@@ -1,4 +1,4 @@
-package com.fishekai.objects;
+package com.fishekai.models;
 
 import java.util.HashMap;
 import java.util.Map;
