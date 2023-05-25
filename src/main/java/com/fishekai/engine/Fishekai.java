@@ -122,6 +122,16 @@ public class Fishekai implements SplashApp {
                         Display.showHelp();
                         intro.askToContinue();
                         break;
+                    case "music":
+                        if (words[1].equals("off")){
+                            stopMusic(6);
+                        } else if (words[1].equals("on")) {
+                            playMusic(6);
+                        }
+                        else {
+                            System.out.println("That is not a valid command. Try music on or music off.");
+                        }
+                        break;
 
                     case "quit":
                         isGameOver = true;
@@ -227,7 +237,7 @@ public class Fishekai implements SplashApp {
         sound.loop();
     }
 
-    public void stopMusic() {
+    public void stopMusic(int i) {
         sound.stop();
     }
 
