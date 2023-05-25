@@ -18,7 +18,7 @@ public class Sound {
         soundURL[0] = getClass().getResource("/sounds/waves-of-hawaii.wav");
         soundURL[1] = getClass().getResource("/sounds/jungle_growl.wav");
         soundURL[2] = getClass().getResource("/sounds/mountain-river.wav");
-        soundURL[3] = getClass().getResource("/sounds/ding.wav");
+        soundURL[3] = getClass().getResource("/sounds/getItem.wav");
         soundURL[4] = getClass().getResource("/sounds/goodbye-friendly.wav");
         soundURL[5] = getClass().getResource("/sounds/unfold-a-map.wav");
         soundURL[6] = getClass().getResource("/sounds/mainMusicLoop.wav");
