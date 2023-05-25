@@ -23,6 +23,7 @@ public class Fishekai implements SplashApp {
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
     Sound sound = new Sound();
+    VolumeControl volumeControl = new VolumeControl(sound);
 
     // instances
     private final Introduction intro = new Introduction();
@@ -139,6 +140,10 @@ public class Fishekai implements SplashApp {
                         gameOver();
                         break;
 
+                    case "sound":
+                        volumeControl(sound);
+                        break;
+
                     default:
                         invalidInput();
                         break;
@@ -147,6 +152,10 @@ public class Fishekai implements SplashApp {
                 invalidInput();
             }
         }
+    }
+
+    private void volumeControl(Sound sound) {
+        new VolumeControl(sound);
     }
 
     private void invalidInput() {
