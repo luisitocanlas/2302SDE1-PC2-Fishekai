@@ -51,8 +51,9 @@ public class Character {
         return thirst;
     }
 
-    public void setThirst(int thirst) {
+    public int setThirst(int thirst) {
         this.thirst = thirst;
+        return thirst;
     }
 
     public HashMap<String, Item> getInventory() {
