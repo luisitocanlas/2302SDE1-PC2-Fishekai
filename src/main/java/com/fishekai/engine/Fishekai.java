@@ -60,12 +60,12 @@ public class Fishekai implements SplashApp {
 
         // set starting point
         Location current_location = locations.get("Beach");
+        playMusic(6);
 
         // starts the game
         while (!isGameOver) {
             // clear screen
             clear();
-
             // show display
             Display.showStatus(player, current_location);
 
