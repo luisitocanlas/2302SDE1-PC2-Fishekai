@@ -10,14 +10,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static com.fishekai.engine.Introduction.formatText;
 import static com.fishekai.engine.Mapa.locationCheck;
 import static com.fishekai.engine.Mapa.showStaticMap;
-import static com.fishekai.utilities.Console.clear;
-import static com.fishekai.utilities.Console.pause;
+import static com.fishekai.utilities.Console.*;
 
 public class Fishekai implements SplashApp {
     // constants
     private static final long PAUSE_VALUE = 1_500;
+    private static final int LINE_WIDTH = 120;
 
     // fields
     private boolean isGameOver = false;
@@ -124,6 +125,7 @@ public class Fishekai implements SplashApp {
                         Display.showHelp();
                         intro.askToContinue();
                         break;
+
                     case "music":
                         if (words[1].equals("off")) {
                             stopMusic(6);
@@ -134,8 +136,12 @@ public class Fishekai implements SplashApp {
                         }
                         break;
 
+                    case "jump":
+                        jumpIntoTheVoid(current_location);
+                        pause(PAUSE_VALUE);
+                        break;
+
                     case "quit":
-                        isGameOver = true;
                         playSE(4);
                         gameOver();
                         break;
@@ -151,6 +157,19 @@ public class Fishekai implements SplashApp {
             } else {
                 invalidInput();
             }
+        }
+    }
+
+    private void jumpIntoTheVoid(Location current_location) {
+        if (current_location.getName().equals("Volcano")) {
+            System.out.println("Despite you better judgement, you jumped into the Volcano's crater...");
+            blankLines(1);
+            formatText(DataLoader.processGameCondition().get("Volcanic_Plunge"), LINE_WIDTH);
+            intro.askToContinue();
+            gameOver();
+        }
+        else {
+            System.out.println("Oof, my knees aren't what they used to be.");
         }
     }
 
@@ -256,6 +275,7 @@ public class Fishekai implements SplashApp {
     }
 
     private void gameOver() {
+        isGameOver = true;
         clear();
         System.out.println("Thank you for playing!");
         pause(PAUSE_VALUE);
