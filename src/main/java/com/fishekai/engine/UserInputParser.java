@@ -18,7 +18,7 @@ public class UserInputParser {
     private final Set<String> dropSynonym = new HashSet<>();
     private final Set<String> getSynonym = new HashSet<>();
     private final Set<String> directionsList = new HashSet<>(List.of("north", "east", "south", "west"));
-    private final Set<String> itemList = new HashSet<>(List.of("amulet", "parachute", "hook", "stick"));
+    private final Set<String> itemList = new HashSet<>(List.of("amulet", "parachute", "hook", "stick", "flask"));
     private final Set<String> foodList = new HashSet<>(List.of("water", "banana", "apple"));
     private final Set<String> fishList = new HashSet<>(List.of("Mystical Sunfish", "Venomous Fangfish", "Silverscale Tuna", "Rainbow Parrotfish", "Luminous Lanternfish"));
     private final Set<String> npcList = new HashSet<>(List.of("ghost", "ball"));

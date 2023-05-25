@@ -47,5 +47,13 @@
     "location": "player",
     "type": "Key Item",
     "modifier": "0"
+  },
+  {
+    "name": "flask",
+    "description": "A weather worn, leather wrapped flask caked with sand. It smells of rancid rum, but there is not a drop left. Why is the rum always gone?",
+    "location": "Beach",
+    "type": "food",
+    "modifier": "2",
+    "actions": "Your flask is now filled."
   }
 ]
