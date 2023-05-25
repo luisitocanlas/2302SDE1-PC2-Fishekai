@@ -15,6 +15,7 @@
 *drink (water)                *
 *talk (self or NPC)           *
 *map (shows map)              *
+*music (on or off)            *
 *                             *
 **********><(((º>**************			
 		
