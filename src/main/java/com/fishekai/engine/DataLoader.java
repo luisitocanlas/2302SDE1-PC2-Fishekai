@@ -20,6 +20,7 @@ public class DataLoader {
     // file paths
     private static final String LOCATIONS_PATH = "/json/locations.json";
     private static final String GAME_INFO_PATH = "/json/Game_Information.json";
+    private static final String GAME_CONDITION_PATH = "/json/Game_Conditions.json";
     private static final String ITEM_PATH = "/json/Item.json";
     private static final String FISH_PATH = "/json/Fish.json";
     private static final String NPC_PATH = "/json/npc.json";
@@ -42,8 +43,15 @@ public class DataLoader {
         Gson gson = new Gson();
 
         BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(GAME_INFO_PATH))));
-        TypeToken<Map<String, String>> token = new TypeToken<>() {
-        };
+        TypeToken<Map<String, String>> token = new TypeToken<>() {};
+        return gson.fromJson(fileReader, token.getType());
+    }
+
+    public static Map<String, String> processGameCondition() {
+        Gson gson = new Gson();
+
+        BufferedReader fileReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(DataLoader.class.getResourceAsStream(GAME_CONDITION_PATH))));
+        TypeToken<Map<String, String>> token = new TypeToken<>() {};
         return gson.fromJson(fileReader, token.getType());
     }
 
