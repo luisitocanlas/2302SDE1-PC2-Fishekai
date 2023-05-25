@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static com.fishekai.engine.Mapa.*;
 import static com.fishekai.utilities.Console.clear;
 import static com.fishekai.utilities.Console.pause;
 
@@ -66,6 +67,10 @@ public class Fishekai implements SplashApp {
         while (!isGameOver) {
             // clear screen
             clear();
+
+            // check for visited locations, used for showing on the map
+            locationCheck(current_location);
+
             // show display
             Display.showStatus(player, current_location);
 
@@ -108,7 +113,7 @@ public class Fishekai implements SplashApp {
                     case "map":
                         clear();
                         playSE(5);
-                        Display.showMap(locations, current_location);
+                        showStaticMap(locations, current_location);
                         intro.askToContinue();
                         break;
 
