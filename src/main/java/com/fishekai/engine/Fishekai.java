@@ -149,8 +149,9 @@ public class Fishekai implements SplashApp {
 
                     case "music":
                         if (words[1].equals("off")) {
-                            stopMusic();
-
+                            for (int i = 0; i < sound.soundClips.length; i++) {
+                                stopMusic(i);
+                            }
                         } else if (words[1].equals("on")) {
                             playMusic(6);
 
@@ -381,8 +382,8 @@ public class Fishekai implements SplashApp {
         sound.loop();
     }
 
-    public void stopMusic() {
-        sound.stop();
+    public void stopMusic(int i) {
+        sound.stopClip(i);
     }
 
     public void playSE(int i) {

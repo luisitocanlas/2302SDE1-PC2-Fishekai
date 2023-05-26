@@ -15,7 +15,7 @@ public class Sound {
     boolean mute = false;
 
     // load clips in an array or list
-    InputStream[] soundClips = {
+    public InputStream[] soundClips = {
             openAudioResource("/sounds/intro.wav"),
             openAudioResource("/sounds/look.wav"),
             openAudioResource("/sounds/drink.wav"),
