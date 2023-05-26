@@ -10,6 +10,7 @@ import com.fishekai.utilities.SplashApp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import static com.fishekai.engine.Introduction.formatText;
 import static com.fishekai.engine.Mapa.locationCheck;
@@ -214,6 +215,11 @@ public class Fishekai implements SplashApp {
                         }
                         pause(PAUSE_VALUE);
                         break;
+                    case "god":
+                        Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
+                        player.getInventory().put("rod", rod);
+                        break;
+
 
                     default:
                         invalidInput();
