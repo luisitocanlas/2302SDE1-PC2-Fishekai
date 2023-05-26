@@ -11,10 +11,11 @@ java {
 }
 
 application {
-//    mainClass = project.mainClass
-    mainClassName = 'com.fishekai.game.Main'
+    mainClass = project.mainClass
+//    mainClassName = 'com.fishekai.game.Main'
 }
 
+/*
 jar {
     manifest {
         attributes "Main-Class": "com.fishekai.game.Main"
@@ -24,6 +25,7 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+*/
 
 run {
     standardInput = System.in

@@ -4,7 +4,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import java.net.URL;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 
 public class Sound {
     Clip clip;
@@ -13,39 +14,36 @@ public class Sound {
     FloatControl fc;
     boolean mute = false;
 
-
-    URL soundURL[] = new URL[30];
-
-    public Sound() {
-        soundURL[0] = getClass().getResource("/sounds/intro.wav");
-        soundURL[1] = getClass().getResource("/sounds/look.wav");
-        soundURL[2] = getClass().getResource("/sounds/drink.wav");
-        soundURL[3] = getClass().getResource("/sounds/getItem.wav");
-        soundURL[4] = getClass().getResource("/sounds/goodbye-friendly.wav");
-        soundURL[5] = getClass().getResource("/sounds/unfold-a-map.wav");
-        soundURL[6] = getClass().getResource("/sounds/mainMusicLoop.wav");
-        soundURL[7] = getClass().getResource("/sounds/help.wav");
-        soundURL[8] = getClass().getResource("/sounds/jump.wav");
-        soundURL[9] = getClass().getResource("/sounds/talk_1.wav");
-        soundURL[10] = getClass().getResource("/sounds/catch.wav");
-        soundURL[11] = getClass().getResource("/sounds/drop.wav");
-        soundURL[12] = getClass().getResource("/sounds/go.wav");
-        soundURL[13] = getClass().getResource("/sounds/beforeEat.wav");
-        soundURL[14] = getClass().getResource("/sounds/eat.wav");
-        soundURL[15] = getClass().getResource("/sounds/build.wav");
-        soundURL[16] = getClass().getResource("/sounds/fish_gets_away.wav");
-        soundURL[17] = getClass().getResource("/sounds/pull.wav");
-
-    }
+    // load clips in an array or list
+    InputStream[] soundClips = {
+            openAudioResource("/sounds/intro.wav"),
+            openAudioResource("/sounds/look.wav"),
+            openAudioResource("/sounds/drink.wav"),
+            openAudioResource("/sounds/getItem.wav"),
+            openAudioResource("/sounds/goodbye-friendly.wav"),
+            openAudioResource("/sounds/unfold-a-map.wav"),
+            openAudioResource("/sounds/mainMusicLoop.wav"),
+            openAudioResource("/sounds/help.wav"),
+            openAudioResource("/sounds/jump.wav"),
+            openAudioResource("/sounds/talk_1.wav"),
+            openAudioResource("/sounds/catch.wav"),
+            openAudioResource("/sounds/drop.wav"),
+            openAudioResource("/sounds/go.wav"),
+            openAudioResource("/sounds/beforeEat.wav"),
+            openAudioResource("/sounds/eat.wav"),
+            openAudioResource("/sounds/build.wav"),
+            openAudioResource("/sounds/fish_gets_away.wav"),
+            openAudioResource("/sounds/pull.wav")
+    };
 
     public void setFile(int i) {
 
-        try (AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i])) {
+        try (AudioInputStream ais = AudioSystem.getAudioInputStream(soundClips[i])) {
             clip = AudioSystem.getClip();
             clip.open(ais);
-            fc = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+            fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -59,9 +57,15 @@ public class Sound {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public void stop() {
-        clip.stop();
+    public void stopClip(int i) {
+        if (clip != null && clip.isOpen()) {
+            if (clip.getFramePosition() > 0 && clip.getFramePosition() < clip.getFrameLength()) {
+                clip.stop();
+                clip.setFramePosition(0);
+            }
+        }
     }
+
     public void volumeUp() {
         currentVolume += 1.0f;
         if (currentVolume > 6.0f) {
@@ -69,6 +73,7 @@ public class Sound {
         }
         fc.setValue(currentVolume);
     }
+
     public void volumeDown() {
         currentVolume -= 1.0f;
         if (currentVolume < -80.f) {
@@ -76,19 +81,28 @@ public class Sound {
         }
         fc.setValue(currentVolume);
     }
+
     public void volumeMute() {
-        if(!mute) {
+        if (!mute) {
             previousVolume = currentVolume;
             currentVolume = -80.0f;
             fc.setValue(currentVolume);
             mute = true;
-            for (int i = 0; i < soundURL.length; i++) {
-                stop();
+            for (int i = 0; i < soundClips.length; i++) {
+                stopClip(i);
             }
         } else {
             currentVolume = previousVolume;
             fc.setValue(currentVolume);
             mute = false;
-            }
         }
     }
+
+    private InputStream openAudioResource(String resourcePath) {
+
+        InputStream input = getClass().getResourceAsStream(resourcePath);
+
+        return new BufferedInputStream(input);
+    }
+
+}

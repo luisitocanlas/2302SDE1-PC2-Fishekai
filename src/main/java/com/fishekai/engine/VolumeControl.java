@@ -45,8 +45,5 @@ public class VolumeControl {
         window.pack();
         window.setVisible(true);
     }
-    // for testing the GUI
-//    public static void main(String[] args) {
-//        VolumeControl volumeControl = new VolumeControl(sound);
-//    }
+
 }
