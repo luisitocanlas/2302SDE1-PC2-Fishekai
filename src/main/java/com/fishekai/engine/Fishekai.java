@@ -24,6 +24,7 @@ public class Fishekai implements SplashApp {
 
     // fields
     private boolean isGameOver = false;
+    public static int moveCounter;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
     Sound sound = new Sound();
@@ -35,6 +36,7 @@ public class Fishekai implements SplashApp {
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private final UserInputParser parser = new UserInputParser();
+
 
     // methods
     public void start() {
@@ -67,6 +69,9 @@ public class Fishekai implements SplashApp {
         // initialize data, crashes the jar build
         loadData();
 
+        // initialize move counter
+        moveCounter = 0;
+
         // set starting point
         Location current_location = locations.get("Beach");
         playMusic(6);
@@ -75,6 +80,12 @@ public class Fishekai implements SplashApp {
         while (!isGameOver) {
             // clear screen
             clear();
+
+            // health check
+            if (player.getHp() == 0) {
+                areYouStillAlive();
+                break;
+            }
 
             // check for visited locations, used for showing on the map
             locationCheck(current_location);
@@ -201,6 +212,21 @@ public class Fishekai implements SplashApp {
         }
     }
 
+    private void areYouStillAlive() {
+        if (player.getHp() == 0 && player.getThirst() == 10) {
+            formatText(DataLoader.processGameCondition().get("Thirst_Toll"), LINE_WIDTH);
+            blankLines(1);
+            intro.askToContinue();
+            gameOver();
+        }
+        else if (player.getHp() == 0 && player.getHunger() == 10) {
+            formatText(DataLoader.processGameCondition().get("Starvation_Embrace"), LINE_WIDTH);
+            blankLines(1);
+            intro.askToContinue();
+            gameOver();
+        }
+    }
+
     private void jumpIntoTheVoid(Location current_location) {
         if (current_location.getName().equals("Volcano")) {
             System.out.println("Despite you better judgement, you jumped into the Volcano's crater...");
@@ -305,6 +331,9 @@ public class Fishekai implements SplashApp {
         if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
             current_location.setHasBeenHere(true);
             current_location = locations.get(current_location.getDirections().get(direction));
+            // check move counter and apply damage
+            player.moveDamage(moveCounter);
+            moveCounter += 1;
         } else {
             System.out.println("Please specify a valid direction.");
         }
@@ -333,8 +362,6 @@ public class Fishekai implements SplashApp {
         System.out.println("Thank you for playing!");
         pause(PAUSE_VALUE);
     }
-
-
 
 
     // load the data
