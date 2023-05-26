@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.fishekai.engine.Fishekai.moveCounter;
+
 public class Display {
 
     private static final int LINE_WIDTH = 120;
@@ -29,7 +31,7 @@ public class Display {
 
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println("Player Status");
-        System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
+        System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst() + "     Moves: " + moveCounter);
         System.out.println();
         showFish(location);
         System.out.println();
@@ -46,7 +48,6 @@ public class Display {
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println();
     }
-
 
 
     private static void showDescription(Location location) {

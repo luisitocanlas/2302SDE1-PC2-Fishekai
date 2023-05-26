@@ -24,17 +24,19 @@ public class Fishekai implements SplashApp {
 
     // fields
     private boolean isGameOver = false;
+    public static int moveCounter;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
     Sound sound = new Sound();
     VolumeControl volumeControl = new VolumeControl(sound);
     Flask flask = new Flask("Hanley's flask");
-    private int drinkCharge = player.setThirst(player.getThirst() - 2);
+    private final int drinkCharge = -2; // the value when you drink
 
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private final UserInputParser parser = new UserInputParser();
+
 
     // methods
     public void start() {
@@ -67,6 +69,9 @@ public class Fishekai implements SplashApp {
         // initialize data, crashes the jar build
         loadData();
 
+        // initialize move counter
+        moveCounter = 0;
+
         // set starting point
         Location current_location = locations.get("Beach");
         playMusic(6);
@@ -75,6 +80,12 @@ public class Fishekai implements SplashApp {
         while (!isGameOver) {
             // clear screen
             clear();
+
+            // health check
+            if (player.getHp() == 0) {
+                areYouStillAlive();
+                break;
+            }
 
             // check for visited locations, used for showing on the map
             locationCheck(current_location);
@@ -163,7 +174,8 @@ public class Fishekai implements SplashApp {
 
                     case "drink":
                         if (words[1].equals("flask")) {
-                            if (player.getInventory().containsKey("flask")) {
+                            if (player.getInventory().containsKey("flask") && flask.getCharges() > 0) {
+                                System.out.printf("drinkCharge be this value: %s\n", drinkCharge);
                                 player.setThirst(drinkCharge);
                                 flask.setCharges(flask.getCharges() - 1);
                                 playSE(2);
@@ -197,6 +209,21 @@ public class Fishekai implements SplashApp {
             } else {
                 invalidInput();
             }
+        }
+    }
+
+    private void areYouStillAlive() {
+        if (player.getHp() == 0 && player.getThirst() == 10) {
+            formatText(DataLoader.processGameCondition().get("Thirst_Toll"), LINE_WIDTH);
+            blankLines(1);
+            intro.askToContinue();
+            gameOver();
+        }
+        else if (player.getHp() == 0 && player.getHunger() == 10) {
+            formatText(DataLoader.processGameCondition().get("Starvation_Embrace"), LINE_WIDTH);
+            blankLines(1);
+            intro.askToContinue();
+            gameOver();
         }
     }
 
@@ -248,8 +275,7 @@ public class Fishekai implements SplashApp {
                 System.out.println("You have the " + itemToGet + ".");
             } else if (itemToGet.equals("water")){
                     if (player.getInventory().containsKey("flask")){
-                        int charges = 5;
-                        flask.setCharges(charges);
+                        flask.setCharges(5);
                         System.out.printf("You filled up the flask");
                 } else {
                         player.setThirst(drinkCharge);
@@ -305,6 +331,9 @@ public class Fishekai implements SplashApp {
         if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
             current_location.setHasBeenHere(true);
             current_location = locations.get(current_location.getDirections().get(direction));
+            // check move counter and apply damage
+            player.moveDamage(moveCounter);
+            moveCounter += 1;
         } else {
             System.out.println("Please specify a valid direction.");
         }
@@ -333,8 +362,6 @@ public class Fishekai implements SplashApp {
         System.out.println("Thank you for playing!");
         pause(PAUSE_VALUE);
     }
-
-
 
 
     // load the data
