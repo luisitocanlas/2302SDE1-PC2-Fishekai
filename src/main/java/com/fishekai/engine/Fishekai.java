@@ -61,6 +61,7 @@ public class Fishekai implements SplashApp {
     private void begin() {
         // show the intro
         intro.showIntro();
+        playSE(0);
 
         // initialize data, crashes the jar build
         loadData();
@@ -93,16 +94,19 @@ public class Fishekai implements SplashApp {
                 switch (verb) {
                     case "go":
                         current_location = changeLocation(current_location, words[1]);
+                        playSE(12);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "look": // need more testing
                         lookAtItem(current_location, words[1]);
+                        playSE(1);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "drop":
                         dropItem(current_location, words[1]);
+                        playSE(11);
                         pause(PAUSE_VALUE);
                         break;
 
@@ -125,6 +129,7 @@ public class Fishekai implements SplashApp {
 
                     case "help":
                         clear();
+                        playSE(7);
                         Display.showHelp();
                         intro.askToContinue();
                         break;
@@ -158,7 +163,8 @@ public class Fishekai implements SplashApp {
                             if (player.getInventory().containsKey("flask")) {
                                 player.setThirst(drinkCharge);
                                 flask.setCharges(flask.getCharges() - 1);
-                                System.out.println("You take a drink from the flask, and wish it was rum.");
+                                playSE(2);
+                                System.out.println("You take a drink from the flask.");
                             } else {
                                 System.out.println("You don't have any items to drink.");
                             }
@@ -179,6 +185,7 @@ public class Fishekai implements SplashApp {
         if (current_location.getName().equals("Volcano")) {
             System.out.println("Despite you better judgement, you jumped into the Volcano's crater...");
             blankLines(1);
+            playSE(8);
             formatText(DataLoader.processGameCondition().get("Volcanic_Plunge"), LINE_WIDTH);
             intro.askToContinue();
             gameOver();
@@ -202,6 +209,7 @@ public class Fishekai implements SplashApp {
         if (parser.getNpcList().contains(npcCharacter)) {
             if (current_location.getNpc().containsKey(npcCharacter)) {
                 current_location.getNpc().get(npcCharacter).getRandomQuotes();
+                playSE(9);
             } else {
                 System.out.println(current_location.getNpc().containsKey(npcCharacter));
                 System.out.println("There is no " + npcCharacter + "here.");
