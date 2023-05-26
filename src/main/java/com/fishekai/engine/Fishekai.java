@@ -8,6 +8,7 @@ import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -172,46 +173,16 @@ public class Fishekai implements SplashApp {
                         break;
 
                     case "drink":
-                        if (words[1].equals("flask")) {
-                            if (player.getInventory().containsKey("flask") && flask.getCharges() > 0) {
-                                System.out.printf("drinkCharge be this value: %s\n", drinkCharge);
-                                player.setThirst(drinkCharge);
-                                flask.setCharges(flask.getCharges() - 1);
-                                playSE(2);
-                                System.out.println("You take a drink from the flask.");
-                            } else {
-                                System.out.println("You don't have any items to drink.");
-                            }
-                        }
+                        rememberToHydrate();
                         pause(PAUSE_VALUE);
                         break;
 
                     case "eat":
-                        String itemToEat = words[1].toLowerCase();
-                        playSE(13);
-                        pause(6_000);
-                        if (parser.getFoodList().contains(itemToEat) && (player.getInventory().containsKey(itemToEat))) {
-                            int nourishment = player.getInventory().get(itemToEat).getModifier();
-                            player.setHunger(player.getHunger() - nourishment);
-                            playSE(14);
-                            pause(1_000);
-                            player.getInventory().remove(itemToEat);
-                        } else {
-                            System.out.printf("You can't eat that %s", itemToEat);
-                        }
+                        timeToEat(words[1]);
                         break;
 
                     case "build":
-                        if (player.getInventory().containsKey("parachute")
-                        && player.getInventory().containsKey("stick")
-                        && player.getInventory().containsKey("hook")) {
-                            System.out.println("I have all the items for fishing pole");
-                            Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
-                            player.getInventory().put("rod", rod);
-                            player.getInventory().remove("parachute");
-                            player.getInventory().remove("stick");
-                            player.getInventory().remove("hook");
-                        }
+                        createFishingPole();
                         pause(PAUSE_VALUE);
                         break;
 
@@ -222,6 +193,54 @@ public class Fishekai implements SplashApp {
             } else {
                 invalidInput();
             }
+        }
+    }
+
+    private void timeToEat(String word) {
+        String itemToEat = word.toLowerCase();
+        playSE(13);
+        pause(6_000);
+        if (parser.getFoodList().contains(itemToEat) && (player.getInventory().containsKey(itemToEat))) {
+            int nourishment = player.getInventory().get(itemToEat).getModifier();
+            player.setHunger(player.getHunger() - nourishment);
+            playSE(14);
+            pause(1_000);
+            if (itemToEat.equals("banana")) { // return banana to jungle after eating
+                locations.get("Jungle").getItems().put(itemToEat, player.getInventory().get(itemToEat));
+            } else if (itemToEat.equals("apple")) { // return apple to jungle after eating
+                locations.get("Mystical Grove").getItems().put(itemToEat, player.getInventory().get(itemToEat));
+            }
+            player.getInventory().remove(itemToEat);
+        } else {
+            System.out.printf("You can't eat that %s", itemToEat);
+        }
+    }
+
+    private void rememberToHydrate() {
+        if (player.getInventory().containsKey("flask") && parser.getItemList().contains("flask")) {
+            if (player.getInventory().containsKey("flask") && flask.getCharges() > 0) {
+                player.setThirst(player.getThirst() + drinkCharge);
+                flask.setCharges(flask.getCharges() - 1);
+                playSE(2);
+                System.out.println("You take a drink from the flask.");
+            } else {
+                System.out.println("Your flask is empty");
+            }
+        } else {
+            System.out.println("You don't have any items to drink from.");
+        }
+    }
+
+    private void createFishingPole() {
+        if (player.getInventory().containsKey("parachute")
+                && player.getInventory().containsKey("stick")
+                && player.getInventory().containsKey("hook")) {
+            System.out.println("I have all the items for a fishing pole");
+            Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
+            player.getInventory().put("rod", rod);
+            player.getInventory().remove("parachute");
+            player.getInventory().remove("stick");
+            player.getInventory().remove("hook");
         }
     }
 
