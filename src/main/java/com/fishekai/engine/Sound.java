@@ -5,6 +5,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.net.URL;
+import java.util.Random;
 
 public class Sound {
     Clip clip;
@@ -15,13 +16,25 @@ public class Sound {
     URL soundURL[] = new URL[30];
 
     public Sound() {
-        soundURL[0] = getClass().getResource("/sounds/waves-of-hawaii.wav");
-        soundURL[1] = getClass().getResource("/sounds/jungle_growl.wav");
-        soundURL[2] = getClass().getResource("/sounds/mountain-river.wav");
+        soundURL[0] = getClass().getResource("/sounds/intro.wav");
+        soundURL[1] = getClass().getResource("/sounds/look.wav");
+        soundURL[2] = getClass().getResource("/sounds/drink.wav");
         soundURL[3] = getClass().getResource("/sounds/getItem.wav");
         soundURL[4] = getClass().getResource("/sounds/goodbye-friendly.wav");
         soundURL[5] = getClass().getResource("/sounds/unfold-a-map.wav");
         soundURL[6] = getClass().getResource("/sounds/mainMusicLoop.wav");
+        soundURL[7] = getClass().getResource("/sounds/help.wav");
+        soundURL[8] = getClass().getResource("/sounds/jump.wav");
+        soundURL[9] = getClass().getResource("/sounds/talk_1.wav");
+        soundURL[10] = getClass().getResource("/sounds/catch.wav");
+        soundURL[11] = getClass().getResource("/sounds/drop.wav");
+        soundURL[12] = getClass().getResource("/sounds/go.wav");
+        soundURL[13] = getClass().getResource("/sounds/beforeEat.wav");
+        soundURL[14] = getClass().getResource("/sounds/eat.wav");
+        soundURL[15] = getClass().getResource("/sounds/build.wav");
+        soundURL[16] = getClass().getResource("/sounds/fish_gets_away.wav");
+        soundURL[17] = getClass().getResource("/sounds/pull.wav");
+
     }
 
     public void setFile(int i) {
@@ -75,4 +88,5 @@ public class Sound {
             mute = false;
         }
     }
+
 }
