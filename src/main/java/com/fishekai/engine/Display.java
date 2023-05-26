@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.fishekai.engine.Fishekai.moveCounter;
+
 public class Display {
 
     private static final int LINE_WIDTH = 120;
@@ -25,11 +27,11 @@ public class Display {
         System.out.println(helpMenu);
     }
 
-    public static void showStatus(Player player, Location location) {
+    public static void showStatus(Player player, Location location, Flask flask) {
 
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println("Player Status");
-        System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
+        System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst() + "     Moves: " + moveCounter);
         System.out.println();
         showFish(location);
         System.out.println();
@@ -40,11 +42,13 @@ public class Display {
         System.out.println();
         showItem(location);
         showNPC(location);
+        showCharges(flask);
         System.out.println();
         System.out.println("You see paths to " + location.getDirections());
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println();
     }
+
 
     private static void showDescription(Location location) {
         if (!location.isHasBeenHere()) {
@@ -76,6 +80,11 @@ public class Display {
     public static void showFish(Location location) {
         if (location.getFishes() != null) {
             System.out.println("You see something swimming in the water...");
+        }
+    }
+    public static void showCharges(Flask flask) {
+        if (flask.getCharges()> 0){
+            System.out.printf("Flask amount: %s/5", flask.getCharges());
         }
     }
 

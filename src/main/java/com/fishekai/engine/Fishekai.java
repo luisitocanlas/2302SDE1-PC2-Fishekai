@@ -8,6 +8,7 @@ import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -23,17 +24,19 @@ public class Fishekai implements SplashApp {
 
     // fields
     private boolean isGameOver = false;
+    public static int moveCounter;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
     Sound sound = new Sound();
     VolumeControl volumeControl = new VolumeControl(sound);
     Flask flask = new Flask("Hanley's flask");
-    private int drinkCharge = player.setThirst(player.getThirst() - 2);
+    private final int drinkCharge = -2; // the value when you drink
 
     // instances
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private final UserInputParser parser = new UserInputParser();
+
 
     // methods
     public void start() {
@@ -66,6 +69,9 @@ public class Fishekai implements SplashApp {
         // initialize data, crashes the jar build
         loadData();
 
+        // initialize move counter and set to 0
+        moveCounter = 0;
+
         // set starting point
         Location current_location = locations.get("Beach");
         playMusic(6);
@@ -75,11 +81,17 @@ public class Fishekai implements SplashApp {
             // clear screen
             clear();
 
+            // health check
+            if (player.getHp() == 0) {
+                areYouStillAlive();
+                break;
+            }
+
             // check for visited locations, used for showing on the map
             locationCheck(current_location);
 
             // show display
-            Display.showStatus(player, current_location);
+            Display.showStatus(player, current_location, flask);
 
             // ask user for input
             String input = prompter.prompt("What would you like to do?\n><(((º> ").trim().strip();
@@ -136,9 +148,11 @@ public class Fishekai implements SplashApp {
 
                     case "music":
                         if (words[1].equals("off")) {
-                            stopMusic(6);
+                            stopMusic();
+
                         } else if (words[1].equals("on")) {
                             playMusic(6);
+
                         } else {
                             System.out.println("That is not a valid command. Try music on or music off.");
                         }
@@ -159,17 +173,18 @@ public class Fishekai implements SplashApp {
                         break;
 
                     case "drink":
-                        if (words[1].equals("flask")) {
-                            if (player.getInventory().containsKey("flask")) {
-                                player.setThirst(drinkCharge);
-                                flask.setCharges(flask.getCharges() - 1);
-                                playSE(2);
-                                System.out.println("You take a drink from the flask.");
-                            } else {
-                                System.out.println("You don't have any items to drink.");
-                            }
-                        }break;
+                        rememberToHydrate();
+                        pause(PAUSE_VALUE);
+                        break;
 
+                    case "eat":
+                        timeToEat(words[1]);
+                        break;
+
+                    case "build":
+                        createFishingPole();
+                        pause(PAUSE_VALUE);
+                        break;
 
                     default:
                         invalidInput();
@@ -181,6 +196,68 @@ public class Fishekai implements SplashApp {
         }
     }
 
+    private void timeToEat(String word) {
+        String itemToEat = word.toLowerCase();
+        playSE(13);
+        pause(6_000);
+        if (parser.getFoodList().contains(itemToEat) && (player.getInventory().containsKey(itemToEat))) {
+            int nourishment = player.getInventory().get(itemToEat).getModifier();
+            player.setHunger(player.getHunger() - nourishment);
+            playSE(14);
+            pause(1_000);
+            if (itemToEat.equals("banana")) { // return banana to jungle after eating
+                locations.get("Jungle").getItems().put(itemToEat, player.getInventory().get(itemToEat));
+            } else if (itemToEat.equals("apple")) { // return apple to jungle after eating
+                locations.get("Mystical Grove").getItems().put(itemToEat, player.getInventory().get(itemToEat));
+            }
+            player.getInventory().remove(itemToEat);
+        } else {
+            System.out.printf("You can't eat that %s", itemToEat);
+        }
+    }
+
+    private void rememberToHydrate() {
+        if (player.getInventory().containsKey("flask") && parser.getItemList().contains("flask")) {
+            if (player.getInventory().containsKey("flask") && flask.getCharges() > 0) {
+                player.setThirst(player.getThirst() + drinkCharge);
+                flask.setCharges(flask.getCharges() - 1);
+                playSE(2);
+                System.out.println("You take a drink from the flask.");
+            } else {
+                System.out.println("Your flask is empty");
+            }
+        } else {
+            System.out.println("You don't have any items to drink from.");
+        }
+    }
+
+    private void createFishingPole() {
+        if (player.getInventory().containsKey("parachute")
+                && player.getInventory().containsKey("stick")
+                && player.getInventory().containsKey("hook")) {
+            System.out.println("I have all the items for a fishing pole");
+            Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
+            player.getInventory().put("rod", rod);
+            player.getInventory().remove("parachute");
+            player.getInventory().remove("stick");
+            player.getInventory().remove("hook");
+        }
+    }
+
+    private void areYouStillAlive() {
+        if (player.getHp() == 0 && player.getThirst() == 10) {
+            formatText(DataLoader.processGameCondition().get("Thirst_Toll"), LINE_WIDTH);
+            blankLines(1);
+            intro.askToContinue();
+            gameOver();
+        } else if (player.getHp() == 0 && player.getHunger() == 10) {
+            formatText(DataLoader.processGameCondition().get("Starvation_Embrace"), LINE_WIDTH);
+            blankLines(1);
+            intro.askToContinue();
+            gameOver();
+        }
+    }
+
     private void jumpIntoTheVoid(Location current_location) {
         if (current_location.getName().equals("Volcano")) {
             System.out.println("Despite you better judgement, you jumped into the Volcano's crater...");
@@ -189,8 +266,7 @@ public class Fishekai implements SplashApp {
             formatText(DataLoader.processGameCondition().get("Volcanic_Plunge"), LINE_WIDTH);
             intro.askToContinue();
             gameOver();
-        }
-        else {
+        } else {
             System.out.println("Oof, my knees aren't what they used to be.");
         }
     }
@@ -227,17 +303,15 @@ public class Fishekai implements SplashApp {
                 System.out.println("You got the " + itemToGet + ".");
             } else if (player.getInventory().containsKey(itemToGet)) {
                 System.out.println("You have the " + itemToGet + ".");
-            } else if (itemToGet.equals("water")){
-                    if (player.getInventory().containsKey("flask")){
-                        int charges = 5;
-                        flask.setCharges(charges);
-                        System.out.printf("You filled up the flask");
+            } else if (itemToGet.equals("water")) {
+                if (player.getInventory().containsKey("flask")) {
+                    flask.setCharges(5);
+                    System.out.printf("You filled up the flask");
                 } else {
-                        player.setThirst(drinkCharge);
-                        System.out.println("You drink a long pull of water. It would be nice to be able to carry some with you.");
-                    }
-            }
-            else {
+                    player.setThirst(drinkCharge);
+                    System.out.println("You drink a long pull of water. It would be nice to be able to carry some with you.");
+                }
+            } else {
                 System.out.println("There is no " + itemToGet + " here.");
             }
         }
@@ -286,6 +360,9 @@ public class Fishekai implements SplashApp {
         if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
             current_location.setHasBeenHere(true);
             current_location = locations.get(current_location.getDirections().get(direction));
+            // check move counter and apply damage
+            player.moveDamage(moveCounter);
+            moveCounter += 1;
         } else {
             System.out.println("Please specify a valid direction.");
         }
@@ -298,7 +375,7 @@ public class Fishekai implements SplashApp {
         sound.loop();
     }
 
-    public void stopMusic(int i) {
+    public void stopMusic() {
         sound.stop();
     }
 
@@ -307,14 +384,13 @@ public class Fishekai implements SplashApp {
         sound.play();
     }
 
+
     private void gameOver() {
         isGameOver = true;
         clear();
         System.out.println("Thank you for playing!");
         pause(PAUSE_VALUE);
     }
-
-
 
 
     // load the data
