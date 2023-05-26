@@ -2,7 +2,7 @@ package com.fishekai.models;
 
 public class Flask extends Item {
 
-    private static int charges;
+    private static int charges = 0;
 
     public Flask(String name) {
         super(name);
@@ -16,11 +16,11 @@ public class Flask extends Item {
         super(name, type, description, location, modifier);
     }
 
-    public static int getCharges() {
+    public int getCharges() {
         return charges;
     }
 
-    public static void setCharges(int charges) {
+    public void setCharges(int charges) {
         Flask.charges = charges;
     }
 

@@ -28,7 +28,7 @@ public class Fishekai implements SplashApp {
     Sound sound = new Sound();
     VolumeControl volumeControl = new VolumeControl(sound);
     Flask flask = new Flask("Hanley's flask");
-    private int drinkCharge = player.setThirst(player.getThirst() - 2);
+    private final int drinkCharge = -2; // the value when you drink
 
     // instances
     private final Introduction intro = new Introduction();
@@ -160,7 +160,8 @@ public class Fishekai implements SplashApp {
 
                     case "drink":
                         if (words[1].equals("flask")) {
-                            if (player.getInventory().containsKey("flask")) {
+                            if (player.getInventory().containsKey("flask") && flask.getCharges() > 0) {
+                                System.out.printf("drinkCharge be this value: %s\n", drinkCharge);
                                 player.setThirst(drinkCharge);
                                 flask.setCharges(flask.getCharges() - 1);
                                 playSE(2);
@@ -229,8 +230,7 @@ public class Fishekai implements SplashApp {
                 System.out.println("You have the " + itemToGet + ".");
             } else if (itemToGet.equals("water")){
                     if (player.getInventory().containsKey("flask")){
-                        int charges = 5;
-                        flask.setCharges(charges);
+                        flask.setCharges(5);
                         System.out.printf("You filled up the flask");
                 } else {
                         player.setThirst(drinkCharge);
