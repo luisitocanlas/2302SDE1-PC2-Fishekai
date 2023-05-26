@@ -6,13 +6,14 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.net.URL;
 
-
 public class Sound {
     Clip clip;
     float previousVolume = 0;
     float currentVolume = 0;
     FloatControl fc;
     boolean mute = false;
+
+
     URL soundURL[] = new URL[30];
 
     public Sound() {
@@ -76,17 +77,18 @@ public class Sound {
         fc.setValue(currentVolume);
     }
     public void volumeMute() {
-        if(mute == false) {
+        if(!mute) {
             previousVolume = currentVolume;
             currentVolume = -80.0f;
             fc.setValue(currentVolume);
             mute = true;
-        }
-        else if (mute == true) {
+            for (int i = 0; i < soundURL.length; i++) {
+                stop();
+            }
+        } else {
             currentVolume = previousVolume;
             fc.setValue(currentVolume);
             mute = false;
+            }
         }
     }
-
-}
