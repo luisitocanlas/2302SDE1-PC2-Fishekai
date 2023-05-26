@@ -94,6 +94,8 @@ public class Sound {
         } else {
             currentVolume = previousVolume;
             fc.setValue(currentVolume);
+            play();
+            loop();
             mute = false;
         }
     }
