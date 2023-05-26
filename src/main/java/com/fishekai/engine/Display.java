@@ -25,7 +25,7 @@ public class Display {
         System.out.println(helpMenu);
     }
 
-    public static void showStatus(Player player, Location location) {
+    public static void showStatus(Player player, Location location, Flask flask) {
 
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println("Player Status");
@@ -40,11 +40,14 @@ public class Display {
         System.out.println();
         showItem(location);
         showNPC(location);
+        showCharges(flask);
         System.out.println();
         System.out.println("You see paths to " + location.getDirections());
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println();
     }
+
+
 
     private static void showDescription(Location location) {
         if (!location.isHasBeenHere()) {
@@ -76,6 +79,11 @@ public class Display {
     public static void showFish(Location location) {
         if (location.getFishes() != null) {
             System.out.println("You see something swimming in the water...");
+        }
+    }
+    public static void showCharges(Flask flask) {
+        if (flask.getCharges()> 0){
+            System.out.printf("Flask amount: %s/5", flask.getCharges());
         }
     }
 

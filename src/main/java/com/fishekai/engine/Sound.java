@@ -5,7 +5,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.net.URL;
-import java.util.Random;
+
 
 public class Sound {
     Clip clip;

@@ -8,6 +8,7 @@ import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -79,7 +80,7 @@ public class Fishekai implements SplashApp {
             locationCheck(current_location);
 
             // show display
-            Display.showStatus(player, current_location);
+            Display.showStatus(player, current_location, flask);
 
             // ask user for input
             String input = prompter.prompt("What would you like to do?\n><(((º> ").trim().strip();
@@ -136,9 +137,11 @@ public class Fishekai implements SplashApp {
 
                     case "music":
                         if (words[1].equals("off")) {
-                            stopMusic(6);
+                            stopMusic();
+
                         } else if (words[1].equals("on")) {
                             playMusic(6);
+
                         } else {
                             System.out.println("That is not a valid command. Try music on or music off.");
                         }
@@ -168,6 +171,22 @@ public class Fishekai implements SplashApp {
                             } else {
                                 System.out.println("You don't have any items to drink.");
                             }
+                        }break;
+
+                    case "eat":
+                        String itemToEat = words[1].toLowerCase();
+                        playSE(13);
+                        pause(6_000);
+                        if(parser.getFoodList().contains(itemToEat) && (player.getInventory().containsKey(itemToEat)))
+                       {
+                            int nourishment = player.getInventory().get(itemToEat).getModifier();
+                            player.setHunger(player.getHunger() - nourishment);
+                            playSE(14);
+                            pause(1_000);
+                            player.getInventory().remove(itemToEat);
+                        }
+                        else {
+                            System.out.printf("You can't eat that %s", itemToEat);
                         }break;
 
 
@@ -298,7 +317,7 @@ public class Fishekai implements SplashApp {
         sound.loop();
     }
 
-    public void stopMusic(int i) {
+    public void stopMusic() {
         sound.stop();
     }
 
@@ -306,6 +325,7 @@ public class Fishekai implements SplashApp {
         sound.setFile(i);
         sound.play();
     }
+
 
     private void gameOver() {
         isGameOver = true;
