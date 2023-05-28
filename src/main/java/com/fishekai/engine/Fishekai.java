@@ -4,14 +4,13 @@ import com.fishekai.models.Flask;
 import com.fishekai.models.Item;
 import com.fishekai.models.Location;
 import com.fishekai.models.Player;
+import com.fishekai.utilities.AudioManager;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 import static com.fishekai.engine.Introduction.formatText;
 import static com.fishekai.engine.Mapa.locationCheck;
@@ -28,8 +27,6 @@ public class Fishekai implements SplashApp {
     public static int moveCounter;
     private Map<String, Location> locations; // will contain the locations loaded from JSON file
     Player player = new Player("Ethan Rutherford", "Known for expertise in ancient artifacts.");
-    Sound sound = new Sound();
-    VolumeControl volumeControl = new VolumeControl(sound);
     Flask flask = new Flask("Hanley's flask");
     private final int drinkCharge = -2; // the value when you drink
 
@@ -37,7 +34,10 @@ public class Fishekai implements SplashApp {
     private final Introduction intro = new Introduction();
     private final Prompter prompter = new Prompter(new Scanner(System.in));
     private final UserInputParser parser = new UserInputParser();
+    private final AudioManager audioManager = new AudioManager();
 
+//    Sound sound = new Sound();
+    VolumeControl volumeControl = new VolumeControl(audioManager);
 
     // methods
     public void start() {
@@ -51,31 +51,31 @@ public class Fishekai implements SplashApp {
 
         // if New Game, go to begin()
         if (input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("y")) {
+            // initialize data
+            loadData();
+            // begin the game
             begin();
         }
 
         // if Quit, terminates the game
         else if (input.equalsIgnoreCase("no") || input.equalsIgnoreCase("n")) {
-            prompter.prompt("Are you sure?\n><(((º> ",
-                    "Yes|yes|Y|y",
-                    "This is not a valid option!\n");
+            gameOver();
         }
     }
 
     private void begin() {
         // show the intro
         intro.showIntro();
-        playSE(0);
-
-        // initialize data, crashes the jar build
-        loadData();
+        audioManager.playSoundEffect("intro");
+//        playSE(0);
 
         // initialize move counter and set to 0
         moveCounter = 0;
 
         // set starting point
         Location current_location = locations.get("Beach");
-        playMusic(6);
+        audioManager.playMusic(true);
+//        playMusic();
 
         // starts the game
         while (!isGameOver) {
@@ -107,19 +107,19 @@ public class Fishekai implements SplashApp {
                 switch (verb) {
                     case "go":
                         current_location = changeLocation(current_location, words[1]);
-                        playSE(12);
+//                        playSE(12);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "look": // need more testing
                         lookAtItem(current_location, words[1]);
-                        playSE(1);
+//                        playSE(1);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "drop":
                         dropItem(current_location, words[1]);
-                        playSE(11);
+//                        playSE(11);
                         pause(PAUSE_VALUE);
                         break;
 
@@ -135,30 +135,76 @@ public class Fishekai implements SplashApp {
 
                     case "map":
                         clear();
-                        playSE(5);
+                        audioManager.playSoundEffect("map");
+//                        playSE(5);
                         showStaticMap(locations, current_location);
                         intro.askToContinue();
                         break;
 
                     case "help":
                         clear();
-                        playSE(7);
+                        audioManager.playSoundEffect("help");
+//                        playSE(7);
                         Display.showHelp();
                         intro.askToContinue();
                         break;
 
                     case "music":
-                        if (words[1].equals("off")) {
-                            for (int i = 0; i < sound.soundClips.length; i++) {
-                                stopMusic(i);
+                        if (words.length >= 2) {
+                            String setting = words[1].toLowerCase();
+                            if ("off".equals(setting)) {
+                                audioManager.stopMusic();
+                            } else if ("on".equals(setting)) {
+                                if (!audioManager.isMusicPlaying()) {
+                                    audioManager.playMusic(true);
+                                }
                             }
-                        } else if (words[1].equals("on")) {
-                            playMusic(6);
-
                         } else {
-                            System.out.println("That is not a valid command. Try music on or music off.");
+                            System.out.println("You can turn [music on] or [music off]");
                         }
+                        pause(PAUSE_VALUE);
                         break;
+
+                    case "volume":
+                        if (words.length >= 2) {
+                            String option = words[1].toLowerCase();
+                            if ("up".equals(option)) {
+                                audioManager.volumeUp();
+                            } else if ("down".equals(option)) {
+                                audioManager.volumeDown();
+                            } else {
+                                try {
+                                    float volume = Float.parseFloat(option);
+                                    if (volume >= AudioManager.MIN_VOLUME && volume <= AudioManager.MAX_VOLUME) {
+                                        audioManager.setMusicVolume(volume);
+                                    } else {
+                                        System.out.println("Volume value should be between " +
+                                                AudioManager.MIN_VOLUME + " and " +
+                                                AudioManager.MAX_VOLUME);
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid volume option. Please use 'up', 'down', or a valid volume value.");
+                                }
+                            }
+                        } else {
+                            System.out.println("You can control the music volume using 'volume up', 'volume down', " +
+                                    "or by specifying a specific volume value.");
+                        }
+                        pause(PAUSE_VALUE);
+                        break;
+
+//                    case "music":
+//                        if (words[1].equals("off")) {
+//                            for (int i = 0; i < sound.soundClips.length; i++) {
+//                                stopMusic();
+//                            }
+//                        } else if (words[1].equals("on")) {
+//                            playMusic();
+//
+//                        } else {
+//                            System.out.println("That is not a valid command. Try music on or music off.");
+//                        }
+//                        break;
 
                     case "jump":
                         jumpIntoTheVoid(current_location);
@@ -166,13 +212,14 @@ public class Fishekai implements SplashApp {
                         break;
 
                     case "quit":
-                        playSE(4);
+                        audioManager.playSoundEffect("goodbye");
+//                        playSE(4);
                         gameOver();
                         break;
 
-                    case "sound":
-                        volumeControl(sound);
-                        break;
+//                    case "sound":
+//                        volumeControl(sound);
+//                        break;
 
                     case "drink":
                         rememberToHydrate();
@@ -187,11 +234,11 @@ public class Fishekai implements SplashApp {
                         createFishingPole();
                         pause(PAUSE_VALUE);
                         break;
+
                     case "god":
                         Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
                         player.getInventory().put("rod", rod);
                         break;
-
 
                     default:
                         invalidInput();
@@ -205,12 +252,14 @@ public class Fishekai implements SplashApp {
 
     private void timeToEat(String word) {
         String itemToEat = word.toLowerCase();
-        playSE(13);
+        audioManager.playSoundEffect("beforeEat");
+//        playSE(13);
         pause(6_000);
         if (parser.getFoodList().contains(itemToEat) && (player.getInventory().containsKey(itemToEat))) {
             int nourishment = player.getInventory().get(itemToEat).getModifier();
             player.setHunger(player.getHunger() - nourishment);
-            playSE(14);
+            audioManager.playSoundEffect("eat");
+//            playSE(14);
             pause(1_000);
             if (itemToEat.equals("banana")) { // return banana to jungle after eating
                 locations.get("Jungle").getItems().put(itemToEat, player.getInventory().get(itemToEat));
@@ -228,7 +277,8 @@ public class Fishekai implements SplashApp {
             if (player.getInventory().containsKey("flask") && flask.getCharges() > 0) {
                 player.setThirst(player.getThirst() + drinkCharge);
                 flask.setCharges(flask.getCharges() - 1);
-                playSE(2);
+                audioManager.playSoundEffect("drink");
+//                playSE(2);
                 System.out.println("You take a drink from the flask.");
             } else {
                 System.out.println("Your flask is empty");
@@ -242,6 +292,7 @@ public class Fishekai implements SplashApp {
         if (player.getInventory().containsKey("parachute")
                 && player.getInventory().containsKey("stick")
                 && player.getInventory().containsKey("hook")) {
+            audioManager.playSoundEffect("build");
             System.out.println("I have all the items for a fishing pole");
             Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
             player.getInventory().put("rod", rod);
@@ -269,7 +320,8 @@ public class Fishekai implements SplashApp {
         if (current_location.getName().equals("Volcano")) {
             System.out.println("Despite you better judgement, you jumped into the Volcano's crater...");
             blankLines(1);
-            playSE(8);
+            audioManager.playSoundEffect("jump");
+//            playSE(8);
             formatText(DataLoader.processGameCondition().get("Volcanic_Plunge"), LINE_WIDTH);
             intro.askToContinue();
             gameOver();
@@ -278,9 +330,9 @@ public class Fishekai implements SplashApp {
         }
     }
 
-    private void volumeControl(Sound sound) {
-        new VolumeControl(sound);
-    }
+//    private void volumeControl(Sound sound) {
+//        new VolumeControl(sound);
+//    }
 
     private void invalidInput() {
         System.out.println("I don't understand. Type help for a list of commands.");
@@ -292,7 +344,7 @@ public class Fishekai implements SplashApp {
         if (parser.getNpcList().contains(npcCharacter)) {
             if (current_location.getNpc().containsKey(npcCharacter)) {
                 current_location.getNpc().get(npcCharacter).getRandomQuotes();
-                playSE(9);
+//                playSE(9);
             } else {
                 System.out.println(current_location.getNpc().containsKey(npcCharacter));
                 System.out.println("There is no " + npcCharacter + "here.");
@@ -305,7 +357,7 @@ public class Fishekai implements SplashApp {
         if (parser.getItemList().contains(itemToGet) || parser.getFoodList().contains(itemToGet)) {
             if (!player.getInventory().containsKey(itemToGet) && !itemToGet.equals("water")) {
                 player.getInventory().put(itemToGet, current_location.getItems().get(itemToGet));
-                playSE(3);
+//                playSE(3);
                 current_location.getItems().remove(itemToGet);
                 System.out.println("You got the " + itemToGet + ".");
             } else if (player.getInventory().containsKey(itemToGet)) {
@@ -337,6 +389,7 @@ public class Fishekai implements SplashApp {
                     current_location.getItems().put(itemToDrop, player.getInventory().get(itemToDrop));
                     player.getInventory().remove(itemToDrop);
                 }
+                audioManager.playSoundEffect("drop");
                 System.out.println("You dropped the " + itemToDrop + ".");
             } else {
                 System.out.println("You don't have a " + itemToDrop + "in your inventory.");
@@ -350,8 +403,10 @@ public class Fishekai implements SplashApp {
         String itemToLook = word.toLowerCase();
         if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook)) {
             if (player.getInventory().containsKey(itemToLook)) {
+                audioManager.playSoundEffect("look");
                 System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
             } else if (current_location.getItems().containsKey(itemToLook)) {
+                audioManager.playSoundEffect("look");
                 System.out.println("The " + current_location.getItems().get(itemToLook).getName() + " looks like " + current_location.getItems().get(itemToLook).getDescription());
             } else {
                 System.out.println("There is no " + itemToLook + " here.");
@@ -366,6 +421,7 @@ public class Fishekai implements SplashApp {
         String direction = word.toLowerCase();
         if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
             current_location.setHasBeenHere(true);
+            audioManager.playSoundEffect("go");
             current_location = locations.get(current_location.getDirections().get(direction));
             // check move counter and apply damage
             player.moveDamage(moveCounter);
@@ -376,20 +432,20 @@ public class Fishekai implements SplashApp {
         return current_location;
     }
 
-    public void playMusic(int i) {
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
-    }
-
-    public void stopMusic(int i) {
-        sound.stopClip(i);
-    }
-
-    public void playSE(int i) {
-        sound.setFile(i);
-        sound.play();
-    }
+//    public void playMusic() { // just for the music
+//        sound.setFile(6);
+//        sound.play();
+//        sound.loop();
+//    }
+//
+//    public void stopMusic() { // just for the music
+//        sound.stopClip(6);
+//    }
+//
+//    public void playSE(int i) {
+//        sound.setFile(i);
+//        sound.play();
+//    }
 
 
     private void gameOver() {
@@ -407,6 +463,7 @@ public class Fishekai implements SplashApp {
         DataLoader.processFishes(locations); // load fishes and place in locations
         DataLoader.processNpc(locations); // load NPCs and place in locations
         parser.loadTextArguments(); // loads text arguments in UserInputParser
+        audioManager.loadAudioFiles(); // loads audio files and stores them
     }
 
 }
