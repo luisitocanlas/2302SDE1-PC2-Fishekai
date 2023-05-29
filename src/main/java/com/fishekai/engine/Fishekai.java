@@ -183,6 +183,11 @@ public class Fishekai implements SplashApp {
                         pause(PAUSE_VALUE);
                         break;
 
+                    case "fish":
+                        fish();
+                        pause(PAUSE_VALUE);
+                        break;
+
                     case "god":
                         Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
                         player.getInventory().put("rod", rod);
@@ -304,6 +309,12 @@ public class Fishekai implements SplashApp {
             player.getInventory().remove("parachute");
             player.getInventory().remove("stick");
             player.getInventory().remove("hook");
+        }
+    }
+
+    private void fish() {
+        if (player.getInventory().containsKey("rod")) {
+            System.out.println("You cast your line to catch a fish.");
         }
     }
 
