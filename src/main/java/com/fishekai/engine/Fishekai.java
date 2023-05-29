@@ -184,7 +184,7 @@ public class Fishekai implements SplashApp {
                         break;
 
                     case "fish":
-                        fish();
+                        fish(current_location);
                         pause(PAUSE_VALUE);
                         break;
 
@@ -312,9 +312,15 @@ public class Fishekai implements SplashApp {
         }
     }
 
-    private void fish() {
-        if (player.getInventory().containsKey("rod")) {
+    private void fish(Location current_Location) {
+        if (player.getInventory().containsKey("rod")
+                && current_Location.getName().equals("North Beach")) {
             System.out.println("You cast your line to catch a fish.");
+        } else if (player.getInventory().containsKey("rod")
+                && !current_Location.getName().equals("North Beach")) {
+            System.out.println("There aren't any fish here. Try a different area.");
+        } else if (!player.getInventory().containsKey("rod")) {
+            System.out.println("How can you fish without a fishing rod?");
         }
     }
 
