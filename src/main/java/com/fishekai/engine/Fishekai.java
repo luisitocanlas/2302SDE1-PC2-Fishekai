@@ -259,12 +259,13 @@ public class Fishekai implements SplashApp {
 
     private void timeToEat(String word) {
         String itemToEat = word.toLowerCase();
-        audioManager.playSoundEffect("beforeEat");
-        pause(6_000);
+
+
         if (parser.getFoodList().contains(itemToEat) && (player.getInventory().containsKey(itemToEat))) {
             int nourishment = player.getInventory().get(itemToEat).getModifier();
             player.setHunger(player.getHunger() - nourishment);
-            audioManager.playSoundEffect("eat");
+//            audioManager.playSoundEffect("eat");
+            audioManager.randomEat();
             pause(1_000);
             if (itemToEat.equals("banana")) { // return banana to jungle after eating
                 locations.get("Jungle").getItems().put(itemToEat, player.getInventory().get(itemToEat));
@@ -282,7 +283,7 @@ public class Fishekai implements SplashApp {
             if (player.getInventory().containsKey("flask") && flask.getCharges() > 0) {
                 player.setThirst(player.getThirst() + drinkCharge);
                 flask.setCharges(flask.getCharges() - 1);
-                audioManager.playSoundEffect("drink");
+                audioManager.randomDrink();
                 System.out.println("You take a drink from the flask.");
             } else {
                 System.out.println("Your flask is empty");
@@ -344,6 +345,7 @@ public class Fishekai implements SplashApp {
         if (parser.getNpcList().contains(npcCharacter)) {
             if (current_location.getNpc().containsKey(npcCharacter)) {
                 current_location.getNpc().get(npcCharacter).getRandomQuotes();
+                audioManager.randomTalk();
             } else {
                 System.out.println(current_location.getNpc().containsKey(npcCharacter));
                 System.out.println("There is no " + npcCharacter + "here.");
@@ -356,7 +358,7 @@ public class Fishekai implements SplashApp {
         if (parser.getItemList().contains(itemToGet) || parser.getFoodList().contains(itemToGet)) {
             if (!player.getInventory().containsKey(itemToGet) && !itemToGet.equals("water")) {
                 player.getInventory().put(itemToGet, current_location.getItems().get(itemToGet));
-                audioManager.playSoundEffect("getItem");
+                audioManager.randomGet();
                 current_location.getItems().remove(itemToGet);
                 System.out.println("You got the " + itemToGet + ".");
             } else if (player.getInventory().containsKey(itemToGet)) {
@@ -367,6 +369,7 @@ public class Fishekai implements SplashApp {
                     System.out.println("You filled up the flask");
                 } else {
                     player.setThirst(drinkCharge);
+                    audioManager.randomDrink();
                     System.out.println("You drink a long pull of water. It would be nice to be able to carry some with you.");
                 }
             } else {
@@ -420,7 +423,7 @@ public class Fishekai implements SplashApp {
         String direction = word.toLowerCase();
         if (parser.getDirectionsList().contains(direction) && current_location.getDirections().containsKey(direction)) {
             current_location.setHasBeenHere(true);
-            audioManager.playSoundEffect("go");
+            audioManager.randomGo();
             current_location = locations.get(current_location.getDirections().get(direction));
             // check move counter and apply damage
             player.moveDamage(moveCounter);
@@ -436,6 +439,7 @@ public class Fishekai implements SplashApp {
         clear();
         System.out.println("Thank you for playing!");
         pause(PAUSE_VALUE);
+
     }
 
     // load the data
