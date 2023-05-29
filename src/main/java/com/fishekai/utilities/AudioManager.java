@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class AudioManager {
     private static final float MUSIC_MIN_VOLUME = 0.0f;
     private static final float MUSIC_MAX_VOLUME = 1.0f;
     private static final float EFFECT_MIN_VOLUME = 0.0f;
     private static final float EFFECT_MAX_VOLUME = 1.0f;
+    private Random random = new Random();
 
     private Clip musicClip;
     private final Map<String, Clip> soundEffects;
@@ -154,24 +156,61 @@ public class AudioManager {
     public float getSoundEffectsVolume() {
         return soundEffectsVolume;
     }
-
+    public void randomEat(){
+        int randomIndex = random.nextInt(4) + 1;
+        String filename = "eat" + randomIndex;
+        playSoundEffect(filename);
+    }
+    public void randomGo() {
+        int randomGo = random.nextInt(4) + 1;
+        String goSounds = "go" + randomGo;
+        playSoundEffect(goSounds);
+    }
+    public void randomDrink() {
+        int randomDrink = random.nextInt(3) + 1;
+        String drinkSounds = "drink" + randomDrink;
+        playSoundEffect(drinkSounds);
+    }
+    public void randomTalk() {
+        int randomTalk = random.nextInt(3) + 1;
+        String talkSounds = "talk" + randomTalk;
+        playSoundEffect(talkSounds);
+    }
+    public void randomGet() {
+        int randomGet = random.nextInt(4) + 1;
+        String getSounds = "getItem" + randomGet;
+        playSoundEffect(getSounds);
+    }
+    public void randomPull() {
+        int randomPull = random.nextInt(3) + 1;
+        String pullSounds = "pull" + randomPull;
+        playSoundEffect(pullSounds);
+    }
+    public void randomReel() {
+        int randomReel = random.nextInt(3) + 1;
+        String reelSounds = "reel" + randomReel;
+        playSoundEffect(reelSounds);
+    }
     // call in Fishekai.class to load and store in audioManager instance
     public void loadAudioFiles() {
         loadMusic("/sounds/mainMusicLoop.wav");
-        loadSoundEffect("beforeEat", "/sounds/beforeEat.wav");
         loadSoundEffect("build", "/sounds/build.wav");
         loadSoundEffect("catch", "/sounds/catch.wav");
         loadSoundEffect("ding", "/sounds/ding.wav");
-        loadSoundEffect("drink", "/sounds/drink.wav");
-        loadSoundEffect("drink2", "/sounds/drink_2.wav");
-        loadSoundEffect("drink3", "/sounds/drink_3.wav");
+        loadSoundEffect("drink1", "/sounds/drink1.wav");
+        loadSoundEffect("drink2", "/sounds/drink2.wav");
+        loadSoundEffect("drink3", "/sounds/drink3.wav");
         loadSoundEffect("drop", "/sounds/drop.wav");
-        loadSoundEffect("eat", "/sounds/eat.wav");
-        loadSoundEffect("eat2", "/sounds/eat_2.wav");
-        loadSoundEffect("eat3", "/sounds/eat_3.wav");
+        loadSoundEffect("eat1", "/sounds/eat1.wav");
+        loadSoundEffect("eat2", "/sounds/eat2.wav");
+        loadSoundEffect("eat3", "/sounds/eat3.wav");
+        loadSoundEffect("eat4", "/sounds/eat4.wav");
         loadSoundEffect("fish_gets_away", "/sounds/fish_gets_away.wav");
-        loadSoundEffect("getItem", "/sounds/getItem.wav");
-        loadSoundEffect("go", "/sounds/go.wav");
+        loadSoundEffect("getItem1", "/sounds/getItem1.wav");
+        loadSoundEffect("getItem2", "/sounds/getItem2.wav");
+        loadSoundEffect("getItem3", "/sounds/getItem3.wav");
+        loadSoundEffect("getItem4", "/sounds/getItem4.wav");
+        loadSoundEffect("go1", "/sounds/go1.wav");
         loadSoundEffect("go2", "/sounds/go2.wav");
         loadSoundEffect("go3", "/sounds/go3.wav");
         loadSoundEffect("go4", "/sounds/go4.wav");
@@ -183,11 +222,15 @@ public class AudioManager {
         loadSoundEffect("look", "/sounds/look.wav");
         loadSoundEffect("map_open", "/sounds/map-open.wav");
         loadSoundEffect("mountain", "/sounds/mountain-river.wav");
-        loadSoundEffect("pull", "/sounds/pull.wav");
-        loadSoundEffect("reel", "/sounds/reel.wav");
-        loadSoundEffect("talk1", "/sounds/talk_1.wav");
-        loadSoundEffect("talk2", "/sounds/talk_2.wav");
-        loadSoundEffect("talk3", "/sounds/talk_3.wav");
+        loadSoundEffect("pull1", "/sounds/pull1.wav");
+        loadSoundEffect("pull2","/sounds/pull2.wav");
+        loadSoundEffect("pull3", "/sounds/pull3.wav");
+        loadSoundEffect("reel1", "/sounds/reel1.wav");
+        loadSoundEffect("reel2", "/sounds/reel2.wav");
+        loadSoundEffect("reel3", "/sounds/reel3.wav");
+        loadSoundEffect("talk1", "/sounds/talk1.wav");
+        loadSoundEffect("talk2", "/sounds/talk2.wav");
+        loadSoundEffect("talk3", "/sounds/talk3.wav");
         loadSoundEffect("unfold_map", "/sounds/unfold-a-map.wav");
         loadSoundEffect("waves", "/sounds/waves-of-hawaii.wav");
     }

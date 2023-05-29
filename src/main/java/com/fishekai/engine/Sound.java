@@ -18,22 +18,22 @@ public class Sound {
     public InputStream[] soundClips = {
             openAudioResource("/sounds/intro.wav"),
             openAudioResource("/sounds/look.wav"),
-            openAudioResource("/sounds/drink.wav"),
-            openAudioResource("/sounds/getItem.wav"),
+            openAudioResource("/sounds/drink1.wav"),
+            openAudioResource("/sounds/getItem1.wav"),
             openAudioResource("/sounds/goodbye-friendly.wav"),
             openAudioResource("/sounds/unfold-a-map.wav"),
             openAudioResource("/sounds/mainMusicLoop.wav"),
             openAudioResource("/sounds/help.wav"),
             openAudioResource("/sounds/jump.wav"),
-            openAudioResource("/sounds/talk_1.wav"),
+            openAudioResource("/sounds/talk1.wav"),
             openAudioResource("/sounds/catch.wav"),
             openAudioResource("/sounds/drop.wav"),
-            openAudioResource("/sounds/go.wav"),
-            openAudioResource("/sounds/beforeEat.wav"),
-            openAudioResource("/sounds/eat.wav"),
+            openAudioResource("/sounds/go1.wav"),
+            openAudioResource("/sounds/eat4.wav"),
+            openAudioResource("/sounds/eat1.wav"),
             openAudioResource("/sounds/build.wav"),
             openAudioResource("/sounds/fish_gets_away.wav"),
-            openAudioResource("/sounds/pull.wav")
+            openAudioResource("/sounds/pull1.wav")
     };
 
     public void setFile(int i) {
