@@ -88,14 +88,9 @@ public class Sound {
             currentVolume = -80.0f;
             fc.setValue(currentVolume);
             mute = true;
-            for (int i = 0; i < soundClips.length; i++) {
-                stopClip(i);
-            }
         } else {
             currentVolume = previousVolume;
             fc.setValue(currentVolume);
-            play();
-            loop();
             mute = false;
         }
     }
