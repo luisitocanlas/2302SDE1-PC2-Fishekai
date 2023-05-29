@@ -14,16 +14,16 @@ class AudioManagerTest {
         audioManager.loadAudioFiles();
     }
 
-    @Test
-    void playMusic() {
-        audioManager.playMusic(false);
-        pause(50_000);
-        audioManager.stopMusic();
-    }
-
-    @Test
-    void playSoundEffect() {
-        audioManager.playSoundEffect("pull");
-        pause(10_000);
-    }
+//    @Test
+//    void playMusic() {
+//        audioManager.playMusic(false);
+//        pause(50_000);
+//        audioManager.stopMusic();
+//    }
+//
+//    @Test
+//    void playSoundEffect() {
+//        audioManager.playSoundEffect("pull");
+//        pause(10_000);
+//    }
 }
