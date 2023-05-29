@@ -128,7 +128,7 @@ public class Fishekai implements SplashApp {
 
                     case "map":
                         clear();
-                        audioManager.playSoundEffect("map");
+                        audioManager.playSoundEffect("unfold_map");
                         showStaticMap(locations, current_location);
                         intro.askToContinue();
                         break;

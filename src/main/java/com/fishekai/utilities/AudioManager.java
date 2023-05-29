@@ -158,22 +158,37 @@ public class AudioManager {
     // call in Fishekai.class to load and store in audioManager instance
     public void loadAudioFiles() {
         loadMusic("/sounds/mainMusicLoop.wav");
-        loadSoundEffect("intro", "/sounds/intro.wav");
-        loadSoundEffect("look", "/sounds/look.wav");
-        loadSoundEffect("drink", "/sounds/drink.wav");
-        loadSoundEffect("getItem", "/sounds/getItem.wav");
-        loadSoundEffect("goodbye", "/sounds/goodbye-friendly.wav");
-        loadSoundEffect("map", "/sounds/unfold-a-map.wav");
-        loadSoundEffect("help", "/sounds/help.wav");
-        loadSoundEffect("jump", "/sounds/jump.wav");
-        loadSoundEffect("talk", "/sounds/talk_1.wav");
-        loadSoundEffect("catch", "/sounds/catch.wav");
-        loadSoundEffect("drop", "/sounds/drop.wav");
-        loadSoundEffect("go", "/sounds/go.wav");
         loadSoundEffect("beforeEat", "/sounds/beforeEat.wav");
-        loadSoundEffect("eat", "/sounds/eat.wav");
         loadSoundEffect("build", "/sounds/build.wav");
+        loadSoundEffect("catch", "/sounds/catch.wav");
+        loadSoundEffect("ding", "/sounds/ding.wav");
+        loadSoundEffect("drink", "/sounds/drink.wav");
+        loadSoundEffect("drink2", "/sounds/drink_2.wav");
+        loadSoundEffect("drink3", "/sounds/drink_3.wav");
+        loadSoundEffect("drop", "/sounds/drop.wav");
+        loadSoundEffect("eat", "/sounds/eat.wav");
+        loadSoundEffect("eat2", "/sounds/eat_2.wav");
+        loadSoundEffect("eat3", "/sounds/eat_3.wav");
         loadSoundEffect("fish_gets_away", "/sounds/fish_gets_away.wav");
+        loadSoundEffect("getItem", "/sounds/getItem.wav");
+        loadSoundEffect("go", "/sounds/go.wav");
+        loadSoundEffect("go2", "/sounds/go2.wav");
+        loadSoundEffect("go3", "/sounds/go3.wav");
+        loadSoundEffect("go4", "/sounds/go4.wav");
+        loadSoundEffect("goodbye", "/sounds/goodbye-friendly.wav");
+        loadSoundEffect("help", "/sounds/help.wav");
+        loadSoundEffect("intro", "/sounds/intro.wav");
+        loadSoundEffect("jump", "/sounds/jump.wav");
+        loadSoundEffect("jungle", "/sounds/jungle_growl.wav");
+        loadSoundEffect("look", "/sounds/look.wav");
+        loadSoundEffect("map_open", "/sounds/map-open.wav");
+        loadSoundEffect("mountain", "/sounds/mountain-river.wav");
         loadSoundEffect("pull", "/sounds/pull.wav");
+        loadSoundEffect("reel", "/sounds/reel.wav");
+        loadSoundEffect("talk1", "/sounds/talk_1.wav");
+        loadSoundEffect("talk2", "/sounds/talk_2.wav");
+        loadSoundEffect("talk3", "/sounds/talk_3.wav");
+        loadSoundEffect("unfold_map", "/sounds/unfold-a-map.wav");
+        loadSoundEffect("waves", "/sounds/waves-of-hawaii.wav");
     }
 }
