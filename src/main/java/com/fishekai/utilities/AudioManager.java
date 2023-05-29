@@ -8,11 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AudioManager {
-    public static final float MIN_VOLUME = 0.0f;
-    public static final float MAX_VOLUME = 1.0f;
+    private static final float MUSIC_MIN_VOLUME = 0.0f;
+    private static final float MUSIC_MAX_VOLUME = 1.0f;
+    private static final float EFFECT_MIN_VOLUME = 0.0f;
+    private static final float EFFECT_MAX_VOLUME = 1.0f;
 
     private Clip musicClip;
-    private Map<String, Clip> soundEffects;
+    private final Map<String, Clip> soundEffects;
     private float musicVolume;
     private float soundEffectsVolume;
     private boolean soundEffectsEnabled;
@@ -71,6 +73,11 @@ public class AudioManager {
 
     public void setSoundEffectsEnabled(boolean enabled) {
         soundEffectsEnabled = enabled;
+        if (soundEffectsEnabled) {
+            setSoundEffectsVolume(EFFECT_MAX_VOLUME);
+        } else {
+            setSoundEffectsVolume(EFFECT_MIN_VOLUME);
+        }
     }
 
     public boolean areSoundEffectsEnabled() {
@@ -86,7 +93,7 @@ public class AudioManager {
     }
 
     public void setMusicVolume(float volume) {
-        if (volume >= MIN_VOLUME && volume <= MAX_VOLUME && musicClip != null) {
+        if (volume >= MUSIC_MIN_VOLUME && volume <= MUSIC_MAX_VOLUME && musicClip != null) {
             FloatControl gainControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
             float dB = (float) (Math.log(volume) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
@@ -99,32 +106,40 @@ public class AudioManager {
         return musicVolume;
     }
 
+    public float getMusicMinVolume() {
+        return MUSIC_MIN_VOLUME;
+    }
+
+    public float getMusicMaxVolume() {
+        return MUSIC_MAX_VOLUME;
+    }
+
     public void volumeUp() {
-        if (musicVolume == MAX_VOLUME) {
+        if (musicVolume == MUSIC_MAX_VOLUME) {
             System.out.println("Already at maximum volume.");
         } else {
             float newVolume = musicVolume + 0.1f;
-            if (newVolume > MAX_VOLUME) {
-                newVolume = MAX_VOLUME;
+            if (newVolume > MUSIC_MAX_VOLUME) {
+                newVolume = MUSIC_MAX_VOLUME;
             }
             setMusicVolume(newVolume);
         }
     }
 
     public void volumeDown() {
-        if (musicVolume == MIN_VOLUME) {
+        if (musicVolume == MUSIC_MIN_VOLUME) {
             System.out.println("Already at minimum volume.");
         } else {
             float newVolume = musicVolume - 0.1f;
-            if (newVolume < MIN_VOLUME) {
-                newVolume = MIN_VOLUME;
+            if (newVolume < MUSIC_MIN_VOLUME) {
+                newVolume = MUSIC_MIN_VOLUME;
             }
             setMusicVolume(newVolume);
         }
     }
 
     public void setSoundEffectsVolume(float volume) {
-        if (volume >= 0.0f && volume <= 1.0f) {
+        if (volume >= EFFECT_MIN_VOLUME && volume <= EFFECT_MAX_VOLUME) {
             for (Clip clip : soundEffects.values()) {
                 if (clip != null) {
                     FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
