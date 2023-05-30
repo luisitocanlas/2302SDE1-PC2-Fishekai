@@ -194,7 +194,6 @@ public class Fishekai implements SplashApp {
                         player.getInventory().put("rod", rod);
                         player.getInventory().put("fangfish", fangfish);
                         player.getInventory().put("tuna", tuna);player.getInventory().put("sunfish", sunfish);
-
                         break;
 
                     default:
