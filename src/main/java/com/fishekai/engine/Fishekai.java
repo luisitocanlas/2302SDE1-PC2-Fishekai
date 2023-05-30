@@ -272,6 +272,17 @@ public class Fishekai implements SplashApp {
 //            audioManager.playSoundEffect("eat");
             audioManager.randomEat();
             pause(1_000);
+            if (itemToEat.equals("Sunfish")) { // winning condition
+                formatText(DataLoader.processGameCondition().get("Mystic_Feast"), LINE_WIDTH);
+                blankLines(1);
+                gameOver();
+            }
+            if (itemToEat.equals("Fangfish")){ // losing condition
+                formatText(DataLoader.processGameCondition().get("Fanged_Death"), LINE_WIDTH);
+                blankLines(1);
+                intro.askToContinue();
+                gameOver();
+            }
             if (itemToEat.equals("banana")) { // return banana to jungle after eating
                 locations.get("Jungle").getItems().put(itemToEat, player.getInventory().get(itemToEat));
             } else if (itemToEat.equals("apple")) { // return apple to jungle after eating
