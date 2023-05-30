@@ -41,39 +41,59 @@ public class FishingMechanic {
         System.out.println("A " + fish.getName() + " has bitten your bait! It's time to reel it in.");
 
         boolean fishBattle = true;
+        boolean lineTight = false;
         int pullCount = 0;
 
         // start the BATTLE!!!
         while (fishBattle) {
             String move = prompter.prompt("[Pull] or [Release] the line?\n><(((º> ").trim().strip();
 
-            if (move.equalsIgnoreCase("pull")) {
-                int success = random.nextInt(2); // Random number: 0 or 1
-
-                if (success == 1) {
-                    System.out.println("You pull the line and feel a strong resistance. You're making progress!");
-                    pullCount++;
-
-                    if (pullCount == 3) {
-                        System.out.println("After a few more strong pulls, you successfully catch the " + fish.getName() + "!");
-                        player.getInventory().put(fish.getName(), fish);
-                        fishBattle = false;
-                    }
+            if (lineTight) {
+                if (move.equalsIgnoreCase("pull")) {
+                    System.out.println("The line is tight! You pull anyway and lose some progress.");
+                    pullCount -= 3;
+                } else if (move.equalsIgnoreCase("release")) {
+                    System.out.println("You release the line, giving the fish some slack.");
+                    lineTight = false;
                 } else {
-                    System.out.println("You pull the line, but the fish slips away. Keep trying!");
-                    pullCount--;
-
-                    if (pullCount == -3) {
-                        System.out.println("The fish escapes. Better luck next time!");
-                        fishBattle = false;
-                    }
+                    System.out.println("Invalid move. Choose either [Pull] or [Release].");
                 }
-            } else if (move.equalsIgnoreCase("release")) {
-                System.out.println("You release the line, giving the fish some slack.");
             } else {
-                System.out.println("Invalid move. Choose either [Pull] or [Release].");
+                if (move.equalsIgnoreCase("pull")) {
+                    int success = random.nextInt(5); // Random number: 0, 1, 2, 3, or 4
+
+                    if (success < 3) {
+                        System.out.println("You pull the line and feel a strong resistance. You're making progress!");
+                        pullCount++;
+
+                        if (pullCount == 3) {
+                            System.out.println("After a few more strong pulls, you successfully catch the " + fish.getName() + "!");
+                            player.getInventory().put(fish.getName(), fish);
+                            fishBattle = false;
+                        }
+                    } else {
+                        System.out.println("You pull the line, but the fish slips away. Keep trying!");
+                        pullCount--;
+
+                        if (pullCount == -3) {
+                            System.out.println("The fish escapes. Better luck next time!");
+                            fishBattle = false;
+                        }
+                    }
+
+                    // Randomly determine if the line becomes tight
+                    lineTight = random.nextBoolean();
+                    if (lineTight) {
+                        System.out.println("The line goes very tight with a lot of resistance. Be careful!");
+                    }
+                } else if (move.equalsIgnoreCase("release")) {
+                    System.out.println("You release the line, giving the fish some slack.");
+                    lineTight = true;
+                } else {
+                    System.out.println("Invalid move. Choose either [Pull] or [Release].");
+                }
             }
         }
-    }
 
+    }
 }
