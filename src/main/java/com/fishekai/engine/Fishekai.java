@@ -1,9 +1,6 @@
 package com.fishekai.engine;
 
-import com.fishekai.models.Flask;
-import com.fishekai.models.Item;
-import com.fishekai.models.Location;
-import com.fishekai.models.Player;
+import com.fishekai.models.*;
 import com.fishekai.utilities.AudioManager;
 import com.fishekai.utilities.Prompter;
 import com.fishekai.utilities.SplashApp;
@@ -36,6 +33,7 @@ public class Fishekai implements SplashApp {
     private final UserInputParser parser = new UserInputParser();
     private final AudioManager audioManager = new AudioManager();
     VolumeControl volumeControl = new VolumeControl(audioManager);
+    FishingMechanic fishingMechanic = new FishingMechanic();
 
     // methods
     public void start() {
@@ -184,13 +182,19 @@ public class Fishekai implements SplashApp {
                         break;
 
                     case "fish":
-                        fish(current_location);
+                        fish(player, current_location);
                         pause(PAUSE_VALUE);
                         break;
 
                     case "god":
                         Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
+                        Fish sunfish = locations.get("North Beach").getFishes().get("sunfish");
+                        Fish fangfish = locations.get("North Beach").getFishes().get("fangfish");
+                        Fish tuna = locations.get("North Beach").getFishes().get("tuna");
                         player.getInventory().put("rod", rod);
+                        player.getInventory().put("fangfish", fangfish);
+                        player.getInventory().put("tuna", tuna);player.getInventory().put("sunfish", sunfish);
+
                         break;
 
                     default:
@@ -265,7 +269,6 @@ public class Fishekai implements SplashApp {
     private void timeToEat(String word) {
         String itemToEat = word.toLowerCase();
 
-
         if (parser.getFoodList().contains(itemToEat) && (player.getInventory().containsKey(itemToEat))) {
             int nourishment = player.getInventory().get(itemToEat).getModifier();
             player.setHunger(player.getHunger() - nourishment);
@@ -312,10 +315,11 @@ public class Fishekai implements SplashApp {
         }
     }
 
-    private void fish(Location current_Location) {
+    private void fish(Player player, Location current_Location) {
         if (player.getInventory().containsKey("rod")
                 && current_Location.getName().equals("North Beach")) {
             System.out.println("You cast your line to catch a fish.");
+            fishingMechanic.startFishing(player, current_Location);
         } else if (player.getInventory().containsKey("rod")
                 && !current_Location.getName().equals("North Beach")) {
             System.out.println("There aren't any fish here. Try a different area.");
@@ -397,7 +401,7 @@ public class Fishekai implements SplashApp {
 
     private void dropItem(Location current_location, String word) {
         String itemToDrop = word.toLowerCase();
-        if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop)) {
+        if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop) || parser.getFishList().contains(itemToDrop)) {
             if (player.getInventory().containsKey(itemToDrop)) {
                 if (current_location.getItems() == null) {
                     Map<String, Item> inventoryMap = new HashMap<>();
@@ -420,7 +424,7 @@ public class Fishekai implements SplashApp {
 
     private void lookAtItem(Location current_location, String word) {
         String itemToLook = word.toLowerCase();
-        if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook)) {
+        if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook) || parser.getFishList().contains(itemToLook)) {
             if (player.getInventory().containsKey(itemToLook)) {
                 audioManager.playSoundEffect("look");
                 System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());
