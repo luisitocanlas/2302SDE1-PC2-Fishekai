@@ -182,7 +182,7 @@ public class Fishekai implements SplashApp {
                         break;
 
                     case "fish":
-                        fish(player, current_location);
+                        fish(player, current_location, audioManager, volumeControl);
                         pause(PAUSE_VALUE);
                         break;
 
@@ -275,12 +275,13 @@ public class Fishekai implements SplashApp {
 //            audioManager.playSoundEffect("eat");
             audioManager.randomEat();
             pause(1_000);
-            if (itemToEat.equals("Sunfish")) { // winning condition
+            if (itemToEat.equals("sunfish")) { // winning condition
                 formatText(DataLoader.processGameCondition().get("Mystic_Feast"), LINE_WIDTH);
                 blankLines(1);
+                intro.askToContinue();
                 gameOver();
             }
-            if (itemToEat.equals("Fangfish")){ // losing condition
+            if (itemToEat.equals("fangfish")){ // losing condition
                 formatText(DataLoader.processGameCondition().get("Fanged_Death"), LINE_WIDTH);
                 blankLines(1);
                 intro.askToContinue();
@@ -326,11 +327,11 @@ public class Fishekai implements SplashApp {
         }
     }
 
-    private void fish(Player player, Location current_Location) {
+    private void fish(Player player, Location current_Location, AudioManager audioManager, VolumeControl volumeControl) {
         if (player.getInventory().containsKey("rod")
                 && current_Location.getName().equals("North Beach")) {
             System.out.println("You cast your line to catch a fish.");
-            fishingMechanic.startFishing(player, current_Location);
+            fishingMechanic.startFishing(player, current_Location, audioManager, volumeControl);
         } else if (player.getInventory().containsKey("rod")
                 && !current_Location.getName().equals("North Beach")) {
             System.out.println("There aren't any fish here. Try a different area.");
@@ -412,7 +413,7 @@ public class Fishekai implements SplashApp {
 
     private void dropItem(Location current_location, String word) {
         String itemToDrop = word.toLowerCase();
-        if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop) || parser.getFishList().contains(itemToDrop)) {
+        if (parser.getItemList().contains(itemToDrop) || parser.getFoodList().contains(itemToDrop)) {
             if (player.getInventory().containsKey(itemToDrop)) {
                 if (current_location.getItems() == null) {
                     Map<String, Item> inventoryMap = new HashMap<>();
@@ -435,7 +436,7 @@ public class Fishekai implements SplashApp {
 
     private void lookAtItem(Location current_location, String word) {
         String itemToLook = word.toLowerCase();
-        if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook) || parser.getFishList().contains(itemToLook)) {
+        if (parser.getItemList().contains(itemToLook) || parser.getFoodList().contains(itemToLook)) {
             if (player.getInventory().containsKey(itemToLook)) {
                 audioManager.playSoundEffect("look");
                 System.out.println("The " + player.getInventory().get(itemToLook).getName() + " looks like " + player.getInventory().get(itemToLook).getDescription());

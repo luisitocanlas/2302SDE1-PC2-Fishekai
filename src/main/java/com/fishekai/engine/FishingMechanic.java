@@ -16,10 +16,8 @@ public class FishingMechanic {
     private static final int PAUSE_VALUE = 1_500;
 
     private final Prompter prompter = new Prompter(new Scanner(System.in));
-    private final AudioManager audioManager = new AudioManager();
-//    VolumeControl volumeControl = new VolumeControl(audioManager);
 
-    public void startFishing(Player player, Location current_location) {
+    public void startFishing(Player player, Location current_location, AudioManager audioManager, VolumeControl volumeControl) {
         // randomly select a fish
         Map<String, Fish> fishMap = current_location.getFishes();
         Random random = new Random();
@@ -40,12 +38,19 @@ public class FishingMechanic {
 
         // start the BATTLE!!!
         while (fishBattle) {
-            System.out.printf("Pull count: %s\n", pullCount);
+            System.out.println("Positive number means closer to the player and negative number means farther from the player");
+            System.out.printf("Fish distance: %s\n", pullCount);
+
+            // there should be a display here
 
             String move = prompter.prompt("[Pull] or [Release] the line?\n><(((º> ").trim().strip();
 
             if (lineTight) {
-                if (move.equalsIgnoreCase("pull")) {
+                if (pullCount <= -3) {
+                    System.out.println("The fish escapes. Better luck next time!");
+                    fishBattle = false;
+                }
+                else if (move.equalsIgnoreCase("pull")) {
                     System.out.println("The line is tight! You pull anyway and lose some progress.");
                     pullCount -= 3;
                     audioManager.randomPull();
