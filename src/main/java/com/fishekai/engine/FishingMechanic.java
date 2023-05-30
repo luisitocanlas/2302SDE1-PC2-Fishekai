@@ -41,10 +41,16 @@ public class FishingMechanic {
             System.out.println("Positive number means closer to the player and negative number means farther from the player");
             System.out.printf("Fish distance: %s\n", pullCount);
 
+            // there should be a display here
+
             String move = prompter.prompt("[Pull] or [Release] the line?\n><(((º> ").trim().strip();
 
             if (lineTight) {
-                if (move.equalsIgnoreCase("pull")) {
+                if (pullCount <= -3) {
+                    System.out.println("The fish escapes. Better luck next time!");
+                    fishBattle = false;
+                }
+                else if (move.equalsIgnoreCase("pull")) {
                     System.out.println("The line is tight! You pull anyway and lose some progress.");
                     pullCount -= 3;
                     audioManager.randomPull();
