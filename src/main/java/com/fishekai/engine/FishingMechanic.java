@@ -44,10 +44,10 @@ public class FishingMechanic {
 
         // start the BATTLE!!!
         while (fishBattle) {
+            blankLines(2);
             System.out.println(fishDistance);
             System.out.printf("Is the line tight? %s\n", islineTight);
             System.out.printf("Fish distance: %s\n", pullCount);
-
 
             String move = prompter.prompt("[Pull] or [Release] the line?\n><(((º> ").trim().strip();
 
@@ -75,9 +75,9 @@ public class FishingMechanic {
                 }
             } else {
                 if (move.equalsIgnoreCase("pull")) {
-                    int success = random.nextInt(10); // Random number: 0, 1, 2, 3, or 4
+                    int success = random.nextInt(5); // Random number will handle success rate of pulling a fish
                     audioManager.randomPull();
-                    if (success >= 2) {
+                    if (success >= 1) {
                         System.out.println("You pull the line and feel a strong resistance. You're making progress!");
                         pullCount++;
                         fishDistance.remove(1);
@@ -111,6 +111,7 @@ public class FishingMechanic {
                     System.out.println("Invalid move. Choose either [Pull] or [Release].");
                 }
             }
+            pause(PAUSE_VALUE);
         }
 
     }

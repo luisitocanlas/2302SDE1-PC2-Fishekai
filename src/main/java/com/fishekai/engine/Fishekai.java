@@ -193,7 +193,8 @@ public class Fishekai implements SplashApp {
                         Fish tuna = locations.get("North Beach").getFishes().get("tuna");
                         player.getInventory().put("rod", rod);
                         player.getInventory().put("fangfish", fangfish);
-                        player.getInventory().put("tuna", tuna);player.getInventory().put("sunfish", sunfish);
+                        player.getInventory().put("tuna", tuna);
+                        player.getInventory().put("sunfish", sunfish);
                         break;
 
                     default:
