@@ -3,6 +3,7 @@ package com.fishekai.engine;
 import com.fishekai.models.Fish;
 import com.fishekai.models.Location;
 import com.fishekai.models.Player;
+import com.fishekai.utilities.AudioManager;
 import com.fishekai.utilities.Prompter;
 
 import java.util.Map;
@@ -19,6 +20,8 @@ public class FishingMechanic {
     private final Location current_location;
 
     private final Prompter prompter = new Prompter(new Scanner(System.in));
+    private final AudioManager audioManager = new AudioManager();
+//    VolumeControl volumeControl = new VolumeControl(audioManager);
 
     public FishingMechanic(Player player, Location current_location) {
         this.player = player;
@@ -52,16 +55,18 @@ public class FishingMechanic {
                 if (move.equalsIgnoreCase("pull")) {
                     System.out.println("The line is tight! You pull anyway and lose some progress.");
                     pullCount -= 3;
+                    audioManager.randomPull();
                 } else if (move.equalsIgnoreCase("release")) {
                     System.out.println("You release the line, giving the fish some slack.");
                     lineTight = false;
+                    audioManager.randomReel();
                 } else {
                     System.out.println("Invalid move. Choose either [Pull] or [Release].");
                 }
             } else {
                 if (move.equalsIgnoreCase("pull")) {
                     int success = random.nextInt(5); // Random number: 0, 1, 2, 3, or 4
-
+                    audioManager.randomPull();
                     if (success < 3) {
                         System.out.println("You pull the line and feel a strong resistance. You're making progress!");
                         pullCount++;
@@ -87,6 +92,7 @@ public class FishingMechanic {
                         System.out.println("The line goes very tight with a lot of resistance. Be careful!");
                     }
                 } else if (move.equalsIgnoreCase("release")) {
+                    audioManager.randomReel();
                     System.out.println("You release the line, giving the fish some slack.");
                     lineTight = true;
                 } else {
