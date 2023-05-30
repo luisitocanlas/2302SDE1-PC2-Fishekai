@@ -20,7 +20,7 @@ public class UserInputParser {
     private final Set<String> directionsList = new HashSet<>(List.of("north", "east", "south", "west"));
     private final Set<String> itemList = new HashSet<>(List.of("amulet", "parachute", "hook", "stick", "flask", "rod"));
     private final Set<String> foodList = new HashSet<>(List.of("water", "banana", "apple"));
-    private final Set<String> fishList = new HashSet<>(List.of("Sunfish", "Fangfish", "Tuna", "Parrotfish", "Lanternfish"));
+    private final Set<String> fishList = new HashSet<>(List.of("sunfish", "fangfish", "tuna", "parrotfish", "lanternfish"));
     private final Set<String> npcList = new HashSet<>(List.of("ghost", "ball"));
 
     public Set<String> getExcludedWords() {

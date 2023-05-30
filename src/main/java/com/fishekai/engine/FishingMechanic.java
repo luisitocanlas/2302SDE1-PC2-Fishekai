@@ -9,23 +9,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-import static com.fishekai.utilities.Console.blankLines;
-import static com.fishekai.utilities.Console.pause;
+import static com.fishekai.utilities.Console.*;
 
 public class FishingMechanic {
     private static final int PAUSE_VALUE = 1_500;
 
-    private final Player player;
-    private final Location current_location;
-
     private final Prompter prompter = new Prompter(new Scanner(System.in));
 
-    public FishingMechanic(Player player, Location current_location) {
-        this.player = player;
-        this.current_location = current_location;
-    }
-
-    public void startFishing() {
+    public void startFishing(Player player, Location current_location) {
         // randomly select a fish
         Map<String, Fish> fishMap = current_location.getFishes();
         Random random = new Random();
@@ -46,6 +37,8 @@ public class FishingMechanic {
 
         // start the BATTLE!!!
         while (fishBattle) {
+            System.out.printf("Pull count: %s\n", pullCount);
+
             String move = prompter.prompt("[Pull] or [Release] the line?\n><(((º> ").trim().strip();
 
             if (lineTight) {
@@ -66,7 +59,7 @@ public class FishingMechanic {
                         System.out.println("You pull the line and feel a strong resistance. You're making progress!");
                         pullCount++;
 
-                        if (pullCount == 3) {
+                        if (pullCount >= 3) {
                             System.out.println("After a few more strong pulls, you successfully catch the " + fish.getName() + "!");
                             player.getInventory().put(fish.getName(), fish);
                             fishBattle = false;
@@ -75,7 +68,7 @@ public class FishingMechanic {
                         System.out.println("You pull the line, but the fish slips away. Keep trying!");
                         pullCount--;
 
-                        if (pullCount == -3) {
+                        if (pullCount <= -3) {
                             System.out.println("The fish escapes. Better luck next time!");
                             fishBattle = false;
                         }
