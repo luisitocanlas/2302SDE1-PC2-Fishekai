@@ -18,20 +18,20 @@
     "description": "Swift and agile, the silverscale tuna embodies the grace and power of the open sea. Its sleek body cuts through the water with effortless speed, challenging even the most skilled angler. A successful catch yields a prized delicacy, its tender meat a testament to the bountiful treasures hidden beneath the surface.",
     "type" : "fish",
     "causesDeath": false,
-    "hungerValue": -3
+    "hungerValue": -8
   },
   {
     "name": "Parrotfish",
     "description": "A kaleidoscope of vibrant colors adorns the scales of the rainbow parrotfish, making it a sight to behold. Its beak-like mouth is specially designed for nibbling on coral, transforming it into fine, white sand. Capturing the rainbow parrotfish provides a unique opportunity to glimpse the underwater wonders it once called home.",
     "type" : "fish",
     "causesDeath": false,
-    "hungerValue": -2
+    "hungerValue": -6
   },
   {
     "name": "Lanternfish",
     "description": "As darkness falls, the depths come alive with the soft glow of the luminous lanternfish. Its bioluminescent display creates an otherworldly ambiance, lighting up the surrounding waters like a constellation of stars. This enchanting catch not only offers a mesmerizing spectacle but also serves as a natural light source during the island's nocturnal hours.",
     "type" : "fish",
     "causesDeath": false,
-    "hungerValue": -1
+    "hungerValue": -4
   }
 ]
