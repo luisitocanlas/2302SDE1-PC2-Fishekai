@@ -6,15 +6,21 @@
 *Commands                     *
 *                             *
 *go (North, South, East, West)*
-*get (item from location)     *
-*build (fishing pole)         *
 *look (item)                  *
-*cast (catch a fish)          *
-*pull (pulls fishing line in) *
-*eat (food item)              *
-*drink (water)                *
+*drop (item)                  *
+*get (item from location)     *
 *talk (self or NPC)           *
 *map (shows map)              *
+*music (on or off)            *
+*volume (up or down)          *
+*effect (on or off)           *
+*show (gui)                   *
+*jump (into the void)         *
+*quit (the game)              *
+*drink (water)                *
+*eat (food item)              *
+*build (fishing pole)         *
+*fish (start fishing)         *
 *                             *
 **********><(((º>**************			
 		

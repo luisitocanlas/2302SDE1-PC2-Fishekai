@@ -1,6 +1,6 @@
 package com.fishekai.engine;
 
-import com.fishekai.objects.*;
+import com.fishekai.models.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,21 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.fishekai.engine.Fishekai.moveCounter;
+
 public class Display {
 
     private static final int LINE_WIDTH = 120;
 
     private static String banner;
     private static String helpMenu;
-    private static String gameMap;
-    private static String inBeach;
-    private static String inCave;
-    private static String inJungle;
-    private static String inMountain;
-    private static String inMysticalGrove;
-    private static String inNorthBeach;
-    private static String inVolcano;
-    private static String inWaterfall;
 
     public static void showTitle() {
         System.out.println(banner);
@@ -34,33 +27,11 @@ public class Display {
         System.out.println(helpMenu);
     }
 
-    public static void showMap(Map<String, Location> locations, Location current_location) {
-        if (locations.get("Beach").equals(current_location)) {
-            System.out.println(inBeach);
-        } else if (locations.get("Cave").equals(current_location)) {
-            System.out.println(inCave);
-        } else if (locations.get("Jungle").equals(current_location)) {
-            System.out.println(inJungle);
-        } else if (locations.get("Mountain").equals(current_location)) {
-            System.out.println(inMountain);
-        } else if (locations.get("Mystical Grove").equals(current_location)) {
-            System.out.println(inMysticalGrove);
-        } else if (locations.get("North Beach").equals(current_location)) {
-            System.out.println(inNorthBeach);
-        } else if (locations.get("Volcano").equals(current_location)) {
-            System.out.println(inVolcano);
-        } else if (locations.get("Waterfall").equals(current_location)) {
-            System.out.println(inWaterfall);
-        } else {
-            System.out.println(gameMap);
-        }
-    }
-
-    public static void showStatus(Player player, Location location) {
+    public static void showStatus(Player player, Location location, Flask flask) {
 
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println("Player Status");
-        System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst());
+        System.out.println("Health: " + player.getHp() + "     Hunger: " + player.getHunger() + "     Thirst: " + player.getThirst() + "     Moves: " + moveCounter);
         System.out.println();
         showFish(location);
         System.out.println();
@@ -71,11 +42,13 @@ public class Display {
         System.out.println();
         showItem(location);
         showNPC(location);
+        showCharges(flask);
         System.out.println();
         System.out.println("You see paths to " + location.getDirections());
         System.out.println("--------------------------------------------------------><(((º>--------------------------------------------------------");
         System.out.println();
     }
+
 
     private static void showDescription(Location location) {
         if (!location.isHasBeenHere()) {
@@ -109,6 +82,11 @@ public class Display {
             System.out.println("You see something swimming in the water...");
         }
     }
+    public static void showCharges(Flask flask) {
+        if (flask.getCharges()> 0){
+            System.out.printf("Flask amount: %s/5", flask.getCharges());
+        }
+    }
 
     public static void showNPC(Location location) {
         if (location.getNpc() != null) {
@@ -133,15 +111,6 @@ public class Display {
         try {
             banner = readResource("/images/banner.txt");
             helpMenu = readResource("/images/helpMenu.txt");
-            gameMap = readResource("/images/game_map.txt");
-            inBeach = readResource("/images/inBeachMap.txt");
-            inCave = readResource("/images/inCaveMap.txt");
-            inJungle = readResource("/images/inJungleMap.txt");
-            inMountain = readResource("/images/inMountainMap.txt");
-            inMysticalGrove = readResource("/images/inMysticalGroveMap.txt");
-            inNorthBeach = readResource("/images/inNorthBeachMap.txt");
-            inVolcano = readResource("/images/inVolcanoMap.txt");
-            inWaterfall = readResource("/images/inWaterfallMap.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
