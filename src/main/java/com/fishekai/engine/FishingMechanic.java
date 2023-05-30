@@ -6,18 +6,24 @@ import com.fishekai.models.Player;
 import com.fishekai.utilities.AudioManager;
 import com.fishekai.utilities.Prompter;
 
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static com.fishekai.utilities.Console.*;
 
 public class FishingMechanic {
     private static final int PAUSE_VALUE = 1_500;
 
+    private List<String> fishDistance = new ArrayList<>();
+
     private final Prompter prompter = new Prompter(new Scanner(System.in));
 
     public void startFishing(Player player, Location current_location, AudioManager audioManager, VolumeControl volumeControl) {
+        // clear the screen
+        clear();
+
+        // reset display
+        resetFishDistance();
+
         // randomly select a fish
         Map<String, Fish> fishMap = current_location.getFishes();
         Random random = new Random();
@@ -38,11 +44,10 @@ public class FishingMechanic {
 
         // start the BATTLE!!!
         while (fishBattle) {
-            System.out.println("Positive number means closer to the player and negative number means farther from the player");
+            System.out.println(fishDistance);
             System.out.printf("Is the line tight? %s\n", islineTight);
             System.out.printf("Fish distance: %s\n", pullCount);
 
-            // there should be a display here
 
             String move = prompter.prompt("[Pull] or [Release] the line?\n><(((º> ").trim().strip();
 
@@ -54,6 +59,12 @@ public class FishingMechanic {
                 else if (move.equalsIgnoreCase("pull")) {
                     System.out.println("The line is tight! You pull anyway and lose some progress.");
                     pullCount -= 3;
+                    fishDistance.remove(fishDistance.size()-1);
+                    fishDistance.remove(fishDistance.size()-1);
+                    fishDistance.remove(fishDistance.size()-1);
+                    fishDistance.add(1," ");
+                    fishDistance.add(1," ");
+                    fishDistance.add(1," ");
                     audioManager.randomPull();
                 } else if (move.equalsIgnoreCase("release")) {
                     System.out.println("You release the line, giving the fish some slack.");
@@ -64,11 +75,13 @@ public class FishingMechanic {
                 }
             } else {
                 if (move.equalsIgnoreCase("pull")) {
-                    int success = random.nextInt(5); // Random number: 0, 1, 2, 3, or 4
+                    int success = random.nextInt(10); // Random number: 0, 1, 2, 3, or 4
                     audioManager.randomPull();
-                    if (success < 3) {
+                    if (success >= 2) {
                         System.out.println("You pull the line and feel a strong resistance. You're making progress!");
                         pullCount++;
+                        fishDistance.remove(1);
+                        fishDistance.add(" ");
 
                         if (pullCount >= 3) {
                             System.out.println("After a few more strong pulls, you successfully catch the " + fish.getName() + "!");
@@ -78,6 +91,8 @@ public class FishingMechanic {
                     } else {
                         System.out.println("You pull the line, but the fish slips away. Keep trying!");
                         pullCount--;
+                        fishDistance.remove(fishDistance.size()-1);
+                        fishDistance.add(1," ");
 
                         if (pullCount <= -3) {
                             System.out.println("The fish escapes. Better luck next time!");
@@ -87,9 +102,7 @@ public class FishingMechanic {
 
                     // Randomly determine if the line becomes tight
                     islineTight = random.nextBoolean();
-                    if (islineTight) {
-                        System.out.println("The line goes very tight with a lot of resistance. Be careful!");
-                    }
+
                 } else if (move.equalsIgnoreCase("release")) {
                     audioManager.randomReel();
                     System.out.println("You release the line, giving the fish some slack.");
@@ -100,5 +113,18 @@ public class FishingMechanic {
             }
         }
 
+    }
+
+    private void resetFishDistance(){
+        fishDistance.clear();
+
+        fishDistance.add("o/");
+        fishDistance.add(" ");
+        fishDistance.add(" ");
+        fishDistance.add(" ");
+        fishDistance.add("><(((º>");
+        fishDistance.add(" ");
+        fishDistance.add(" ");
+        fishDistance.add(" ");
     }
 }
