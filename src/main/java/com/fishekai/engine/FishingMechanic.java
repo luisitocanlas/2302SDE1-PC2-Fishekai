@@ -33,19 +33,20 @@ public class FishingMechanic {
         System.out.println("A " + fish.getName() + " has bitten your bait! It's time to reel it in.");
 
         boolean fishBattle = true;
-        boolean lineTight = false;
+        boolean islineTight = false;
         int pullCount = 0;
 
         // start the BATTLE!!!
         while (fishBattle) {
             System.out.println("Positive number means closer to the player and negative number means farther from the player");
+            System.out.printf("Is the line tight? %s\n", islineTight);
             System.out.printf("Fish distance: %s\n", pullCount);
 
             // there should be a display here
 
             String move = prompter.prompt("[Pull] or [Release] the line?\n><(((º> ").trim().strip();
 
-            if (lineTight) {
+            if (islineTight) {
                 if (pullCount <= -3) {
                     System.out.println("The fish escapes. Better luck next time!");
                     fishBattle = false;
@@ -56,7 +57,7 @@ public class FishingMechanic {
                     audioManager.randomPull();
                 } else if (move.equalsIgnoreCase("release")) {
                     System.out.println("You release the line, giving the fish some slack.");
-                    lineTight = false;
+                    islineTight = false;
                     audioManager.randomReel();
                 } else {
                     System.out.println("Invalid move. Choose either [Pull] or [Release].");
@@ -85,14 +86,14 @@ public class FishingMechanic {
                     }
 
                     // Randomly determine if the line becomes tight
-                    lineTight = random.nextBoolean();
-                    if (lineTight) {
+                    islineTight = random.nextBoolean();
+                    if (islineTight) {
                         System.out.println("The line goes very tight with a lot of resistance. Be careful!");
                     }
                 } else if (move.equalsIgnoreCase("release")) {
                     audioManager.randomReel();
                     System.out.println("You release the line, giving the fish some slack.");
-                    lineTight = true;
+                    islineTight = true;
                 } else {
                     System.out.println("Invalid move. Choose either [Pull] or [Release].");
                 }
