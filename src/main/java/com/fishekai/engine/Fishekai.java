@@ -183,6 +183,11 @@ public class Fishekai implements SplashApp {
                         pause(PAUSE_VALUE);
                         break;
 
+                    case "fish":
+                        fish(current_location);
+                        pause(PAUSE_VALUE);
+                        break;
+
                     case "god":
                         Item rod = new Item("Fishing Pole", "tool", "You hold in your hands an artifact that you have created. Let's hope it catches a fish.");
                         player.getInventory().put("rod", rod);
@@ -304,6 +309,18 @@ public class Fishekai implements SplashApp {
             player.getInventory().remove("parachute");
             player.getInventory().remove("stick");
             player.getInventory().remove("hook");
+        }
+    }
+
+    private void fish(Location current_Location) {
+        if (player.getInventory().containsKey("rod")
+                && current_Location.getName().equals("North Beach")) {
+            System.out.println("You cast your line to catch a fish.");
+        } else if (player.getInventory().containsKey("rod")
+                && !current_Location.getName().equals("North Beach")) {
+            System.out.println("There aren't any fish here. Try a different area.");
+        } else if (!player.getInventory().containsKey("rod")) {
+            System.out.println("How can you fish without a fishing rod?");
         }
     }
 
