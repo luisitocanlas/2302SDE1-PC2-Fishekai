@@ -1,7 +1,6 @@
-# Gradle project template
+*Fishekai
 
-This template is intended as a project starter, using the Gradle project structure and build system, but providing a slightly more complete starting point than the **New Project wizard** dialog in IntelliJ IDEA provides.
+Text Adventure Game based on the fantasy genre called Isekai. Our hero, Ethan Rutherford the archaeologist, is magically transported to a deserted island and his only means of escape is to fish for his life. 
 
-For help in getting started with the basic project configuration, see [`getting-started.md`](getting-started.md).
+Luisito Canlas, Caleb Wise, and Chad Kellum developed the story, gameplay, and wrote the code for this text based game in 9 days, split into 3 sprints. 
 
-We recommend that the developer(s) replace the heading and body of this file with the name and summary of their project.
